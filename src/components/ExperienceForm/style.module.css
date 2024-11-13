@@ -27,38 +27,38 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
-.jobTitle {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #444;
-  margin-bottom: 5px;
-}
-
-.location {
-  font-size: 0.95rem;
-  color: #666;
-  margin: 4px 0;
-}
-
-.responsibilities {
-  margin-top: 10px;
-  list-style-type: disc;
-  padding-left: 20px;
-  color: #555;
-}
-
-.textInput, .textarea {
+.textInput {
   width: 100%;
   padding: 10px;
   font-size: 1rem;
+  color: #333;
+  font-weight: 500;
   border: 1px solid #ddd;
   border-radius: 8px;
   margin-bottom: 10px;
   transition: border-color 0.2s, box-shadow 0.2s;
-  resize: vertical;
 }
 
-.textInput:focus, .textarea:focus {
+.textInput:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.3);
+}
+
+.textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.textarea:focus {
   outline: none;
   border-color: #007bff;
   box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.3);

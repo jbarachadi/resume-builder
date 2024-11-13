@@ -14,14 +14,22 @@ const ExperienceForm = ({ data, onChange }) => {
     onChange({ ...data, positions: updatedPositions });
   };
 
+  const addResponsibility = (index) => {
+    const updatedPositions = [...data.positions];
+    updatedPositions[index].responsibilities.push('');
+    onChange({ ...data, positions: updatedPositions });
+  };
+
+  const removePosition = (index) => {
+    const updatedPositions = data.positions.filter((_, i) => i !== index);
+    onChange({ ...data, positions: updatedPositions });
+  };
+
   return (
     <div className={styles.formContainer}>
       <h3 className={styles.subheadline}>{data.subheadline}</h3>
       {data.positions.map((position, index) => (
         <div key={index} className={styles.jobEntry}>
-          <h4 className={styles.jobTitle}>{position.job_title} at {position.company}</h4>
-          <p className={styles.location}>{position.location} | {position.duration}</p>
-          
           <input
             type="text"
             value={position.job_title}
@@ -29,7 +37,6 @@ const ExperienceForm = ({ data, onChange }) => {
             className={styles.textInput}
             placeholder="Job Title"
           />
-
           <input
             type="text"
             value={position.company}
@@ -37,7 +44,6 @@ const ExperienceForm = ({ data, onChange }) => {
             className={styles.textInput}
             placeholder="Company"
           />
-
           <input
             type="text"
             value={position.location}
@@ -45,7 +51,6 @@ const ExperienceForm = ({ data, onChange }) => {
             className={styles.textInput}
             placeholder="Location"
           />
-
           <input
             type="text"
             value={position.duration}
@@ -68,8 +73,20 @@ const ExperienceForm = ({ data, onChange }) => {
           </ul>
 
           <div className={styles.buttonContainer}>
-            <button type="button" className={`${styles.button} ${styles.addButton}`}>Add Responsibility</button>
-            <button type="button" className={`${styles.button} ${styles.removeButton}`}>Remove Position</button>
+            <button
+              type="button"
+              className={`${styles.button} ${styles.addButton}`}
+              onClick={() => addResponsibility(index)}
+            >
+              Add Responsibility
+            </button>
+            <button
+              type="button"
+              className={`${styles.button} ${styles.removeButton}`}
+              onClick={() => removePosition(index)}
+            >
+              Remove Position
+            </button>
           </div>
         </div>
       ))}
