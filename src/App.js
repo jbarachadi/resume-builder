@@ -43,6 +43,10 @@ function App() {
                     data={data.resume.experience}
                     onChange={(updated) => handleInputChange('experience', updated)}
                   />
+                  {/* <LanguagesForm
+                    data={data.resume.languages}
+                    onChange={(updated) => handleInputChange('languages', updated)}
+                  /> */}
                   <TemplateSelection onSelectTemplate={handleTemplateChange} />
                   <ResumePreview template={selectedTemplate} data={data.resume} />
                 </>

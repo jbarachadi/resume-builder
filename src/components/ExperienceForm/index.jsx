@@ -16,11 +16,11 @@ const ExperienceForm = ({ data, onChange }) => {
 
   return (
     <div className={styles.formContainer}>
-      <h3>{data.subheadline}</h3>
+      <h3 className={styles.subheadline}>{data.subheadline}</h3>
       {data.positions.map((position, index) => (
         <div key={index} className={styles.jobEntry}>
-          <h4>{position.job_title} at {position.company}</h4>
-          <p>{position.location} | {position.duration}</p>
+          <h4 className={styles.jobTitle}>{position.job_title} at {position.company}</h4>
+          <p className={styles.location}>{position.location} | {position.duration}</p>
           
           <input
             type="text"
@@ -68,8 +68,8 @@ const ExperienceForm = ({ data, onChange }) => {
           </ul>
 
           <div className={styles.buttonContainer}>
-            <button type="button" className={styles.button}>Add Responsibility</button>
-            <button type="button" className={styles.button}>Remove Position</button>
+            <button type="button" className={`${styles.button} ${styles.addButton}`}>Add Responsibility</button>
+            <button type="button" className={`${styles.button} ${styles.removeButton}`}>Remove Position</button>
           </div>
         </div>
       ))}

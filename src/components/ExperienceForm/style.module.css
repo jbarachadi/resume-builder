@@ -1,27 +1,40 @@
 .formContainer {
   width: 100%;
   max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
+.subheadline {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
 .jobEntry {
   border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 15px;
-  background-color: #f9fafb;
+  padding: 20px;
+  background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
-.jobEntry h4 {
-  font-size: 1.2rem;
+.jobTitle {
+  font-size: 1.1rem;
   font-weight: 500;
   color: #444;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
 }
 
-.jobEntry p {
+.location {
   font-size: 0.95rem;
   color: #666;
   margin: 4px 0;
@@ -41,25 +54,49 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   margin-bottom: 10px;
+  transition: border-color 0.2s, box-shadow 0.2s;
   resize: vertical;
+}
+
+.textInput:focus, .textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.3);
 }
 
 .buttonContainer {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 10px;
 }
 
 .button {
-  padding: 8px 12px;
-  background-color: #007bff;
-  color: white;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #fff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, box-shadow 0.2s;
 }
 
 .button:hover {
-  background-color: #0056b3;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.15);
+}
+
+.addButton {
+  background-color: #28a745;
+}
+
+.addButton:hover {
+  background-color: #218838;
+}
+
+.removeButton {
+  background-color: #dc3545;
+}
+
+.removeButton:hover {
+  background-color: #c82333;
 }

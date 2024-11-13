@@ -89,7 +89,7 @@ const Template1 = ({ data }) => {
               </div>
             </section>
 
-            {/* <section className={`${styles.resume__section} ${styles.resume__languages}`}>
+            <section className={`${styles.resume__section} ${styles.resume__languages}`}>
               <div className={styles.resume__content}>
                 <div className={styles.resume__sectionTitle}>
                   <i className="fa fa-globe"></i>
@@ -104,7 +104,7 @@ const Template1 = ({ data }) => {
                   </div>
                 ))}
               </div>
-            </section> */}
+            </section>
           </div>
         </div>
       </div>
