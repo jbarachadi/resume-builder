@@ -1,0 +1,98 @@
+/* General Styles */
+.stroke-transparent {
+  opacity: 0.5;
+}
+
+.stroke-transparent-blue {
+  opacity: 0.8;
+}
+
+.card {
+  margin-bottom: 2em;
+}
+
+.tags {
+  color: #555;
+}
+
+.blue {
+  color: #5695cd;
+}
+
+/* Profile */
+#profile {
+  text-align: center;
+}
+
+#profile-photo {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+}
+
+#name {
+  font-size: 1.5em;
+  margin-top: 1em;
+}
+
+#designation {
+  font-size: 1.2em;
+  margin-top: 0.5em;
+}
+
+#college {
+  color: #888;
+  font-size: 1em;
+}
+
+#social-links a {
+  margin: 0 10px;
+}
+
+/* Info Cards */
+#info-cards {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 2em;
+  justify-content: space-between;
+}
+
+.card p {
+  font-weight: bold;
+}
+
+.card a {
+  color: #5695cd;
+  font-size: 0.9em;
+}
+
+/* Workshop and Education */
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul li {
+  margin-bottom: 10px;
+}
+
+.tags span {
+  font-size: 0.9em;
+  color: #777;
+}
+
+/* Edit Icon */
+.edit i {
+  color: #5695cd;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  #profile {
+    text-align: left;
+  }
+
+  #info-cards {
+    flex-direction: column;
+  }
+}

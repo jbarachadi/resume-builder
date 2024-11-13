@@ -10,7 +10,7 @@ import styles from './App.module.css';
 
 function App() {
   const [data, setData] = useState(initialData);
-  const [selectedTemplate, setSelectedTemplate] = useState('Template1');
+  const [selectedTemplate, setSelectedTemplate] = useState('Template2');
 
   const handleInputChange = (section, updatedData) => {
     setData({ ...data, [section]: updatedData });
