@@ -27,24 +27,15 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
-.textInput {
-  width: 100%;
-  padding: 10px;
-  font-size: 1rem;
-  color: #333;
+.label {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 5px;
+  display: block;
   font-weight: 500;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.textInput:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.3);
-}
-
+.textInput,
 .textarea {
   width: 100%;
   padding: 10px;
@@ -54,14 +45,35 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   margin-bottom: 10px;
-  resize: vertical;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+.textInput:focus,
 .textarea:focus {
   outline: none;
   border-color: #007bff;
   box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.3);
+}
+
+.textarea {
+  resize: vertical;
+}
+
+.saveButton {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-top: 5px;
+  transition: background-color 0.2s;
+}
+
+.saveButton:hover {
+  background-color: #218838;
 }
 
 .buttonContainer {
@@ -86,11 +98,11 @@
 }
 
 .addButton {
-  background-color: #28a745;
+  background-color: #007bff;
 }
 
 .addButton:hover {
-  background-color: #218838;
+  background-color: #0056b3;
 }
 
 .removeButton {
