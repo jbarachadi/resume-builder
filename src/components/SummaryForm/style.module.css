@@ -1,0 +1,23 @@
+.formContainer {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.formContainer h3 {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  resize: vertical;
+  height: 100px;
+}
