@@ -6,7 +6,7 @@ import SkillsForm from './components/SkillsForm';
 import ExperienceForm from './components/ExperienceForm';
 import ResumePreview from './components/ResumePreview';
 import { initialData } from './data';
-import styles from './App.module.css';
+import { Container, Box, Typography } from '@mui/material';
 
 function App() {
   const [data, setData] = useState(initialData);
@@ -20,12 +20,14 @@ function App() {
 
   return (
     <Router>
-      <div className={styles.appContainer}>
-        <header className={styles.header}>
-          Resume Builder
-        </header>
+      <Container maxWidth="lg" sx={{ bgcolor: '#ffffff', py: 5, borderRadius: 2, boxShadow: 3 }}>
+        <Box sx={{ textAlign: 'center', mb: 4 }}>
+          <Typography variant="h3" component="header" sx={{ fontWeight: 600, color: '#333' }}>
+            Resume Builder
+          </Typography>
+        </Box>
 
-        <main className={styles.mainContent}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
           <Routes>
             <Route
               path="/"
@@ -43,22 +45,18 @@ function App() {
                     data={data.resume.experience}
                     onChange={(updated) => handleInputChange('experience', updated)}
                   />
-                  {/* <LanguagesForm
-                    data={data.resume.languages}
-                    onChange={(updated) => handleInputChange('languages', updated)}
-                  /> */}
                   <TemplateSelection onSelectTemplate={handleTemplateChange} />
                   <ResumePreview template={selectedTemplate} data={data.resume} />
                 </>
               }
             />
           </Routes>
-        </main>
+        </Box>
 
-        <footer className={styles.footer}>
-          © 2024 Resume Builder. All rights reserved.
-        </footer>
-      </div>
+        <Box sx={{ textAlign: 'center', mt: 5, color: '#777' }}>
+          <Typography variant="body2">© 2024 Resume Builder. All rights reserved.</Typography>
+        </Box>
+      </Container>
     </Router>
   );
 }

@@ -1,5 +1,12 @@
 import React from 'react';
-import styles from './style.module.css';
+import {
+  TextField,
+  Button,
+  Typography,
+  Box,
+  Grid,
+  Divider,
+} from '@mui/material';
 
 const ExperienceForm = ({ data, onChange }) => {
   const handleInputChange = (index, field, value) => {
@@ -26,99 +33,113 @@ const ExperienceForm = ({ data, onChange }) => {
   };
 
   return (
-    <div className={styles.formContainer}>
-      <h3 className={styles.subheadline}>{data.subheadline}</h3>
+    <Box sx={{ mx: 'auto', p: 3, backgroundColor: '#f9f9f9', borderRadius: 2, boxShadow: 3 }}>
+      <Typography variant="h5" sx={{ textAlign: 'center', mb: 3 }}>
+        {data.subheadline}
+      </Typography>
       {data.positions.map((position, index) => (
-        <div key={index} className={styles.jobEntry}>
-          <label htmlFor={`jobTitle-${index}`} className={styles.label}>Job Title</label>
-          <input
-            type="text"
-            id={`jobTitle-${index}`}
-            value={position.job_title}
-            onChange={(e) => handleInputChange(index, 'job_title', e.target.value)}
-            className={styles.textInput}
-            placeholder="Job Title"
-          />
-          <button type="button" className={styles.saveButton} onClick={() => handleInputChange(index, 'job_title', position.job_title)}>
-            Save
-          </button>
-
-          <label htmlFor={`company-${index}`} className={styles.label}>Company</label>
-          <input
-            type="text"
-            id={`company-${index}`}
-            value={position.company}
-            onChange={(e) => handleInputChange(index, 'company', e.target.value)}
-            className={styles.textInput}
-            placeholder="Company"
-          />
-          <button type="button" className={styles.saveButton} onClick={() => handleInputChange(index, 'company', position.company)}>
-            Save
-          </button>
-
-          <label htmlFor={`location-${index}`} className={styles.label}>Location</label>
-          <input
-            type="text"
-            id={`location-${index}`}
-            value={position.location}
-            onChange={(e) => handleInputChange(index, 'location', e.target.value)}
-            className={styles.textInput}
-            placeholder="Location"
-          />
-          <button type="button" className={styles.saveButton} onClick={() => handleInputChange(index, 'location', position.location)}>
-            Save
-          </button>
-
-          <label htmlFor={`duration-${index}`} className={styles.label}>Duration</label>
-          <input
-            type="text"
-            id={`duration-${index}`}
-            value={position.duration}
-            onChange={(e) => handleInputChange(index, 'duration', e.target.value)}
-            className={styles.textInput}
-            placeholder="Duration"
-          />
-          <button type="button" className={styles.saveButton} onClick={() => handleInputChange(index, 'duration', position.duration)}>
-            Save
-          </button>
-
-          <ul className={styles.responsibilities}>
+        <Box key={index} sx={{ mb: 4, p: 2, border: '1px solid #ddd', borderRadius: 2, backgroundColor: '#ffffff' }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Job Title"
+                value={position.job_title}
+                onChange={(e) => handleInputChange(index, 'job_title', e.target.value)}
+                variant="outlined"
+                sx={{ mb: 1 }}
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                sx={{ mt: 1 }}
+                onClick={() => handleInputChange(index, 'job_title', position.job_title)}
+              >
+                Save
+              </Button>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Company"
+                value={position.company}
+                onChange={(e) => handleInputChange(index, 'company', e.target.value)}
+                variant="outlined"
+                sx={{ mb: 1 }}
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                sx={{ mt: 1 }}
+                onClick={() => handleInputChange(index, 'company', position.company)}
+              >
+                Save
+              </Button>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                label="Location"
+                value={position.location}
+                onChange={(e) => handleInputChange(index, 'location', e.target.value)}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                label="Duration"
+                value={position.duration}
+                onChange={(e) => handleInputChange(index, 'duration', e.target.value)}
+                variant="outlined"
+              />
+            </Grid>
+          </Grid>
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="subtitle1">Responsibilities</Typography>
             {position.responsibilities.map((resp, respIndex) => (
-              <li key={respIndex}>
-                <label htmlFor={`responsibility-${index}-${respIndex}`} className={styles.label}>Responsibility</label>
-                <textarea
-                  id={`responsibility-${index}-${respIndex}`}
+              <Box key={respIndex} sx={{ mt: 1 }}>
+                <TextField
+                  fullWidth
+                  label={`Responsibility ${respIndex + 1}`}
+                  multiline
                   value={resp}
                   onChange={(e) => handleResponsibilityChange(index, respIndex, e.target.value)}
-                  className={styles.textarea}
-                  placeholder="Responsibility"
+                  variant="outlined"
                 />
-                <button type="button" className={styles.saveButton} onClick={() => handleResponsibilityChange(index, respIndex, resp)}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  sx={{ mt: 1 }}
+                  onClick={() => handleResponsibilityChange(index, respIndex, resp)}
+                >
                   Save
-                </button>
-              </li>
+                </Button>
+              </Box>
             ))}
-          </ul>
-
-          <div className={styles.buttonContainer}>
-            <button
-              type="button"
-              className={`${styles.button} ${styles.addButton}`}
+            <Button
+              variant="contained"
+              color="success"
+              sx={{ mt: 2 }}
               onClick={() => addResponsibility(index)}
             >
               Add Responsibility
-            </button>
-            <button
-              type="button"
-              className={`${styles.button} ${styles.removeButton}`}
-              onClick={() => removePosition(index)}
-            >
-              Remove Position
-            </button>
-          </div>
-        </div>
+            </Button>
+          </Box>
+          <Divider sx={{ my: 2 }} />
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => removePosition(index)}
+          >
+            Remove Position
+          </Button>
+        </Box>
       ))}
-    </div>
+    </Box>
   );
 };
 
