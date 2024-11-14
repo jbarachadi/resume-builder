@@ -40,7 +40,7 @@ const ExperienceForm = ({ data, onChange }) => {
       {data.positions.map((position, index) => (
         <Box key={index} sx={{ mb: 4, p: 2, border: '1px solid #ddd', borderRadius: 2, backgroundColor: '#ffffff' }}>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
               <TextField
                 fullWidth
                 label="Job Title"
@@ -53,13 +53,13 @@ const ExperienceForm = ({ data, onChange }) => {
                 variant="contained"
                 color="primary"
                 size="small"
-                sx={{ mt: 1 }}
+                sx={{ px: '10px', py: '4px' }}
                 onClick={() => handleInputChange(index, 'job_title', position.job_title)}
               >
                 Save
               </Button>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
               <TextField
                 fullWidth
                 label="Company"
@@ -72,35 +72,55 @@ const ExperienceForm = ({ data, onChange }) => {
                 variant="contained"
                 color="primary"
                 size="small"
-                sx={{ mt: 1 }}
+                sx={{ px: '10px', py: '4px' }}
                 onClick={() => handleInputChange(index, 'company', position.company)}
               >
                 Save
               </Button>
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
               <TextField
                 fullWidth
                 label="Location"
                 value={position.location}
                 onChange={(e) => handleInputChange(index, 'location', e.target.value)}
                 variant="outlined"
+                sx={{ mb: 1 }}
               />
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                sx={{ px: '10px', py: '4px' }}
+                onClick={() => handleInputChange(index, 'company', position.company)}
+              >
+                Save
+              </Button>
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
               <TextField
                 fullWidth
                 label="Duration"
                 value={position.duration}
                 onChange={(e) => handleInputChange(index, 'duration', e.target.value)}
                 variant="outlined"
+                sx={{ mb: 1 }}
               />
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                sx={{ px: '10px', py: '4px' }}
+                onClick={() => handleInputChange(index, 'company', position.company)}
+              >
+                Save
+              </Button>
             </Grid>
           </Grid>
-          <Box sx={{ mt: 2 }}>
+          <Box sx={{ my: 2 }}>
             <Typography variant="subtitle1">Responsibilities</Typography>
             {position.responsibilities.map((resp, respIndex) => (
-              <Box key={respIndex} sx={{ mt: 1 }}>
+              <Box key={respIndex} sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', mt: 1 }}>
                 <TextField
                   fullWidth
                   label={`Responsibility ${respIndex + 1}`}
@@ -108,12 +128,13 @@ const ExperienceForm = ({ data, onChange }) => {
                   value={resp}
                   onChange={(e) => handleResponsibilityChange(index, respIndex, e.target.value)}
                   variant="outlined"
+                  sx={{ mb: 1 }}
                 />
                 <Button
                   variant="contained"
                   color="primary"
                   size="small"
-                  sx={{ mt: 1 }}
+                  sx={{ px: '10px', py: '4px' }}
                   onClick={() => handleResponsibilityChange(index, respIndex, resp)}
                 >
                   Save
@@ -123,7 +144,7 @@ const ExperienceForm = ({ data, onChange }) => {
             <Button
               variant="contained"
               color="success"
-              sx={{ mt: 2 }}
+              sx={{ width: '100%', mt: 2 }}
               onClick={() => addResponsibility(index)}
             >
               Add Responsibility
@@ -133,6 +154,7 @@ const ExperienceForm = ({ data, onChange }) => {
           <Button
             variant="contained"
             color="error"
+            sx={{ width: '100%' }}
             onClick={() => removePosition(index)}
           >
             Remove Position
