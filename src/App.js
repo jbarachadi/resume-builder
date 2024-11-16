@@ -9,10 +9,10 @@ import { initialData } from './data';
 import { Container, Box, Typography } from '@mui/material';
 
 function App() {
-  const [data, setData] = useState(initialData.resume);
+  const [data, setData] = useState(initialData);
   // const [skills, setSkills] = useState(data.skills.list);
   const [skills, setSkills] = useState({
-    list1: data.skills.list,
+    list1: data.sections.skills.items.map(item => item.name),
     list2: ["Python", "SQL", "AWS"],
   });
 

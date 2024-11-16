@@ -3,24 +3,14 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import styles from "./style.module.css";
 
 const Template2 = ({ data, setSkills }) => {
-  const {
-    profile,
-    headline,
-    summary,
-    skills,
-    experience,
-    education,
-    certifications,
-    projects,
-    references,
-  } = data;
+  const { basics, sections, skills } = data;
 
   const handleDragEnd = (result) => {
     const { destination, source } = result;
-  
+
     // If there is no destination (dropped outside), return
     if (!destination) return;
-  
+
     // If the item has not moved, return early
     if (
       destination.index === source.index &&
@@ -28,15 +18,15 @@ const Template2 = ({ data, setSkills }) => {
     ) {
       return;
     }
-  
+
     // Safeguard against undefined lists
     const list1 = skills.list1 || [];
     const list2 = skills.list2 || [];
-  
+
     // Handle moving items between the two lists
     const sourceListId = source.droppableId;
     const destinationListId = destination.droppableId;
-  
+
     // Case for moving between list1 and list2
     if (
       (sourceListId === "list1" && destinationListId === "list2") ||
@@ -44,10 +34,10 @@ const Template2 = ({ data, setSkills }) => {
     ) {
       const sourceSkillsList = sourceListId === "list1" ? list1 : list2;
       const destinationSkillsList = destinationListId === "list1" ? list1 : list2;
-  
+
       const [movedSkill] = sourceSkillsList.splice(source.index, 1);
       destinationSkillsList.splice(destination.index, 0, movedSkill);
-  
+
       setSkills({
         list1: sourceListId === "list1" ? sourceSkillsList : list1,
         list2: sourceListId === "list2" ? sourceSkillsList : list2,
@@ -61,12 +51,13 @@ const Template2 = ({ data, setSkills }) => {
 
       setSkills((prevSkills) => {
         return {
-        ...prevSkills,
-        [sourceListId]: reorderedSkillsList,
-      }});
+          ...prevSkills,
+          [sourceListId]: reorderedSkillsList,
+        }
+      });
     }
   };
-  
+
 
   return (
     <div className={styles.resume}>
@@ -74,34 +65,34 @@ const Template2 = ({ data, setSkills }) => {
       <div className={styles.resume_left}>
         {/* Profile */}
         <div className={styles.resume_profile}>
-          <img src={profile.photo || "https://via.placeholder.com/150"} alt="Profile Pic" />
+          <img src={basics?.photo || "https://via.placeholder.com/150"} alt="Profile Pic" />
         </div>
 
         {/* Contact Info */}
         <div className={styles.resume_content}>
           <div className={`${styles.resume_item} ${styles.resume_info}`}>
             <div className={styles.title}>
-              <p className={styles.bold}>{profile.name || "Name Not Provided"}</p>
-              <p className={styles.regular}>{headline}</p>
+              <p className={styles.bold}>{basics.name || "Name Not Provided"}</p>
+              <p className={styles.regular}>{basics.headline}</p>
             </div>
             <ul>
               <li>
                 <div className={styles.icon}>
                   <i className="fas fa-map-signs"></i>
                 </div>
-                <div className={styles.data}>{profile.location || "Location Not Provided"}</div>
+                <div className={styles.data}>{basics.location || "Location Not Provided"}</div>
               </li>
               <li>
                 <div className={styles.icon}>
                   <i className="fas fa-mobile-alt"></i>
                 </div>
-                <div className={styles.data}>{profile.phone || "Phone Not Provided"}</div>
+                <div className={styles.data}>{basics.phone || "Phone Not Provided"}</div>
               </li>
               <li>
                 <div className={styles.icon}>
                   <i className="fas fa-envelope"></i>
                 </div>
-                <div className={styles.data}>{profile.email || "Email Not Provided"}</div>
+                <div className={styles.data}>{basics.email || "Email Not Provided"}</div>
               </li>
             </ul>
           </div>
@@ -118,7 +109,7 @@ const Template2 = ({ data, setSkills }) => {
                     className={styles.skillsList}
                   >
                     <div className={styles.title}>
-                      <p className={styles.bold}>{skills.subheadline} 1</p>
+                      <p className={styles.bold}>Suggested {sections.skills.name}</p>
                     </div>
                     {skills.list1.map((skill, index) => (
                       <Draggable key={skill} draggableId={`list1-${skill}`} index={index}>
@@ -148,7 +139,7 @@ const Template2 = ({ data, setSkills }) => {
                     className={styles.skillsList}
                   >
                     <div className={styles.title}>
-                      <p className={styles.bold}>{skills.subheadline} 2</p>
+                      <p className={styles.bold}>Current {sections.skills.name}</p>
                     </div>
                     {skills.list2.map((skill, index) => (
                       <Draggable key={skill} draggableId={`list2-${skill}`} index={index}>
@@ -178,28 +169,28 @@ const Template2 = ({ data, setSkills }) => {
         {/* Summary */}
         <div className={`${styles.resume_item} ${styles.resume_about}`}>
           <div className={styles.title}>
-            <p className={styles.bold}>{summary.subheadline}</p>
+            <p className={styles.bold}>{sections.summary.name}</p>
           </div>
-          <p>{summary.text}</p>
+          <p>{sections.summary.text}</p>
         </div>
 
         {/* Work Experience */}
         <div className={`${styles.resume_item} ${styles.resume_work}`}>
           <div className={styles.title}>
-            <p className={styles.bold}>{experience.subheadline}</p>
+            <p className={styles.bold}>{sections.experience.name}</p>
           </div>
           <ul>
-            {experience.positions.map((position, index) => (
+            {sections.experience.items.map((experience, index) => (
               <li key={index}>
-                <div className={styles.date}>{position.duration}</div>
+                <div className={styles.date}>{experience.date}</div>
                 <div className={styles.info}>
-                  <p className={styles.semi_bold}>{position.job_title}</p>
-                  <p>{position.company}, {position.location}</p>
-                  <ul>
-                    {position.responsibilities.map((task, taskIndex) => (
+                  <p className={styles.semi_bold}>{experience.position}</p>
+                  <p>{experience.company}, {experience.location}</p>
+                  {/* <ul>
+                    {experience.responsibilities.map((task, taskIndex) => (
                       <li key={taskIndex}>{task}</li>
                     ))}
-                  </ul>
+                  </ul> */}
                 </div>
               </li>
             ))}
@@ -209,14 +200,14 @@ const Template2 = ({ data, setSkills }) => {
         {/* Education */}
         <div className={`${styles.resume_item} ${styles.resume_education}`}>
           <div className={styles.title}>
-            <p className={styles.bold}>{education.subheadline}</p>
+            <p className={styles.bold}>{sections.education.name}</p>
           </div>
           <ul>
-            {education.details.map((degree, index) => (
+            {sections.education.items.map((degree, index) => (
               <li key={index}>
-                <div className={styles.date}>{degree.year}</div>
+                <div className={styles.date}>{degree.date}</div>
                 <div className={styles.info}>
-                  <p className={styles.semi_bold}>{degree.degree}</p>
+                  <p className={styles.semi_bold}>{degree.studyType}</p>
                   <p>{degree.institution}</p>
                 </div>
               </li>
@@ -227,11 +218,11 @@ const Template2 = ({ data, setSkills }) => {
         {/* Certifications */}
         <div className={`${styles.resume_item} ${styles.resume_certifications}`}>
           <div className={styles.title}>
-            <p className={styles.bold}>{certifications.subheadline}</p>
+            <p className={styles.bold}>{sections.certifications.name}</p>
           </div>
           <ul>
-            {certifications.list.map((cert, index) => (
-              <li key={index}>{cert}</li>
+            {sections.certifications.items.map((cert, index) => (
+              <li key={index}>{cert.name}</li>
             ))}
           </ul>
         </div>
@@ -239,12 +230,12 @@ const Template2 = ({ data, setSkills }) => {
         {/* Projects */}
         <div className={`${styles.resume_item} ${styles.resume_projects}`}>
           <div className={styles.title}>
-            <p className={styles.bold}>{projects.subheadline}</p>
+            <p className={styles.bold}>{sections.projects.name}</p>
           </div>
           <ul>
-            {projects.list.map((project, index) => (
+            {sections.projects.items.map((project, index) => (
               <li key={index}>
-                <p className={styles.semi_bold}>{project.project_name}</p>
+                <p className={styles.semi_bold}>{project.name}</p>
                 <p>{project.description}</p>
               </li>
             ))}
@@ -254,9 +245,9 @@ const Template2 = ({ data, setSkills }) => {
         {/* References */}
         <div className={`${styles.resume_item} ${styles.resume_references}`}>
           <div className={styles.title}>
-            <p className={styles.bold}>{references.subheadline}</p>
+            <p className={styles.bold}>{sections.references.name}</p>
           </div>
-          <p>{references.text}</p>
+          <p>{sections.references.text}</p>
         </div>
       </div>
     </div>

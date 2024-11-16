@@ -1,4 +1,4 @@
-export const initialData2 = {
+export const initialData = {
   "basics": {
     "name": "admin",
     "email": "adminssssddd@yopmail.com",
@@ -193,7 +193,171 @@ export const initialData2 = {
   }
 }
 
-export const initialData = {
+export const initialData1 = {
+  "basics": {
+      "email": "kalpanamba2015@gmail.com",
+      "headline": "",
+      "location": "",
+      "name": "KALPANA B",
+      "phone": "+91 8884938830"
+  },
+  "sections": {
+      "awards": {
+          "items": [],
+          "name": "Awards"
+      },
+      "certifications": {
+          "items": [
+              {
+                  "date": "",
+                  "issuer": "",
+                  "title": "  Got Appreciation from hiring manager for outstanding performance \n  Have attended Advanced Recruitment Training Workshop. \n  Have completed online course of Recruitment – Talent Acquisition and Hiring on Udemy.",
+                  "url": {
+                      "href": "",
+                      "label": ""
+                  }
+              }
+          ],
+          "name": "Certifications"
+      },
+      "education": {
+          "items": [
+              {
+                  "area": "",
+                  "date": "",
+                  "institution": "University of JNTU",
+                  "score": "",
+                  "studyType": "MBA",
+                  "summary": "",
+                  "url": {
+                      "href": "",
+                      "label": ""
+                  }
+              }
+          ],
+          "name": "Education"
+      },
+      "experience": {
+          "items": [],
+          "name": "Experience"
+      },
+      "interests": {
+          "items": [],
+          "name": "Interests"
+      },
+      "languages": {
+          "items": [],
+          "name": "Languages"
+      },
+      "profiles": {
+          "items": [],
+          "name": "Profiles"
+      },
+      "projects": {
+          "items": [],
+          "name": "Projects"
+      },
+      "publications": {
+          "items": [],
+          "name": "Publications"
+      },
+      "references": {
+          "columns": 1,
+          "items": [],
+          "name": "References",
+          "separateLinks": true,
+          "visible": true
+      },
+      "skills": {
+          "items": [
+              {
+                  "description": "",
+                  "level": 3,
+                  "name": "Recruitment &Selection",
+                  "visible": true
+              },
+              {
+                  "description": "",
+                  "level": 3,
+                  "name": "Lateral& Niche Hiring",
+                  "visible": true
+              },
+              {
+                  "description": "",
+                  "level": 3,
+                  "name": "Volume Hiring",
+                  "visible": true
+              },
+              {
+                  "description": "",
+                  "level": 3,
+                  "name": "Organizing walk-in-drive",
+                  "visible": true
+              },
+              {
+                  "description": "",
+                  "level": 3,
+                  "name": "Interview Scheduling",
+                  "visible": true
+              },
+              {
+                  "description": "",
+                  "level": 3,
+                  "name": "Employee Relation",
+                  "visible": true
+              },
+              {
+                  "description": "",
+                  "level": 3,
+                  "name": "Candidate Database",
+                  "visible": true
+              },
+              {
+                  "description": "",
+                  "level": 3,
+                  "name": "Team Assist",
+                  "visible": true
+              },
+              {
+                  "description": "",
+                  "level": 3,
+                  "name": "Salary Negotiation",
+                  "visible": true
+              },
+              {
+                  "description": "",
+                  "level": 3,
+                  "name": "Python Programming",
+                  "visible": true
+              },
+              {
+                  "description": "",
+                  "level": 3,
+                  "name": "Machine Learning",
+                  "visible": true
+              },
+              {
+                  "description": "",
+                  "level": 3,
+                  "name": "Data Visualization",
+                  "visible": true
+              }
+          ],
+          "name": "Skills"
+      },
+      "summary": {
+          "content": "<p>Results-focused  HR  IT  Recruitment  with  6+  years  Specialized  Expertise  into  identifying  and  qualifying \ncandidates.  Well-versed  in  outlining  job  requirements,  developing  sourcing  tactics,  and  scheduling  and \ncoordinating  interviews.  Impeccable  track  record  sourcing  top-notch  talents  through  internet  searches, \nrecruitment fairs, job boards, and professional networks.</p>",
+          "name": "Summary",
+          "visible": true
+      },
+      "volunteer": {
+          "items": [],
+          "name": "Volunteering"
+      }
+  }
+}
+
+export const initialData2 = {
   "resume": {
     "profile": {
       "photo": "",
