@@ -40,15 +40,20 @@ function App() {
                     data={data.summary}
                     onChange={(updated) => handleInputChange('summary', updated)}
                   /> */}
-                  <SkillsForm
-                    data={data.skills}
+                  {/* <SkillsForm
+                    data={{ ...data.skills, list: skills }} 
+                    setSkills={setSkills}
                     onChange={(updated) => handleInputChange('skills', updated)}
-                  />
+                  /> */}
                   {/* <ExperienceForm
                     data={data.experience}
                     onChange={(updated) => handleInputChange('experience', updated)}
                   /> */}
-                  <ResumePreview template={selectedTemplate} data={{ ...data, skills: { ...data.skills, list: skills } }} setSkills={setSkills} />
+                  <ResumePreview
+                    template={selectedTemplate}
+                    data={{ ...data, skills: { ...data.skills, list: skills } }}
+                    setSkills={setSkills}
+                  />
                 </>
               }
             />

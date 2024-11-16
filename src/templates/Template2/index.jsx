@@ -2,7 +2,7 @@ import React from "react";
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import styles from "./style.module.css";
 
-const Resume = ({ data, setSkills }) => {
+const Template2 = ({ data, setSkills }) => {
   const {
     profile,
     headline,
@@ -16,13 +16,15 @@ const Resume = ({ data, setSkills }) => {
   } = data;
 
   const handleDragEnd = (result) => {
-    if (!result.destination) return;
+    const { destination, source } = result;
+
+    if (!destination) return;
 
     const reorderedSkills = Array.from(skills.list);
-    const [movedSkill] = reorderedSkills.splice(result.source.index, 1);
-    reorderedSkills.splice(result.destination.index, 0, movedSkill);
+    const [movedSkill] = reorderedSkills.splice(source.index, 1);
+    reorderedSkills.splice(destination.index, 0, movedSkill);
 
-    setSkills(reorderedSkills); // Update the skills list in the parent state
+    setSkills(reorderedSkills);
   };
 
   return (
@@ -77,7 +79,7 @@ const Resume = ({ data, setSkills }) => {
                     className={styles.skillsList}
                   >
                     {skills.list.map((skill, index) => (
-                      <Draggable key={skill} draggableId={skill} index={index}>
+                      <Draggable key={index} draggableId={String(index)} index={index}>
                         {(provided) => (
                           <li
                             ref={provided.innerRef}
@@ -189,4 +191,4 @@ const Resume = ({ data, setSkills }) => {
   );
 };
 
-export default Resume;
+export default Template2;
