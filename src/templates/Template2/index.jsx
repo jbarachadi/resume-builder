@@ -1,5 +1,5 @@
 import React from "react";
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import styles from "./style.module.css";
 
 const Template2 = ({ data, setSkills }) => {
@@ -17,15 +17,56 @@ const Template2 = ({ data, setSkills }) => {
 
   const handleDragEnd = (result) => {
     const { destination, source } = result;
-
+  
+    // If there is no destination (dropped outside), return
     if (!destination) return;
+  
+    // If the item has not moved, return early
+    if (
+      destination.index === source.index &&
+      destination.droppableId === source.droppableId
+    ) {
+      return;
+    }
+  
+    // Safeguard against undefined lists
+    const list1 = skills.list1 || [];
+    const list2 = skills.list2 || [];
+  
+    // Handle moving items between the two lists
+    const sourceListId = source.droppableId;
+    const destinationListId = destination.droppableId;
+  
+    // Case for moving between list1 and list2
+    if (
+      (sourceListId === "list1" && destinationListId === "list2") ||
+      (sourceListId === "list2" && destinationListId === "list1")
+    ) {
+      const sourceSkillsList = sourceListId === "list1" ? list1 : list2;
+      const destinationSkillsList = destinationListId === "list1" ? list1 : list2;
+  
+      const [movedSkill] = sourceSkillsList.splice(source.index, 1);
+      destinationSkillsList.splice(destination.index, 0, movedSkill);
+  
+      setSkills({
+        list1: sourceListId === "list1" ? sourceSkillsList : list1,
+        list2: sourceListId === "list2" ? sourceSkillsList : list2,
+      });
+    } else {
+      // Case for reordering within the same list
+      const sourceSkillsList = sourceListId === "list1" ? list1 : list2;
+      const reorderedSkillsList = Array.from(sourceSkillsList);
+      const [movedSkill] = reorderedSkillsList.splice(source.index, 1);
+      reorderedSkillsList.splice(destination.index, 0, movedSkill);
 
-    const reorderedSkills = Array.from(skills.list);
-    const [movedSkill] = reorderedSkills.splice(source.index, 1);
-    reorderedSkills.splice(destination.index, 0, movedSkill);
-
-    setSkills(reorderedSkills);
+      setSkills((prevSkills) => {
+        return {
+        ...prevSkills,
+        [sourceListId]: reorderedSkillsList,
+      }});
+    }
   };
+  
 
   return (
     <div className={styles.resume}>
@@ -67,19 +108,50 @@ const Template2 = ({ data, setSkills }) => {
 
           {/* Skills */}
           <div className={`${styles.resume_item} ${styles.resume_skills}`}>
-            <div className={styles.title}>
-              <p className={styles.bold}>{skills.subheadline}</p>
-            </div>
             <DragDropContext onDragEnd={handleDragEnd}>
-              <Droppable droppableId="skillsList">
+              {/* First Skills List */}
+              <Droppable droppableId="list1">
                 {(provided) => (
                   <ul
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                     className={styles.skillsList}
                   >
-                    {skills.list.map((skill, index) => (
-                      <Draggable key={index} draggableId={String(index)} index={index}>
+                    <div className={styles.title}>
+                      <p className={styles.bold}>{skills.subheadline} 1</p>
+                    </div>
+                    {skills.list1.map((skill, index) => (
+                      <Draggable key={skill} draggableId={`list1-${skill}`} index={index}>
+                        {(provided) => (
+                          <li
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            className={styles.skillItem}
+                          >
+                            {skill}
+                          </li>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </ul>
+                )}
+              </Droppable>
+
+              {/* Second Skills List */}
+              <Droppable droppableId="list2">
+                {(provided) => (
+                  <ul
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    className={styles.skillsList}
+                  >
+                    <div className={styles.title}>
+                      <p className={styles.bold}>{skills.subheadline} 2</p>
+                    </div>
+                    {skills.list2.map((skill, index) => (
+                      <Draggable key={skill} draggableId={`list2-${skill}`} index={index}>
                         {(provided) => (
                           <li
                             ref={provided.innerRef}

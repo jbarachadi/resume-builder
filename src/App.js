@@ -10,7 +10,11 @@ import { Container, Box, Typography } from '@mui/material';
 
 function App() {
   const [data, setData] = useState(initialData.resume);
-  const [skills, setSkills] = useState(data.skills.list);
+  // const [skills, setSkills] = useState(data.skills.list);
+  const [skills, setSkills] = useState({
+    list1: data.skills.list,
+    list2: ["Python", "SQL", "AWS"],
+  });
 
   const [selectedTemplate, setSelectedTemplate] = useState('Template2');
 
@@ -51,7 +55,14 @@ function App() {
                   /> */}
                   <ResumePreview
                     template={selectedTemplate}
-                    data={{ ...data, skills: { ...data.skills, list: skills } }}
+                    data={{
+                      ...data,
+                      skills: {
+                        ...data.skills,
+                        list1: skills.list1,
+                        list2: skills.list2,
+                      },
+                    }}
                     setSkills={setSkills}
                   />
                 </>
