@@ -9,7 +9,9 @@ import { initialData } from './data';
 import { Container, Box, Typography } from '@mui/material';
 
 function App() {
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState(initialData.resume);
+  const [skills, setSkills] = useState(data.skills.list);
+
   const [selectedTemplate, setSelectedTemplate] = useState('Template2');
 
   const handleInputChange = (section, updatedData) => {
@@ -33,20 +35,20 @@ function App() {
               path="/"
               element={
                 <>
-                  <SummaryForm
-                    data={data.resume.summary}
+                  {/* <SummaryForm
+                    data={data.summary}
                     onChange={(updated) => handleInputChange('summary', updated)}
-                  />
+                  /> */}
                   <SkillsForm
-                    data={data.resume.skills}
+                    data={data.skills}
                     onChange={(updated) => handleInputChange('skills', updated)}
                   />
-                  <ExperienceForm
-                    data={data.resume.experience}
+                  {/* <ExperienceForm
+                    data={data.experience}
                     onChange={(updated) => handleInputChange('experience', updated)}
-                  />
+                  /> */}
                   <TemplateSelection onSelectTemplate={handleTemplateChange} />
-                  <ResumePreview template={selectedTemplate} data={data.resume} />
+                  <ResumePreview template={selectedTemplate} data={{ ...data, skills: { ...data.skills, list: skills } }} setSkills={setSkills} />
                 </>
               }
             />

@@ -1,71 +1,189 @@
-import React from 'react';
-import styles from './style.module.css';
+import React from "react";
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import styles from "./style.module.css";
 
-const Resume = ({ data }) => {
+const Resume = ({ data, setSkills }) => {
+  const {
+    profile,
+    headline,
+    summary,
+    skills,
+    experience,
+    education,
+    certifications,
+    projects,
+    references,
+  } = data;
+
+  const handleDragEnd = (result) => {
+    if (!result.destination) return;
+
+    const reorderedSkills = Array.from(skills.list);
+    const [movedSkill] = reorderedSkills.splice(result.source.index, 1);
+    reorderedSkills.splice(result.destination.index, 0, movedSkill);
+
+    setSkills(reorderedSkills); // Update the skills list in the parent state
+  };
+
   return (
-    <div id="container">
-      <div id="profile">
-        {/* <div id="image">
-          <img id="profile-photo" src={data.profile.photo} alt="Profile-Image" />
-          <a href="#"><i className={`fas fa-pen ${styles.strokeTransparent}`}></i></a>
-        </div> */}
-        {/* <p id="name">{data.profile.name}<br /><span id="email">{data.profile.email}</span></p> */}
-        {/* <p id="designation">{data.profile.designation}<br /><span id="college">{data.profile.college}</span></p> */}
-        {/* <div id="social-links">
-          {data.profile.socialLinks.map((link, index) => (
-            <a key={index} href={link.url}>
-              <i className={`fab fa-${link.platform} ${styles.strokeTransparent}`}></i>
-            </a>
-          ))}
-        </div> */}
-        <a id="edit-intro" href="#"><i className="fas fa-pen-alt blue"></i>&nbsp;&nbsp;Edit Intro</a>
-        <hr width="100%" />
-        <div id="about">
-          <p style={{ display: 'inline' }}>About</p>
-          <a href="#"><i className={`fas fa-pen ${styles.strokeTransparentBlue}`}></i></a>
+    <div className={styles.resume}>
+      {/* Left Section */}
+      <div className={styles.resume_left}>
+        {/* Profile */}
+        <div className={styles.resume_profile}>
+          <img src={profile.photo || "https://via.placeholder.com/150"} alt="Profile Pic" />
         </div>
-        {/* <p id="year-graduation">Expected Year of Graduation<br /><strong>{data.profile.yearOfGraduation}</strong></p> */}
-        {/* <p id="education">Education<br /><strong>{data.education}</strong></p> */}
-        {/* <p id="more-about">More about me<br /><span>{data.profile.moreAbout}</span></p> */}
-        {/* <p id="telephone">Telephone<br /><strong>{data.profile.telephone}</strong></p> */}
-        {/* <p id="fax">Fax<br /><strong>{data.profile.fax}</strong></p> */}
-      </div>
 
-      <div id="info-cards">
-        {data.experience.positions.map((work, index) => (
-          <div className={styles.card} key={index}>
-            <p><i className="fas fa-briefcase"></i>&nbsp;&nbsp;&nbsp;{work.job_title}</p>
-            <a href="#">+ Add work experience</a>
-          </div>
-        ))}
-        {/* {data.workshops.map((workshop, index) => (
-          <div className={styles.card} key={index}>
-            <p><i className="fas fa-briefcase"></i>&nbsp;&nbsp;&nbsp;Workshop</p>
-            <ul>
-              {workshop.items.map((item, idx) => (
-                <li key={idx}>
-                  <p className={styles.tags}>
-                    {item.title}<br /><span>{item.location} | <span>{item.duration}</span></span>
-                  </p>
-                  <a className="edit" href="#"><i className={`fas fa-pen ${styles.strokeTransparentBlue}`}></i></a>
-                </li>
-              ))}
-            </ul>
-            <a href="#">+ Add workshops attended</a>
-          </div>
-        ))} */}
-        {data.education.details.map((edu, index) => (
-          <div className={styles.card} key={index}>
-            <p><i className="fas fa-graduation-cap"></i>&nbsp;&nbsp;&nbsp;Education</p>
+        {/* Contact Info */}
+        <div className={styles.resume_content}>
+          <div className={`${styles.resume_item} ${styles.resume_info}`}>
+            <div className={styles.title}>
+              <p className={styles.bold}>{profile.name || "Name Not Provided"}</p>
+              <p className={styles.regular}>{headline}</p>
+            </div>
             <ul>
               <li>
-                <p className={styles.tags}>{edu.institution}<br /><span>{edu.degree} | <span>{edu.year}</span></span></p>
-                <a className="edit" href="#"><i className={`fas fa-pen ${styles.strokeTransparentBlue}`}></i></a>
+                <div className={styles.icon}>
+                  <i className="fas fa-map-signs"></i>
+                </div>
+                <div className={styles.data}>{profile.location || "Location Not Provided"}</div>
+              </li>
+              <li>
+                <div className={styles.icon}>
+                  <i className="fas fa-mobile-alt"></i>
+                </div>
+                <div className={styles.data}>{profile.phone || "Phone Not Provided"}</div>
+              </li>
+              <li>
+                <div className={styles.icon}>
+                  <i className="fas fa-envelope"></i>
+                </div>
+                <div className={styles.data}>{profile.email || "Email Not Provided"}</div>
               </li>
             </ul>
-            <a href="#">+ Add new</a>
           </div>
-        ))}
+
+          {/* Skills */}
+          <div className={`${styles.resume_item} ${styles.resume_skills}`}>
+            <div className={styles.title}>
+              <p className={styles.bold}>{skills.subheadline}</p>
+            </div>
+            <DragDropContext onDragEnd={handleDragEnd}>
+              <Droppable droppableId="skillsList">
+                {(provided) => (
+                  <ul
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    className={styles.skillsList}
+                  >
+                    {skills.list.map((skill, index) => (
+                      <Draggable key={skill} draggableId={skill} index={index}>
+                        {(provided) => (
+                          <li
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            className={styles.skillItem}
+                          >
+                            {skill}
+                          </li>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </ul>
+                )}
+              </Droppable>
+            </DragDropContext>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Section */}
+      <div className={styles.resume_right}>
+        {/* Summary */}
+        <div className={`${styles.resume_item} ${styles.resume_about}`}>
+          <div className={styles.title}>
+            <p className={styles.bold}>{summary.subheadline}</p>
+          </div>
+          <p>{summary.text}</p>
+        </div>
+
+        {/* Work Experience */}
+        <div className={`${styles.resume_item} ${styles.resume_work}`}>
+          <div className={styles.title}>
+            <p className={styles.bold}>{experience.subheadline}</p>
+          </div>
+          <ul>
+            {experience.positions.map((position, index) => (
+              <li key={index}>
+                <div className={styles.date}>{position.duration}</div>
+                <div className={styles.info}>
+                  <p className={styles.semi_bold}>{position.job_title}</p>
+                  <p>{position.company}, {position.location}</p>
+                  <ul>
+                    {position.responsibilities.map((task, taskIndex) => (
+                      <li key={taskIndex}>{task}</li>
+                    ))}
+                  </ul>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Education */}
+        <div className={`${styles.resume_item} ${styles.resume_education}`}>
+          <div className={styles.title}>
+            <p className={styles.bold}>{education.subheadline}</p>
+          </div>
+          <ul>
+            {education.details.map((degree, index) => (
+              <li key={index}>
+                <div className={styles.date}>{degree.year}</div>
+                <div className={styles.info}>
+                  <p className={styles.semi_bold}>{degree.degree}</p>
+                  <p>{degree.institution}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Certifications */}
+        <div className={`${styles.resume_item} ${styles.resume_certifications}`}>
+          <div className={styles.title}>
+            <p className={styles.bold}>{certifications.subheadline}</p>
+          </div>
+          <ul>
+            {certifications.list.map((cert, index) => (
+              <li key={index}>{cert}</li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Projects */}
+        <div className={`${styles.resume_item} ${styles.resume_projects}`}>
+          <div className={styles.title}>
+            <p className={styles.bold}>{projects.subheadline}</p>
+          </div>
+          <ul>
+            {projects.list.map((project, index) => (
+              <li key={index}>
+                <p className={styles.semi_bold}>{project.project_name}</p>
+                <p>{project.description}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* References */}
+        <div className={`${styles.resume_item} ${styles.resume_references}`}>
+          <div className={styles.title}>
+            <p className={styles.bold}>{references.subheadline}</p>
+          </div>
+          <p>{references.text}</p>
+        </div>
       </div>
     </div>
   );

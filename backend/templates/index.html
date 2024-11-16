@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume and Job Description Processing</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; padding: 20px; }
+        .container { width: 80%; display: flex; justify-content: space-between; }
+        .left, .right { width: 45%; }
+        textarea { width: 100%; height: 150px; }
+        .button { padding: 10px 20px; margin-top: 10px; cursor: pointer; background-color: #007BFF; color: white; border: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left">
+            <h3>Resume Text Preview</h3>
+            <textarea id="ocr-preview" placeholder="Extracted resume text will appear here..."></textarea>
+            <input type="file" id="file-input" accept=".pdf,.docx,.png,.jpg">
+            
+            <h3>Job Description</h3>
+            <textarea id="job-description" placeholder="Paste the job description here..."></textarea>
+            
+            <button class="button" id="process-button">Process Resume</button>
+        </div>
+        
+        <div class="right">
+            <h3>Suggestions</h3>
+            <div id="suggestions"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('process-button').addEventListener('click', async function() {
+            const fileInput = document.getElementById('file-input');
+            const file = fileInput.files[0];
+            const jobDescription = document.getElementById('job-description').value.trim();
+
+            if (!file) {
+                alert('Please upload a resume file first!');
+                return;
+            }
+            
+            if (!jobDescription) {
+                alert('Please provide a job description!');
+                return;
+            }
+
+            // Prepare form data for file upload
+            const formData = new FormData();
+            formData.append('file', file);  // Field name must match backend expectation
+            formData.append('job_description', jobDescription);
+
+            try {
+                // Step 1: Send file and job description to backend
+                let response = await fetch('/upload_file', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                let result = await response.json();
+                if (response.ok) {
+                    let suggestionsResponse = await fetch('/process_resume/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            resume_text: result.extracted_text,
+                            job_description: jobDescription
+                        })
+                    });
+
+                    let suggestions = await suggestionsResponse.json();
+                    // if (suggestions.suggestions) {
+                    //     document.getElementById('suggestions').innerText = suggestions.suggestions;
+                    // }
+                    // Display the extracted resume text
+                    document.getElementById('ocr-preview').value = result.extracted_text;
+
+                    // Display the suggestions
+                    document.getElementById('suggestions').innerText = JSON.stringify(suggestions, null, 2);
+                } else {
+                    alert('Error processing resume: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while processing the resume.');
+            }
+        });
+    </script>
+</body>
+</html>

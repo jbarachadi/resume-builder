@@ -1,3 +1,198 @@
+export const initialData2 = {
+  "basics": {
+    "name": "admin",
+    "email": "adminssssddd@yopmail.com",
+    "phone": "9979999799",
+    "headline": "version to vission",
+    "location": "india"
+  },
+  "sections": {
+    "awards": {
+      "name": "Awards",
+      "items": [
+        {
+          "url": {
+            "href": "http://sdfsdfd.sds",
+            "label": ""
+          },
+          "date": "March 2024",
+          "title": "Employee of the month",
+          "awarder": "abc",
+          "summary": "<p>fdvsjdfhbskdfuh</p>"
+        }
+      ]
+    },
+    "skills": {
+      "name": "Skills",
+      "items": [
+        {
+          "name": "html",
+          "level": 3,
+          "keywords": [],
+          "description": "sdfvnsdkfvjn",
+          "visible": true
+        }
+      ]
+    },
+    "summary": {
+      "name": "Summary",
+      "content": "<p>sdkjf</p><p>dfdfs</p><p>dfbfd</p><p>fgbsf</p><p>gbsfg</p><p></p>",
+      "visible": true
+    },
+    "profiles": {
+      "name": "Profiles",
+      "items": [
+        {
+          "url": {
+            "href": "https://linkedin",
+            "label": ""
+          },
+          "icon": "linkedin",
+          "network": "Linkedin",
+          "username": "john.doe",
+          "visible": true
+        }
+      ]
+    },
+    "projects": {
+      "name": "Projects",
+      "items": [
+        {
+          "url": {
+            "href": "http://sdfsd.dsd",
+            "label": ""
+          },
+          "date": "march -2020",
+          "name": "One",
+          "summary": "<p>dfkvjndfk</p>",
+          "keywords": [
+            "kcvncvjkn"
+          ],
+          "description": "Visa",
+          "visible": true
+        }
+      ]
+    },
+    "education": {
+      "name": "Education",
+      "items": [
+        {
+          "url": {
+            "href": "http://ee.ee",
+            "label": ""
+          },
+          "area": "information",
+          "date": "2020-2024",
+          "score": "3",
+          "summary": "<p>xdvkdfhsbdfk</p>",
+          "studyType": "BE",
+          "institution": "online"
+        }
+      ]
+    },
+    "interests": {
+      "name": "Interests",
+      "items": [
+        {
+          "name": "Codeing",
+          "keywords": [
+            "sdlvndf"
+          ]
+        }
+      ]
+    },
+    "languages": {
+      "name": "Languages",
+      "items": [
+        {
+          "name": "Emglish",
+          "level": 3,
+          "description": "sdfdjfn"
+        }
+      ]
+    },
+    "volunteer": {
+      "name": "Volunteering",
+      "items": [
+        {
+          "url": {
+            "href": "http://sdfsdsd.sdvsd",
+            "label": ""
+          },
+          "date": "feb-2020",
+          "summary": "<p>zxkvjn adj ljalidj l javlj</p>",
+          "location": "india",
+          "position": "poddion",
+          "organization": "Orgnam"
+        }
+      ]
+    },
+    "experience": {
+      "name": "Experience",
+      "items": [
+        {
+          "url": {
+            "href": "https:/eee.eee",
+            "label": ""
+          },
+          "date": "March-2023 to present",
+          "company": "compmnay 1",
+          "summary": "<p>sdkhbkdufbhvf</p>",
+          "location": "india",
+          "position": "senioe"
+        }
+      ]
+    },
+    "references": {
+      "name": "References",
+      "items": [
+        {
+          "url": {
+            "href": "http://dfsdfsd.dfsdf.sfsdfds",
+            "label": ""
+          },
+          "name": "Ref namw",
+          "summary": "<p>kfvjnsl nsdflsjn</p>",
+          "description": "ref description"
+        }
+      ],
+      "columns": 1,
+      "visible": true,
+      "separateLinks": true
+    },
+    "publications": {
+      "name": "Publications",
+      "items": [
+        {
+          "url": {
+            "href": "http://dfsdf.dsdd",
+            "label": ""
+          },
+          "date": "jan-2021",
+          "name": "Pulication",
+          "summary": "<p>dfjkvnsdlfjh adifjvn lv jna afvj afljnlfjn </p>",
+          "publisher": "publishre1"
+        }
+      ]
+    },
+    "certifications": {
+      "name": "Certifications",
+      "items": [
+        {
+          "url": {
+            "href": "http://dsfsd.dfsd",
+            "label": ""
+          },
+          "date": "march-2023",
+          "name": "React js",
+          "issuer": "udamy",
+          "summary": "<p>dfikjvnsdfjh</p>"
+        }
+      ]
+    }
+  }
+}
+
 export const initialData = {
   "resume": {
     "profile": {
@@ -102,31 +297,28 @@ export const initialData = {
     "references": {
       "subheadline": "*References*",
       "text": "Available upon request."
-    },
-    "languages": {
-      "subheadline": "Languages",
-      "list": [
-        {
-          "name": "English",
-          "level": "Professional",
-          "proficiency": "100%"
-        },
-        {
-          "name": "French",
-          "level": "Native",
-          "proficiency": "100%"
-        },
-        {
-          "name": "Arabic",
-          "level": "Native",
-          "proficiency": "100%"
-        },
-        {
-          "name": "Spanish",
-          "level": "Beginner",
-          "proficiency": "40%"
-        }
-      ]
-    },
+    }
+  },
+  "missing_skills": {
+    "Client Management": [
+      "Managed the account through effective communication, reachability, and prompt delivery, ensuring client satisfaction.",
+      "Developed relationships with key decision-makers in client organizations and cultivated relations for securing new deals."
+    ],
+    "Cold Calling": [
+      "Successfully recruited consultants from various sources including cold calling, internal databases, job portals, networking portals like LinkedIn and Facebook, referrals, head hunting, and user groups.",
+      "Consistently met revenue targets and profit targets through effective cold calling techniques."
+    ],
+    "Incident Management": [
+      "Managed critical incidents and client escalations by involving appropriate managers from both the organization, ensuring timely resolution.",
+      "Followed up with consultants and filled the requirements as per clients' expectations, maintaining high levels of client satisfaction."
+    ],
+    "Market Mapping": [
+      "Researched, built, and reported on competitive and market-driven insights/market mapping to help hiring managers better understand their unique talent markets.",
+      "Built talent pipelines, owned and nurtured candidate relationships to ensure the right talent is available when needed."
+    ],
+    "Recruitment Metrics": [
+      "Maintained and published key recruitment KPIs and trackers like open position tracker, aging analysis, etc., to track and improve recruitment performance.",
+      "Focused on effective networking methods to reach the greatest number of potential candidates through various sourcing channels."
+    ]
   }
 };

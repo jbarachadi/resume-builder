@@ -1,8 +1,19 @@
 import React from 'react';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import styles from './style.module.css';
 
-const Template3 = ({ data }) => {
+const Template3 = ({ data, setSkills }) => {
   const { headline, summary, skills, experience, education, certifications, projects, references } = data;
+
+  const handleDragEnd = (result) => {
+    if (!result.destination) return;
+
+    const reorderedSkills = Array.from(skills.list);
+    const [movedSkill] = reorderedSkills.splice(result.source.index, 1);
+    reorderedSkills.splice(result.destination.index, 0, movedSkill);
+
+    setSkills(reorderedSkills); // Update the skills list in the parent state
+  };
 
   return (
     <div className={styles.resumeContainer}>
@@ -20,11 +31,33 @@ const Template3 = ({ data }) => {
 
       <section className={styles.section}>
         <h2>{skills.subheadline}</h2>
-        <ul>
-          {skills.list.map((skill, index) => (
-            <li key={index}>{skill}</li>
-          ))}
-        </ul>
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <Droppable droppableId="skillsList">
+            {(provided) => (
+              <ul
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                className={styles.skillsList}
+              >
+                {skills.list.map((skill, index) => (
+                  <Draggable key={skill} draggableId={skill} index={index}>
+                    {(provided) => (
+                      <li
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        className={styles.skillItem}
+                      >
+                        {skill}
+                      </li>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </ul>
+            )}
+          </Droppable>
+        </DragDropContext>
       </section>
 
       <section className={styles.section}>
@@ -77,6 +110,6 @@ const Template3 = ({ data }) => {
       </footer>
     </div>
   );
-}
+};
 
 export default Template3;

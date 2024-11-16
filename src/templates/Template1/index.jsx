@@ -1,7 +1,19 @@
 import React from 'react';
-import styles from './style.module.css';  // Use default import for styles
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import styles from './style.module.css';
 
-const Template1 = ({ data }) => {
+const Template1 = ({ data, setSkills }) => {
+  // Handle drag-and-drop logic
+  const handleDragEnd = (result) => {
+    if (!result.destination) return;
+
+    const reorderedSkills = Array.from(data.skills.list);
+    const [movedSkill] = reorderedSkills.splice(result.source.index, 1);
+    reorderedSkills.splice(result.destination.index, 0, movedSkill);
+
+    setSkills(reorderedSkills); // Update the skills list
+  };
+
   return (
     <div className={styles.sheet}>
       <div className={`${styles.twoColumn} ${styles.resume}`}>
@@ -13,9 +25,7 @@ const Template1 = ({ data }) => {
               <span className={styles.infoLabel}>
                 <i className="fa fa-location-arrow"></i>
               </span>
-              <span className={styles.infoText}>
-                {data.location}
-              </span>
+              <span className={styles.infoText}>{data.location}</span>
             </div>
             <div className={styles.infoItem}>
               <span className={styles.infoLabel}>
@@ -78,18 +88,43 @@ const Template1 = ({ data }) => {
                   <i className="fa fa-align-center"></i>
                   <h2>{data.skills.subheadline}</h2>
                 </div>
-                {data.skills.list.map((skill, index) => (
-                  <div key={index} className={styles.extra}>
-                    <div className={styles.extraInfo}>{skill}</div>
-                    <div className={styles.extraDetails}>
-                      <div className={styles.extraDetails__progress} style={{ width: '90%' }}></div>
-                    </div>
-                  </div>
-                ))}
+                <DragDropContext onDragEnd={handleDragEnd}>
+                  <Droppable droppableId="skillsList">
+                    {(provided) => (
+                      <div
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        className={styles.skillsList}
+                      >
+                        {data.skills.list.map((skill, index) => (
+                          <Draggable key={skill} draggableId={skill} index={index}>
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                className={styles.extra}
+                              >
+                                <div className={styles.extraInfo}>{skill}</div>
+                                <div className={styles.extraDetails}>
+                                  <div
+                                    className={styles.extraDetails__progress}
+                                    style={{ width: '90%' }}
+                                  ></div>
+                                </div>
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                </DragDropContext>
               </div>
             </section>
 
-            <section className={`${styles.resume__section} ${styles.resume__languages}`}>
+            {data.languages && <section className={`${styles.resume__section} ${styles.resume__languages}`}>
               <div className={styles.resume__content}>
                 <div className={styles.resume__sectionTitle}>
                   <i className="fa fa-globe"></i>
@@ -97,14 +132,19 @@ const Template1 = ({ data }) => {
                 </div>
                 {data.languages.list.map((language, index) => (
                   <div key={index} className={styles.extra}>
-                    <div className={styles.extraInfo}>{language.name} <small>({language.level})</small></div>
+                    <div className={styles.extraInfo}>
+                      {language.name} <small>({language.level})</small>
+                    </div>
                     <div className={styles.extraDetails}>
-                      <div className={styles.extraDetails__progress} style={{ width: language.proficiency }}></div>
+                      <div
+                        className={styles.extraDetails__progress}
+                        style={{ width: language.proficiency }}
+                      ></div>
                     </div>
                   </div>
                 ))}
               </div>
-            </section>
+            </section>}
           </div>
         </div>
       </div>

@@ -32,7 +32,7 @@ const SkillsForm = ({ data, onChange }) => {
             variant="outlined"
             sx={{ mb: 1 }}
           />
-          <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
+          {/* <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
             <Button
               variant="contained"
               color="primary"
@@ -49,17 +49,17 @@ const SkillsForm = ({ data, onChange }) => {
             >
               Remove
             </Button>
-          </Box>
+          </Box> */}
         </Box>
       ))}
-      <Button
+      {/* <Button
         variant="contained"
         color="success"
         onClick={() => onChange({ ...data, list: [...data.list, ''] })}
         sx={{ width: '100%' }}
       >
         Add Skill
-      </Button>
+      </Button> */}
     </Box>
   );
 };
