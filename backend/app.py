@@ -40,6 +40,14 @@ def convert_to_json(input_text):
                 "name": "Skills",
                 "items": []
             },
+            "current_skills": {
+                "name": "Current Skills",
+                "items": []
+            },
+            "missing_skills": {
+                "name": "Missing Skills",
+                "items": []
+            },
             "summary": {
                 "name": "Summary",
                 "content": "",
@@ -300,7 +308,7 @@ def upload_file():
     resume_json = json.loads(convert_to_json(extracted_text))
     skills_to_add = list(resume_json["sections"]["skills"]["items"])
     missing_skills = json.loads(get_missing_skills(extracted_text, job_description))["missing_skills"]
-    print(missing_skills)
+    missing_skills_to_add = []
     for skill in missing_skills:
         skills_to_add.append({
             "name": skill,
@@ -308,8 +316,16 @@ def upload_file():
             "description": "",
             "visible": True
         })
+        missing_skills_to_add.append({
+            "name": skill,
+            "level": 3,
+            "description": "",
+            "visible": True
+        })
     
+    resume_json["sections"]["current_skills"]["items"] = resume_json["sections"]["skills"]["items"]
     resume_json["sections"]["skills"]["items"] = skills_to_add
+    resume_json["sections"]["missing_skills"]["items"] = missing_skills_to_add
     return jsonify(resume_json), 200
     #return jsonify({'extracted_text': extracted_text}), 200
 
@@ -346,4 +362,4 @@ def index():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port='5050', debug=True)

@@ -5,7 +5,7 @@ import Template3 from '../../templates/Template3';
 import { Box, Paper } from '@mui/material';
 
 const ResumePreview = ({ template, data, setSkills }) => (
-  <Paper elevation={3} sx={{ width: '1200px', p: 3, borderRadius: 2, bgcolor: '#f9fafb' }}>
+  <Paper elevation={3} sx={{ width: '1200px', gap: 3, borderRadius: 2, bgcolor: '#f9fafb' }}>
     <Box>
       {template === 'Template1' && <Template1 data={data} setSkills={setSkills} />}
       {template === 'Template2' && <Template2 data={data} setSkills={setSkills} />}
