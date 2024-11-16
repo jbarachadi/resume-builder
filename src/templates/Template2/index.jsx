@@ -171,7 +171,7 @@ const Template2 = ({ data, setSkills }) => {
           <div className={styles.title}>
             <p className={styles.bold}>{sections.summary.name}</p>
           </div>
-          <p>{sections.summary.text}</p>
+          <p>{sections.summary.content}</p>
         </div>
 
         {/* Work Experience */}

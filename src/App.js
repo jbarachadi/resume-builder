@@ -16,7 +16,7 @@ function App() {
     list2: ["Python", "SQL", "AWS"],
   });
 
-  const [selectedTemplate, setSelectedTemplate] = useState('Template2');
+  const [selectedTemplate, setSelectedTemplate] = useState('Template3');
 
   const handleInputChange = (section, updatedData) => {
     setData({ ...data, [section]: updatedData });
