@@ -22,14 +22,15 @@ function App() {
 
   return (
     <Router>
-      <Container maxWidth="lg" sx={{ bgcolor: '#ffffff', py: 5, borderRadius: 2, boxShadow: 3 }}>
+      <Container maxWidth="100%" sx={{ bgcolor: '#ffffff', py: 5, borderRadius: 2, boxShadow: 3 }}>
         <Box sx={{ textAlign: 'center', mb: 4 }}>
           <Typography variant="h3" component="header" sx={{ fontWeight: 600, color: '#333' }}>
             Resume Builder
           </Typography>
+          <TemplateSelection onSelectTemplate={handleTemplateChange} />
         </Box>
 
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'row', gap: 4 }}>
           <Routes>
             <Route
               path="/"
@@ -47,7 +48,6 @@ function App() {
                     data={data.experience}
                     onChange={(updated) => handleInputChange('experience', updated)}
                   /> */}
-                  <TemplateSelection onSelectTemplate={handleTemplateChange} />
                   <ResumePreview template={selectedTemplate} data={{ ...data, skills: { ...data.skills, list: skills } }} setSkills={setSkills} />
                 </>
               }

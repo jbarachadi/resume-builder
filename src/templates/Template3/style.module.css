@@ -16,6 +16,7 @@
 .header h1 {
   font-size: 48px;
   color: #333;
+  line-height: 48px;
 }
 
 .contactInfo {

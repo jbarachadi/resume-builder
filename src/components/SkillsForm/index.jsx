@@ -18,7 +18,7 @@ const SkillsForm = ({ data, onChange }) => {
   };
 
   return (
-    <Box sx={{ width: '100%', mx: 'auto', p: 3, backgroundColor: '#f9f9f9', borderRadius: 2, boxShadow: 3 }}>
+    <Box sx={{ width: '400px', mx: 'auto', p: 3, backgroundColor: '#f9f9f9', borderRadius: 2, boxShadow: 3 }}>
       <Typography variant="h5" sx={{ textAlign: 'center', mb: 3, borderBottom: '2px solid #007bff', pb: 1 }}>
         {data.subheadline}
       </Typography>
