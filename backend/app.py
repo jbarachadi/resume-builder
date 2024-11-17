@@ -32,21 +32,38 @@ def convert_to_json(input_text):
             "location": ""
         },
         "sections": {
-            "awards": {
-                "name": "Awards",
-                "items": []
-            },
             "skills": {
                 "name": "Skills",
-                "items": []
+                "items": [
+                    {
+                        "name": "",
+                        "level": 3,
+                        "description": "",
+                        "visible": True
+                    }
+                ]
             },
             "current_skills": {
                 "name": "Current Skills",
-                "items": []
+                "items": [
+                    {
+                        "name": "",
+                        "level": 3,
+                        "description": "",
+                        "visible": True
+                    }
+                ]
             },
             "missing_skills": {
                 "name": "Missing Skills",
-                "items": []
+                "items": [
+                    {
+                        "name": "",
+                        "level": 3,
+                        "description": "",
+                        "visible": True
+                    }
+                ]
             },
             "summary": {
                 "name": "Summary",
@@ -55,27 +72,74 @@ def convert_to_json(input_text):
             },
             "profiles": {
                 "name": "Profiles",
-                "items": []
+                "items": [
+                    {
+                        "name": "",
+                        "url": {
+                            "href": "",
+                            "label": ""
+                        }
+                    }
+                ]
             },
             "projects": {
                 "name": "Projects",
-                "items": []
+                "items": [
+                    {
+                        "name": "",
+                        "description": "",
+                        "skills": [
+                            ""
+                        ]
+                    }
+                ]
             },
             "interests": {
                 "name": "Interests",
-                "items": [] 
+                "items": [
+                    {
+                        "name": ""
+                    }
+                ] 
             },
             "languages": {
                 "name": "Languages",
-                "items": []
+                "items": [
+                    {
+                        "name": "",
+                        "level": "",
+                        "proficiency": "100%"
+                    }
+                ]
             },
             "volunteer": {
                 "name": "Volunteering",
-                "items": []
+                "items": [
+                    {
+                        "position": "",
+                        "company": "",
+                        "location": "",
+                        "date": "",
+                        "summary": "",
+                        "visible": True
+                    }
+                ]
             },
             "experience": {
                 "name": "Experience",
-                "items": []
+                "items": [
+                    {
+                        "position": "",
+                        "company": "",
+                        "location": "",
+                        "date": "",
+                        "summary": "",
+                        "missions": [
+                            ""
+                        ],
+                        "visible": True
+                    }
+                ]
             },
             "references": {
                 "name": "References",
@@ -86,18 +150,80 @@ def convert_to_json(input_text):
             },
             "publications": {
                 "name": "Publications",
-                "items": []
+                "items": [
+                    {
+                        "name": "",
+                        "description": "",
+                        "issuer": "",
+                        "date": "",
+                        "url": {
+                            "href": "",
+                            "label": ""
+                        }
+                    }
+                ]
             },
             "certifications": {
                 "name": "Certifications",
-                "items": []
+                "items": [
+                    {
+                        "name": "",
+                        "description": "",
+                        "issuer": "",
+                        "date": "",
+                        "url": {
+                            "href": "",
+                            "label": ""
+                        }
+                    }
+                ]
+            },
+            "awards": {
+                "name": "Awards",
+                "items": [
+                    {
+                        "name": "",
+                        "description": "",
+                        "issuer": "",
+                        "date": ""
+                    }
+                ]
             },
             "education": {
                 "name": "Education",
-                "items": []
+                "items": [
+                    {
+                        "institution": "",
+                        "studyType": "",
+                        "area": "",
+                        "date": "",
+                        "summary": "",
+                        "score": "",
+                        "url": {
+                            "href": "",
+                            "label": ""
+                        }
+                    }
+                ]
             }
         }
     }
+
+    prompt = f"""I need to translate this text into this JSON format. Provide me with only the JSON as text format and nothing else, remove the ```json :
+
+    Text: {input_text}
+    JSON format: {data}"""
+
+    response = openai.ChatCompletion.create(
+        model="gpt-4o",
+        temperature=0.3,
+        max_tokens=2048,
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant that converts the input into the output format based on the format given."},
+            {"role": "user", "content": prompt}
+        ]
+    )
+    return response.choices[0].message['content']
 
     # Extract basics
     try:
@@ -300,7 +426,7 @@ def upload_file():
     if file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
     
-    job_description = 'Python' #request.get_json()["job_description"]
+    job_description = request.form.get("job_description")
 
     file_path = os.path.join(tempfile.gettempdir(), secure_filename(file.filename))
     file.save(file_path)
