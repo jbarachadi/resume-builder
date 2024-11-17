@@ -62,7 +62,7 @@ const Template2 = ({ downloadable }) => {
 
 
   return (
-    <div className={styles.resume}>
+    <div className={styles.resume} style={{ backgroundColor: 'white' }}>
       {/* Left Section */}
       <div className={styles.resume_left}>
         {/* Profile */}
@@ -178,88 +178,100 @@ const Template2 = ({ downloadable }) => {
       {/* Right Section */}
       <div className={styles.resume_right}>
         {/* Summary */}
-        <div className={`${styles.resume_item} ${styles.resume_about}`}>
-          <div className={styles.title}>
-            <p className={styles.bold}>{sections.summary.name}</p>
+        {sections?.summary &&
+          <div className={`${styles.resume_item} ${styles.resume_about}`}>
+            <div className={styles.title}>
+              <p className={styles.bold}>{sections.summary.name}</p>
+            </div>
+            <p>{sections.summary.content}</p>
           </div>
-          <p>{sections.summary.content}</p>
-        </div>
+        }
 
         {/* Work Experience */}
-        <div className={`${styles.resume_item} ${styles.resume_work}`}>
-          <div className={styles.title}>
-            <p className={styles.bold}>{sections.experience.name}</p>
+        {sections?.experience.items.length !== 0 &&
+          <div className={`${styles.resume_item} ${styles.resume_work}`}>
+            <div className={styles.title}>
+              <p className={styles.bold}>{sections.experience.name}</p>
+            </div>
+            <ul>
+              {sections.experience.items.map((experience, index) => (
+                <li key={index}>
+                  <div className={styles.date}>{experience.date}</div>
+                  <div className={styles.info}>
+                    <p className={styles.semi_bold}>{experience.position}</p>
+                    <p>{experience.company}, {experience.location}</p>
+                    <ul>
+                      {experience.missions.map((mission, index) => (
+                        <li key={index}>{mission}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
-          <ul>
-            {sections.experience.items.map((experience, index) => (
-              <li key={index}>
-                <div className={styles.date}>{experience.date}</div>
-                <div className={styles.info}>
-                  <p className={styles.semi_bold}>{experience.position}</p>
-                  <p>{experience.company}, {experience.location}</p>
-                  {/* <ul>
-                    {experience.responsibilities.map((task, taskIndex) => (
-                      <li key={taskIndex}>{task}</li>
-                    ))}
-                  </ul> */}
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+        }
 
         {/* Education */}
-        <div className={`${styles.resume_item} ${styles.resume_education}`}>
-          <div className={styles.title}>
-            <p className={styles.bold}>{sections.education.name}</p>
+        {sections?.education.items.length !== 0 &&
+          <div className={`${styles.resume_item} ${styles.resume_education}`}>
+            <div className={styles.title}>
+              <p className={styles.bold}>{sections.education.name}</p>
+            </div>
+            <ul>
+              {sections.education.items.map((degree, index) => (
+                <li key={index}>
+                  <div className={styles.date}>{degree.date}</div>
+                  <div className={styles.info}>
+                    <p className={styles.semi_bold}>{degree.studyType}</p>
+                    <p>{degree.institution}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
-          <ul>
-            {sections.education.items.map((degree, index) => (
-              <li key={index}>
-                <div className={styles.date}>{degree.date}</div>
-                <div className={styles.info}>
-                  <p className={styles.semi_bold}>{degree.studyType}</p>
-                  <p>{degree.institution}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+        }
 
         {/* Certifications */}
-        <div className={`${styles.resume_item} ${styles.resume_certifications}`}>
-          <div className={styles.title}>
-            <p className={styles.bold}>{sections.certifications.name}</p>
+        {sections?.certifications.items.length !== 0 &&
+          <div className={`${styles.resume_item} ${styles.resume_certifications}`}>
+            <div className={styles.title}>
+              <p className={styles.bold}>{sections.certifications.name}</p>
+            </div>
+            <ul>
+              {sections.certifications.items.map((cert, index) => (
+                <li key={index}>{cert.name}</li>
+              ))}
+            </ul>
           </div>
-          <ul>
-            {sections.certifications.items.map((cert, index) => (
-              <li key={index}>{cert.name}</li>
-            ))}
-          </ul>
-        </div>
+        }
 
         {/* Projects */}
-        <div className={`${styles.resume_item} ${styles.resume_projects}`}>
-          <div className={styles.title}>
-            <p className={styles.bold}>{sections.projects.name}</p>
+        {sections?.projects.items.length !== 0 &&
+          <div className={`${styles.resume_item} ${styles.resume_projects}`}>
+            <div className={styles.title}>
+              <p className={styles.bold}>{sections.projects.name}</p>
+            </div>
+            <ul>
+              {sections.projects.items.map((project, index) => (
+                <li key={index}>
+                  <p className={styles.semi_bold}>{project.name}</p>
+                  <p>{project.description}</p>
+                </li>
+              ))}
+            </ul>
           </div>
-          <ul>
-            {sections.projects.items.map((project, index) => (
-              <li key={index}>
-                <p className={styles.semi_bold}>{project.name}</p>
-                <p>{project.description}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
+        }
 
         {/* References */}
-        <div className={`${styles.resume_item} ${styles.resume_references}`}>
-          <div className={styles.title}>
-            <p className={styles.bold}>{sections.references.name}</p>
+        {sections?.references.items.length !== 0 &&
+          <div className={`${styles.resume_item} ${styles.resume_references}`}>
+            <div className={styles.title}>
+              <p className={styles.bold}>{sections.references.name}</p>
+            </div>
+            <p>{sections.references.text}</p>
           </div>
-          <p>{sections.references.text}</p>
-        </div>
+        }
       </div>
     </div>
   );

@@ -61,7 +61,7 @@ const Template3 = ({ downloadable }) => {
   };
 
   return (
-    <div className={styles.resumeContainer}>
+    <div className={styles.resumeContainer} style={{ backgroundColor: 'white' }}>
       <header className={styles.header}>
         <h1>{basics.headline}</h1>
         <div className={styles.contactInfo}>
@@ -69,127 +69,147 @@ const Template3 = ({ downloadable }) => {
         </div>
       </header>
 
-      <section className={styles.section}>
-        <h2>{sections.summary.name}</h2>
-        <p>{sections.summary.content}</p>
-      </section>
+      {sections?.summary &&
+        <section className={styles.section}>
+          <h2>{sections.summary.name}</h2>
+          <p>{sections.summary.content}</p>
+        </section>
+      }
 
-      <section className={styles.section}>
-        <h2>{skills.name}</h2>
-        {downloadable ?
-          <ul className={styles.skillsList}>
-            <h2>{sections.skills.name}</h2>
-            {skills.list2.map((skill) => (
-              <li className={styles.skillItem}>
-                {skill}
-              </li>))}
-          </ul>
-          : <DragDropContext onDragEnd={handleDragEnd}>
-            {/* First Skills List */}
-            <Droppable droppableId="list1">
-              {(provided) => (
-                <ul
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  className={styles.skillsList}
-                >
-                  <h2>Suggested {sections.skills.name}</h2>
-                  {skills.list1.map((skill, index) => (
-                    <Draggable key={skill} draggableId={`list1-${skill}`} index={index}>
-                      {(provided) => (
-                        <li
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          className={styles.skillItem}
-                        >
-                          {skill}
-                        </li>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </ul>
-              )}
-            </Droppable>
-            <Droppable droppableId="list2">
-              {(provided) => (
-                <ul
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  className={styles.skillsList}
-                >
-                  <h2>Current {sections.skills.name}</h2>
-                  {skills.list2.map((skill, index) => (
-                    <Draggable key={skill} draggableId={`list2-${skill}`} index={index}>
-                      {(provided) => (
-                        <li
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          className={styles.skillItem}
-                        >
-                          {skill}
-                        </li>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </ul>
-              )}
-            </Droppable>
-          </DragDropContext>
-        }
-      </section>
+      {sections?.skills.items.length !== 0 &&
+        <section className={styles.section}>
+          <h2>{skills.name}</h2>
+          {downloadable ?
+            <ul className={styles.skillsList}>
+              <h2>{sections.skills.name}</h2>
+              {skills.list2.map((skill) => (
+                <li className={styles.skillItem}>
+                  {skill}
+                </li>))}
+            </ul>
+            : <DragDropContext onDragEnd={handleDragEnd}>
+              {/* First Skills List */}
+              <Droppable droppableId="list1">
+                {(provided) => (
+                  <ul
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    className={styles.skillsList}
+                  >
+                    <h2>Suggested {sections.skills.name}</h2>
+                    {skills.list1.map((skill, index) => (
+                      <Draggable key={skill} draggableId={`list1-${skill}`} index={index}>
+                        {(provided) => (
+                          <li
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            className={styles.skillItem}
+                          >
+                            {skill}
+                          </li>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </ul>
+                )}
+              </Droppable>
+              <Droppable droppableId="list2">
+                {(provided) => (
+                  <ul
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    className={styles.skillsList}
+                  >
+                    <h2>Current {sections.skills.name}</h2>
+                    {skills.list2.map((skill, index) => (
+                      <Draggable key={skill} draggableId={`list2-${skill}`} index={index}>
+                        {(provided) => (
+                          <li
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            className={styles.skillItem}
+                          >
+                            {skill}
+                          </li>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </ul>
+                )}
+              </Droppable>
+            </DragDropContext>
+          }
+        </section>
+      }
 
-      <section className={styles.section}>
-        <h2>{sections.experience.name}</h2>
-        {sections.experience.items.map((experience, index) => (
-          <div key={index} className={styles.job}>
-            <h3>{experience.position}</h3>
-            <h4>{experience.company} - {experience.location}</h4>
-            <span>{experience.date}</span>
-            {/* <ul>
-              {experience.responsibilities.map((task, i) => (
-                <li key={i}>{task}</li>
-              ))}
-            </ul> */}
-          </div>
-        ))}
-      </section>
-
-      <section className={styles.section}>
-        <h2>{sections.education.name}</h2>
-        {sections.education.items.map((edu, index) => (
-          <div key={index}>
-            <h3>{edu.studyType}</h3>
-            <p>{edu.institution} - {edu.date}</p>
-          </div>
-        ))}
-      </section>
-
-      <section className={styles.section}>
-        <h2>{sections.certifications.name}</h2>
-        <ul>
-          {sections.certifications.items.map((cert, index) => (
-            <li key={index}>{cert.name}</li>
+      {sections?.skills.items.length !== 0 &&
+        <section className={styles.section}>
+          <h2>{sections.experience.name}</h2>
+          {sections.experience.items.map((experience, index) => (
+            <div key={index} className={styles.job}>
+              <h3>{experience.position}</h3>
+              <h4>{experience.company} - {experience.location}</h4>
+              <span>{experience.date}</span>
+              <ul>
+                {experience.missions.map((mission, index) => (
+                  <li key={index}>{mission}</li>
+                ))}
+              </ul>
+            </div>
           ))}
-        </ul>
-      </section>
+        </section>
+      }
 
-      <section className={styles.section}>
-        <h2>{sections.projects.name}</h2>
-        {sections.projects.items.map((project, index) => (
-          <div key={index}>
-            <h3>{project.name}</h3>
-            <p>{project.description}</p>
-          </div>
-        ))}
-      </section>
+      {sections?.education.items.length !== 0 &&
+        <section className={styles.section}>
+          <h2>{sections.education.name}</h2>
+          {sections.education.items.map((edu, index) => (
+            <div key={index}>
+              <h3>{edu.studyType}</h3>
+              <p>{edu.institution} - {edu.date}</p>
+            </div>
+          ))}
+        </section>
+      }
 
-      <footer className={styles.footer}>
-        <p>{sections.references.name}: {sections.references.text}</p>
-      </footer>
+      {sections?.certifications.items.length !== 0 &&
+        <section className={styles.section}>
+          <h2>{sections.certifications.name}</h2>
+          <ul>
+            {sections.certifications.items.map((cert, index) => (
+              <li key={index}>{cert.name}</li>
+            ))}
+          </ul>
+        </section>
+      }
+
+      {sections?.projects.items.length !== 0 &&
+        <section className={styles.section}>
+          <h2>{sections.projects.name}</h2>
+          {sections.projects.items.map((project, index) => (
+            <div key={index}>
+              <h3>{project.name}</h3>
+              <p>{project.description}</p>
+            </div>
+          ))}
+        </section>
+      }
+
+      {sections?.references.items.length !== 0 &&
+        <section className={styles.section}>
+          <h2>{sections.references.name}</h2>
+          {sections.references.items.map((reference, index) => (
+            <div key={index}>
+              <h3>{reference.name}</h3>
+              <p>{reference.text}</p>
+            </div>
+          ))}
+        </section>
+      }
     </div>
   );
 };
