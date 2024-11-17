@@ -65,7 +65,7 @@ const Template1 = ({ downloadable }) => {
       <div className={`${styles.twoColumn} ${styles.resume}`}>
         <section className={`${styles.resume__section} ${styles.resume__header}`}>
           <div className={styles.resume__content}>
-            <h1>{basics.headline}</h1>
+            <h1>{basics.name}</h1>
 
             <div className={styles.infoItem}>
               <span className={styles.infoLabel}>
@@ -114,13 +114,14 @@ const Template1 = ({ downloadable }) => {
                       <small>{experience.location}</small>
                     </div>
                     <div className={styles.xpDate}>{experience.date}</div>
-                    {/* <div className={styles.xpDetail}>
+                    <div className={styles.xpDetail}>
                       <ul>
-                        {experience.responsibilities.map((responsibility, idx) => (
-                          <li key={idx}>{responsibility}</li>
+                        {console.log(experience.missions)}
+                        {experience.missions.map((mission, idx) => (
+                          <li key={idx}>{mission}</li>
                         ))}
                       </ul>
-                    </div> */}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -232,7 +233,7 @@ const Template1 = ({ downloadable }) => {
                 {sections.languages.items.map((language, index) => (
                   <div key={index} className={styles.extra}>
                     <div className={styles.extraInfo}>
-                      {language.name} <small>({language.level})</small>
+                      {language.name} <small>{language.level}</small>
                     </div>
                     <div className={styles.extraDetails}>
                       <div
