@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import styles from './style.module.css';
+import { useStore } from "../../store"
 
-const Template1 = ({ data, setSkills }) => {
-  const { basics, sections, skills } = data;
+const Template1 = ({ downloadable }) => {  
+  const { data, skills, setSkills } = useStore();
+  const { basics, sections } = data;
 
   const handleDragEnd = (result) => {
     const { destination, source } = result;
@@ -59,7 +61,7 @@ const Template1 = ({ data, setSkills }) => {
   };
 
   return (
-    <div className={styles.sheet}>
+    <div className={styles.sheet} style={{ backgroundColor: 'white' }}>
       <div className={`${styles.twoColumn} ${styles.resume}`}>
         <section className={`${styles.resume__section} ${styles.resume__header}`}>
           <div className={styles.resume__content}>
@@ -69,19 +71,19 @@ const Template1 = ({ data, setSkills }) => {
               <span className={styles.infoLabel}>
                 <i className="fa fa-location-arrow"></i>
               </span>
-              <span className={styles.infoText}>{sections.location}</span>
+              <span className={styles.infoText}>{basics.location}</span>
             </div>
             <div className={styles.infoItem}>
               <span className={styles.infoLabel}>
                 <i className="fa fa-envelope"></i>
               </span>
-              <span className={styles.infoText}>{sections.email}</span>
+              <span className={styles.infoText}>{basics.email}</span>
             </div>
             <div className={styles.infoItem}>
               <span className={styles.infoLabel}>
                 <i className="fa fa-phone"></i>
               </span>
-              <span className={styles.infoText}>{sections.phone}</span>
+              <span className={styles.infoText}>{basics.phone}</span>
             </div>
           </div>
         </section>
@@ -94,7 +96,7 @@ const Template1 = ({ data, setSkills }) => {
                   <i className="fa fa-pencil-square-o"></i>
                   <h2>{sections.summary.name}</h2>
                 </div>
-                <p>{sections.summary.text}</p>
+                <p>{sections.summary.content}</p>
               </div>
             </section>
 
@@ -128,78 +130,96 @@ const Template1 = ({ data, setSkills }) => {
           <div className={styles.resume__side}>
             <section className={`${styles.resume__section} ${styles.resume__skills}`}>
               <div className={styles.resume__content}>
-                <DragDropContext onDragEnd={handleDragEnd}>
-                  <Droppable droppableId="list1">
-                    {(provided) => (
-                      <div
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                        className={styles.skillsList}
-                      >
-                        <div className={styles.resume__sectionTitle}>
-                          <i className="fa fa-align-center"></i>
-                          <h2>Suggested {sections.skills.name}</h2>
+                {downloadable ?
+                  <div className={styles.skillsList}>
+                    <div className={styles.resume__sectionTitle}>
+                      <i className="fa fa-align-center"></i>
+                      <h2>{sections.skills.name}</h2>
+                    </div>
+                    {skills.list2.map((skill) => (
+                      <div className={styles.extra}>
+                        <div className={styles.extraInfo}>{skill}</div>
+                        <div className={styles.extraDetails}>
+                          <div
+                            className={styles.extraDetails__progress}
+                            style={{ width: '90%' }}
+                          ></div>
                         </div>
-                        {skills.list1.map((skill, index) => (
-                          <Draggable key={skill} draggableId={`list1-${skill}`} index={index}>
-                            {(provided) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                className={styles.extra}
-                              >
-                                <div className={styles.extraInfo}>{skill}</div>
-                                <div className={styles.extraDetails}>
+                      </div>))}
+                  </div>
+                  : <DragDropContext onDragEnd={handleDragEnd}>
+                      <Droppable droppableId="list1">
+                        {(provided) => (
+                          <div
+                            {...provided.droppableProps}
+                            ref={provided.innerRef}
+                            className={styles.skillsList}
+                          >
+                            <div className={styles.resume__sectionTitle}>
+                              <i className="fa fa-align-center"></i>
+                              <h2>Suggested {sections.skills.name}</h2>
+                            </div>
+                            {skills.list1.map((skill, index) => (
+                              <Draggable key={skill} draggableId={`list1-${skill}`} index={index}>
+                                {(provided) => (
                                   <div
-                                    className={styles.extraDetails__progress}
-                                    style={{ width: '90%' }}
-                                  ></div>
-                                </div>
-                              </div>
-                            )}
-                          </Draggable>
-                        ))}
-                        {provided.placeholder}
-                      </div>
-                    )}
-                  </Droppable>
-                  <Droppable droppableId="list2">
-                    {(provided) => (
-                      <div
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                        className={styles.skillsList}
-                      >
-                        <div className={styles.resume__sectionTitle}>
-                          <i className="fa fa-align-center"></i>
-                          <h2>Current {sections.skills.name}</h2>
-                        </div>
-                        {skills.list2.map((skill, index) => (
-                          <Draggable key={skill} draggableId={`list2-${skill}`} index={index}>
-                            {(provided) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                className={styles.extra}
-                              >
-                                <div className={styles.extraInfo}>{skill}</div>
-                                <div className={styles.extraDetails}>
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    className={styles.extra}
+                                  >
+                                    <div className={styles.extraInfo}>{skill}</div>
+                                    <div className={styles.extraDetails}>
+                                      <div
+                                        className={styles.extraDetails__progress}
+                                        style={{ width: '90%' }}
+                                      ></div>
+                                    </div>
+                                  </div>
+                                )}
+                              </Draggable>
+                            ))}
+                            {provided.placeholder}
+                          </div>
+                        )}
+                      </Droppable>
+                      <Droppable droppableId="list2">
+                        {(provided) => (
+                          <div
+                            {...provided.droppableProps}
+                            ref={provided.innerRef}
+                            className={styles.skillsList}
+                          >
+                            <div className={styles.resume__sectionTitle}>
+                              <i className="fa fa-align-center"></i>
+                              <h2>Current {sections.skills.name}</h2>
+                            </div>
+                            {skills.list2.map((skill, index) => (
+                              <Draggable key={skill} draggableId={`list2-${skill}`} index={index}>
+                                {(provided) => (
                                   <div
-                                    className={styles.extraDetails__progress}
-                                    style={{ width: '90%' }}
-                                  ></div>
-                                </div>
-                              </div>
-                            )}
-                          </Draggable>
-                        ))}
-                        {provided.placeholder}
-                      </div>
-                    )}
-                  </Droppable>
-                </DragDropContext>
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    className={styles.extra}
+                                  >
+                                    <div className={styles.extraInfo}>{skill}</div>
+                                    <div className={styles.extraDetails}>
+                                      <div
+                                        className={styles.extraDetails__progress}
+                                        style={{ width: '90%' }}
+                                      ></div>
+                                    </div>
+                                  </div>
+                                )}
+                              </Draggable>
+                            ))}
+                            {provided.placeholder}
+                          </div>
+                        )}
+                      </Droppable>
+                    </DragDropContext>
+                }
               </div>
             </section>
 

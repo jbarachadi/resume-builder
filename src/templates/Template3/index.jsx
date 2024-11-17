@@ -1,9 +1,11 @@
 import React from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import styles from './style.module.css';
+import { useStore } from "../../store"
 
-const Template3 = ({ data, setSkills }) => {
-  const { basics, sections, skills } = data;
+const Template3 = ({ downloadable }) => {
+  const { data, skills, setSkills } = useStore();
+  const { basics, sections } = data;
 
   const handleDragEnd = (result) => {
     const { destination, source } = result;
@@ -63,7 +65,7 @@ const Template3 = ({ data, setSkills }) => {
       <header className={styles.header}>
         <h1>{basics.headline}</h1>
         <div className={styles.contactInfo}>
-          <a href="#">Download PDF</a> | <a href="mailto:name@yourdomain.com">name@yourdomain.com</a> | (313) - 867-5309
+          <a href={basics.email}>{basics.email}</a> | {basics.phone}
         </div>
       </header>
 
@@ -74,61 +76,70 @@ const Template3 = ({ data, setSkills }) => {
 
       <section className={styles.section}>
         <h2>{skills.name}</h2>
-        <DragDropContext onDragEnd={handleDragEnd}>
-          {/* First Skills List */}
-          <Droppable droppableId="list1">
-            {(provided) => (
-              <ul
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                className={styles.skillsList}
-              >
-                <h2>Suggested {sections.skills.name}</h2>
-                {skills.list1.map((skill, index) => (
-                  <Draggable key={skill} draggableId={`list1-${skill}`} index={index}>
-                    {(provided) => (
-                      <li
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        className={styles.skillItem}
-                      >
-                        {skill}
-                      </li>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </ul>
-            )}
-          </Droppable>
-          <Droppable droppableId="list2">
-            {(provided) => (
-              <ul
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                className={styles.skillsList}
-              >
-                <h2>Current {sections.skills.name}</h2>
-                {skills.list2.map((skill, index) => (
-                  <Draggable key={skill} draggableId={`list2-${skill}`} index={index}>
-                    {(provided) => (
-                      <li
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        className={styles.skillItem}
-                      >
-                        {skill}
-                      </li>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </ul>
-            )}
-          </Droppable>
-        </DragDropContext>
+        {downloadable ?
+          <ul className={styles.skillsList}>
+            <h2>{sections.skills.name}</h2>
+            {skills.list2.map((skill) => (
+              <li className={styles.skillItem}>
+                {skill}
+              </li>))}
+          </ul>
+          : <DragDropContext onDragEnd={handleDragEnd}>
+            {/* First Skills List */}
+            <Droppable droppableId="list1">
+              {(provided) => (
+                <ul
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  className={styles.skillsList}
+                >
+                  <h2>Suggested {sections.skills.name}</h2>
+                  {skills.list1.map((skill, index) => (
+                    <Draggable key={skill} draggableId={`list1-${skill}`} index={index}>
+                      {(provided) => (
+                        <li
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          className={styles.skillItem}
+                        >
+                          {skill}
+                        </li>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </ul>
+              )}
+            </Droppable>
+            <Droppable droppableId="list2">
+              {(provided) => (
+                <ul
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  className={styles.skillsList}
+                >
+                  <h2>Current {sections.skills.name}</h2>
+                  {skills.list2.map((skill, index) => (
+                    <Draggable key={skill} draggableId={`list2-${skill}`} index={index}>
+                      {(provided) => (
+                        <li
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          className={styles.skillItem}
+                        >
+                          {skill}
+                        </li>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </ul>
+              )}
+            </Droppable>
+          </DragDropContext>
+        }
       </section>
 
       <section className={styles.section}>

@@ -15,9 +15,9 @@ export const useStore = create((set) => ({
         list2: newData?.sections?.current_skills?.items?.map((item) => item.name) || [],
       },
     })),
-  setSkills: (list1, list2) =>
+  setSkills: (skills) =>
     set((state) => ({
-      skills: { list1: list1 || state.skills.list1, list2: list2 || state.skills.list2 },
+      skills: skills,
     })),
   resetData: () => {
     localStorage.removeItem("uploadResponse");
@@ -29,5 +29,5 @@ export const useStore = create((set) => ({
       },
     });
   },
-  setTemplate: (template) => set({ selectedTemplate: template }),
+  setSelectedTemplate: (template) => set({ selectedTemplate: template }),
 }));

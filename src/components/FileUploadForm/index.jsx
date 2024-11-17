@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { TextField, Button, Grid, Typography, Box } from "@mui/material";
+import { useStore } from "../../store"
 
 const FileUploadForm = () => {
   const [text, setText] = useState("");
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const { data, setData, skills, setSkills } = useStore();
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -33,11 +35,16 @@ const FileUploadForm = () => {
       });
 
       // Save response to localStorage
-      localStorage.setItem("uploadResponse", JSON.stringify(response.data));
+      // localStorage.setItem("uploadResponse", JSON.stringify(response.data));
+      setData(response.data)
+      console.log(response.data)
       setMessage("File uploaded successfully!");
     } catch (error) {
       setMessage("Failed to upload file. Please try again.");
     } finally {
+      console.log("Store set successfully")
+      console.log(data)
+      console.log(skills)
       setLoading(false);
     }
   };
