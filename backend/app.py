@@ -209,13 +209,13 @@ def convert_to_json(input_text):
         }
     }
 
-    prompt = f"""I need to translate this text into this JSON format. Provide me with only the JSON as text format and nothing else, remove the ```json :
+    prompt = f"""I need to translate this text into this JSON format. Provide me with only the JSON as text format and nothing else, remove the ```json. The name in the basics objects must always contain the name of the resume holder. The headline in the basics object should contain the current job title. The location in the basics object should be filled if available, if not fill it with the location of the latest job, if not keep empty. The skill name should never be a list of multiple elements, keep it granular, provide the category in the description field. Fill missions list in experience object with responsabilities taken during the job. The summary section must contain the summary if available. If no language is provided, add the language in which the resume is written :
 
     Text: {input_text}
     JSON format: {data}"""
 
     response = openai.ChatCompletion.create(
-        model="gpt-4o",
+        model="gpt-3.5-turbo",
         temperature=0.3,
         max_tokens=2048,
         messages=[
@@ -224,97 +224,6 @@ def convert_to_json(input_text):
         ]
     )
     return response.choices[0].message['content']
-
-    # Extract basics
-    try:
-        data["basics"]["name"] = re.search(r"^(.+?)\s*\n", input_text).group(1)
-    except Exception as e:
-        print(str(e))
-    
-    try:
-        data["basics"]["email"] = re.search(r"Email ID\s*:\s*(\S+)", input_text).group(1)
-    except Exception as e:
-        print(str(e))
-    
-    try:
-        data["basics"]["phone"] = re.search(r"\+91\s*\d{10}", input_text).group(0)
-    except Exception as e:
-        print(str(e))
-
-    # Extract summary    
-    try:
-        summary_match = re.search(r"Objective:\s*\n\n(.+?)\n\nSkills:", input_text, re.DOTALL)
-        if summary_match:
-            data["sections"]["summary"]["content"] = f"<p>{summary_match.group(1).strip()}</p>"
-    except Exception as e:
-        print(str(e))
-
-    # Extract skills
-    try:
-        skills_match = re.search(r"Skills:\s*\n\n(.+?)\n\nSummary:", input_text, re.DOTALL)
-        if skills_match:
-            skills = re.findall(r"\s+(.+)", skills_match.group(1))
-            data["sections"]["skills"]["items"] = [{"name": skill.strip(), "level": 3, "description": "", "visible": True} for skill in skills]
-    except Exception as e:
-        print(str(e))
-    
-    # Extract work experience
-    try:        
-        experience_match = re.search(r"Work Experience:\s*\n\n(.+?)\n\nAchievements & Training:", input_text, re.DOTALL)
-        if experience_match:
-            experiences = re.split(r"\n\n", experience_match.group(1))
-            for exp in experiences:
-                date_match = re.search(r"From\s+(.+?)\sto\s+(.+?)\.", exp)
-                company_match = re.search(r"Working with (.+?)\s", exp)
-                position_match = re.search(r"(Sr\..+?)\s", exp)
-                if date_match and company_match and position_match:
-                    data["sections"]["experience"]["items"].append({
-                        "company": company_match.group(1),
-                        "date": f"{date_match.group(1)} to {date_match.group(2)}",
-                        "summary": f"<p>{exp.strip()}</p>",
-                        "position": position_match.group(1),
-                        "location": ""
-                    })
-    except Exception as e:
-        print(str(e))
-
-    # Extract achievements and training
-    try:    
-        certifications_match = re.search(r"Achievements & Training:\s*\n\n(.+?)(?:\n\n|$)", input_text, re.DOTALL)
-        if certifications_match:
-            certifications = [cert.strip() for cert in re.split(r"\n\n", certifications_match.group(1)) if cert.strip()]
-            for cert in certifications:
-                data["sections"]["certifications"]["items"].append({
-                    "title": cert.strip(),
-                    "date": "",
-                    "issuer": "",
-                    "url": {"href": "", "label": ""}
-                })
-    except Exception as e:
-        print(str(e))
-    
-    # Extract education
-    try:       
-        education_match = re.search(r"Education:\s*\n\n(.+?)(?:\n\n|$)", input_text, re.DOTALL)
-        if education_match:
-            education_lines = education_match.group(1).split("\n")
-            for line in education_lines:
-                institution_match = re.search(r"from (.+?) with", line)
-                study_type_match = re.search(r"Master’s \((.+?)\)", line)
-                if institution_match and study_type_match:
-                    data["sections"]["education"]["items"].append({
-                        "institution": institution_match.group(1),
-                        "studyType": study_type_match.group(1),
-                        "area": "",
-                        "date": "",
-                        "summary": "",  
-                        "score": "",
-                        "url": {"href": "", "label": ""}
-                    })
-    except Exception as e:
-        print(str(e))
-
-    return json.dumps(data, indent=4)
 
 @app.route('/generate_json', methods=['POST'])
 def generate_json():
@@ -453,7 +362,6 @@ def upload_file():
     resume_json["sections"]["skills"]["items"] = skills_to_add
     resume_json["sections"]["missing_skills"]["items"] = missing_skills_to_add
     return jsonify(resume_json), 200
-    #return jsonify({'extracted_text': extracted_text}), 200
 
 # Endpoint for getting suggestions from OpenAI API
 @app.route('/get_suggestions', methods=['POST'])
