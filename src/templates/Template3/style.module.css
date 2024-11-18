@@ -1,8 +1,12 @@
 .resumeContainer {
   padding: 10px 80px;
-  background: #f5f5f5;
+  background: #fff;
   border: solid #666;
   border-width: 8px 0 2px 0;
+  max-width: 900px;
+  height: 100%;
+  width: auto;
+  aspect-ratio: 1 / 1.414;
 }
 
 .header {
@@ -46,6 +50,13 @@
 .job h4 {
   font-size: 1.1em;
   color: #666;
+}
+
+.skillsList {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 ul {

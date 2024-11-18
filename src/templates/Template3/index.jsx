@@ -7,7 +7,7 @@ const Template3 = ({ data, skills, downloadable }) => {
   const { basics, sections } = data;
 
   return (
-    <div className={styles.resumeContainer} style={{ backgroundColor: 'white', height: "100%", aspectRatio: "1/1.414" }}>
+    <div className={styles.resumeContainer}>
       <header className={styles.header}>
         <h1>{basics.name}</h1>
         <div className={styles.contactInfo}>
@@ -25,38 +25,42 @@ const Template3 = ({ data, skills, downloadable }) => {
       {sections?.skills.items.length !== 0 && sections?.skills.items[0]["name"] &&
         <section className={styles.section}>
           <h2>{skills.name}</h2>
-          {downloadable ?
-            <ul className={styles.skillsList}>
+          {downloadable ? 
+            <>
               <h2>{sections.skills.name}</h2>
-              {skills.list2.map((skill) => (
-                <li className={styles.skillItem}>
-                  {skill}
-                </li>))}
-            </ul>
-            : <Droppable droppableId="list2">
+              <ul className={styles.skillsList}>
+                {skills.list2.map((skill) => (
+                  <li className={styles.skillItem}>
+                    {skill}
+                  </li>))}
+              </ul>
+            </>
+            : <Droppable droppableId="list2" direction='horizontal'>
               {(provided) => (
-                <ul
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  className={styles.skillsList}
-                >
+                <>
                   <h2>{sections.skills.name}</h2>
-                  {skills.list2.map((skill, index) => (
-                    <Draggable key={skill} draggableId={`list2-${skill}`} index={index}>
-                      {(provided) => (
-                        <li
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          className={styles.skillItem}
-                        >
-                          {skill}
-                        </li>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </ul>
+                  <ul
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    className={styles.skillsList}
+                  >
+                    {skills.list2.map((skill, index) => (
+                      <Draggable key={skill} draggableId={`list2-${skill}`} index={index}>
+                        {(provided) => (
+                          <li
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            className={styles.skillItem}
+                          >
+                            {skill}
+                          </li>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </ul>
+                </>
               )}
             </Droppable>
           }

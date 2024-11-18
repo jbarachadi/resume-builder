@@ -142,6 +142,7 @@ const ResumePreview = ({ template, downloadable = false }) => {
           },
         });
       }
+      setSkills({ list1, list2 });
     }
   };
   

@@ -7,7 +7,7 @@ const Template1 = ({ data, skills, downloadable }) => {
   const { basics, sections } = data;
 
   return (
-    <div className={styles.sheet} style={{ backgroundColor: 'white', width: "100%", aspectRatio: "1/1.414" }}>
+    <div className={styles.sheet}>
       <div className={`${styles.twoColumn} ${styles.resume}`}>
         <section className={`${styles.resume__section} ${styles.resume__header}`}>
           <div className={styles.resume__content}>
