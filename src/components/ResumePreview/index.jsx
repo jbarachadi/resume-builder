@@ -109,41 +109,44 @@ const ResumePreview = ({ template, downloadable = false }) => {
     destinationList.splice(destination.index, 0, movedItem);
   
     // Update the state based on the lists that changed
-    if (sourceListId === "list1" || destinationListId === "list1") {
-      setSkills({ ...skills, list1 });
-    }
-    if (sourceListId === "list2" || destinationListId === "list2") {
-      setSkills({ ...skills, list2 });
-    }
-    if (sourceListId === "list3" || destinationListId === "list3") {
-      setData({
-        ...data,
-        sections: {
-          ...data.sections,
-          suggested_missions: { ...data.sections.suggested_missions, items: list3 },
-        },
-      });
-    }
-    if (sourceListId.startsWith("list4") || destinationListId.startsWith("list4")) {
-      const updatedExperienceItems = data.sections.experience.items.map((item, idx) => ({
-        ...item,
-        missions: idx === parseInt(sourceListId.split("-")[1], 10) ? sourceList : idx === parseInt(destinationListId.split("-")[1], 10) ? destinationList : item.missions,
-      }));
-      setData({
-        ...data,
-        sections: {
-          ...data.sections,
-          experience: {
-            ...data.sections.experience,
-            items: updatedExperienceItems
-          }
-        },
-      });
+    if (destinationListId === "list1" || destinationListId === "list2") {
+      if (sourceListId === "list1" || destinationListId === "list1") {
+        setSkills({ ...skills, list1 });
+      }
+      if (sourceListId === "list2" || destinationListId === "list2") {
+        setSkills({ ...skills, list2 });
+      }
+    } else {
+      if (sourceListId === "list3" || destinationListId === "list3") {
+        setData({
+          ...data,
+          sections: {
+            ...data.sections,
+            suggested_missions: { ...data.sections.suggested_missions, items: list3 },
+          },
+        });
+      }
+      if (sourceListId.startsWith("list4") || destinationListId.startsWith("list4")) {
+        const updatedExperienceItems = data.sections.experience.items.map((item, idx) => ({
+          ...item,
+          missions: idx === parseInt(sourceListId.split("-")[1], 10) ? sourceList : idx === parseInt(destinationListId.split("-")[1], 10) ? destinationList : item.missions,
+        }));
+        setData({
+          ...data,
+          sections: {
+            ...data.sections,
+            experience: {
+              ...data.sections.experience,
+              items: updatedExperienceItems
+            }
+          },
+        });
+      }
     }
   };
   
   return (
-      <Box sx={{ maxWidth: "1400px", display: 'flex', flexDirection: "row", gap: 3, bgcolor: 'white' }} >
+      <Box sx={{ display: 'flex', flexDirection: "row", gap: 3, bgcolor: 'white' }}>
         <DragDropContext onDragEnd={handleDragEnd}>
           <Paper elevation={3}>
             {template === 'Template1' && <Template1 data={data} skills={skills} downloadable={downloadable} />}
@@ -151,7 +154,7 @@ const ResumePreview = ({ template, downloadable = false }) => {
             {template === 'Template3' && <Template3 data={data} skills={skills} downloadable={downloadable} />}
           </Paper>
           {!downloadable &&
-            <Paper elevation={3} sx={{ display: "flex", flexDirection: "column"}}>
+            <Paper elevation={3} sx={{ display: "flex", flexDirection: "column" }}>
               <Paper elevation={3} sx={{ display: "flex", p: 8, width: "600px" }}>
                 <Droppable droppableId="list3">
                   {(provided) => (

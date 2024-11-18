@@ -27,9 +27,11 @@ body {
 }
 
 .resume {
-  /* width: 800px; */
-  height: auto;
   display: flex;
+  max-width: 900px;
+  height: 100%;
+  width: auto;
+  aspect-ratio: 1 / 1.414;
 }
 
 .resume_left {
