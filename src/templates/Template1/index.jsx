@@ -1,12 +1,13 @@
 import React from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
+import DraggableMissions from '../DraggableMissions';
 import styles from './style.module.css';
 
 const Template1 = ({ data, skills, downloadable }) => {  
   const { basics, sections } = data;
 
   return (
-    <div className={styles.sheet} style={{ backgroundColor: 'white' }}>
+    <div className={styles.sheet} style={{ backgroundColor: 'white', width: "100%", aspectRatio: "1/1.414" }}>
       <div className={`${styles.twoColumn} ${styles.resume}`}>
         <section className={`${styles.resume__section} ${styles.resume__header}`}>
           <div className={styles.resume__content}>
@@ -63,11 +64,7 @@ const Template1 = ({ data, skills, downloadable }) => {
                       </div>
                       <div className={styles.xpDate}>{experience.date}</div>
                       <div className={styles.xpDetail}>
-                        <ul>
-                          {experience.missions.map((mission, idx) => (
-                            <li key={idx}>{mission}</li>
-                          ))}
-                        </ul>
+                        <DraggableMissions droppableId={`list4-${index}`} experience={experience} />
                       </div>
                     </div>
                   ))}

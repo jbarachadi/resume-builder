@@ -6,6 +6,10 @@ export const useStore = create((set) => ({
     list1: [],
     list2: [],
   },
+  missions: {
+    list3: [],
+    list4: [],
+  },
   selectedTemplate: 'Template1',
   setData: (newData) =>
     set((state) => ({

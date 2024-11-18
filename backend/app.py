@@ -138,6 +138,12 @@ def convert_to_json(input_text):
                     }
                 ]
             },
+            "suggested_missions": {
+                "name": "",
+                "items": [
+                    ""
+                ],
+            },
             "references": {
                 "name": "References",
                 "items": [],
@@ -341,6 +347,7 @@ def upload_file():
     skills_to_add = list(resume_json["sections"]["skills"]["items"])
     missing_skills = json.loads(get_missing_skills(extracted_text, job_description))["missing_skills"]
     missing_skills_to_add = []
+    suggested_missions_to_add = []
     for skill in missing_skills:
         skills_to_add.append({
             "name": skill,
@@ -354,10 +361,13 @@ def upload_file():
             "description": "",
             "visible": True
         })
+        for item in missing_skills[skill]:
+            suggested_missions_to_add.append(item)
     
     resume_json["sections"]["current_skills"]["items"] = resume_json["sections"]["skills"]["items"]
     resume_json["sections"]["skills"]["items"] = skills_to_add
     resume_json["sections"]["missing_skills"]["items"] = missing_skills_to_add
+    resume_json["sections"]["suggested_missions"]["items"] = suggested_missions_to_add
     return jsonify(resume_json), 200
 
 # Endpoint for getting suggestions from OpenAI API
