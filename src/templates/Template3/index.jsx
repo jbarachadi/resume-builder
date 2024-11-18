@@ -1,69 +1,14 @@
 import React from 'react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 import styles from './style.module.css';
-import { useStore } from "../../store"
 
-const Template3 = ({ downloadable }) => {
-  const { data, skills, setSkills } = useStore();
+const Template3 = ({ data, skills, downloadable }) => {
   const { basics, sections } = data;
-
-  const handleDragEnd = (result) => {
-    const { destination, source } = result;
-
-    // If there is no destination (dropped outside), return
-    if (!destination) return;
-
-    // If the item has not moved, return early
-    if (
-      destination.index === source.index &&
-      destination.droppableId === source.droppableId
-    ) {
-      return;
-    }
-
-    // Safeguard against undefined lists
-    const list1 = skills.list1 || [];
-    const list2 = skills.list2 || [];
-
-    // Handle moving items between the two lists
-    const sourceListId = source.droppableId;
-    const destinationListId = destination.droppableId;
-
-    // Case for moving between list1 and list2
-    if (
-      (sourceListId === "list1" && destinationListId === "list2") ||
-      (sourceListId === "list2" && destinationListId === "list1")
-    ) {
-      const sourceSkillsList = sourceListId === "list1" ? list1 : list2;
-      const destinationSkillsList = destinationListId === "list1" ? list1 : list2;
-
-      const [movedSkill] = sourceSkillsList.splice(source.index, 1);
-      destinationSkillsList.splice(destination.index, 0, movedSkill);
-
-      setSkills({
-        list1: sourceListId === "list1" ? sourceSkillsList : list1,
-        list2: sourceListId === "list2" ? sourceSkillsList : list2,
-      });
-    } else {
-      // Case for reordering within the same list
-      const sourceSkillsList = sourceListId === "list1" ? list1 : list2;
-      const reorderedSkillsList = Array.from(sourceSkillsList);
-      const [movedSkill] = reorderedSkillsList.splice(source.index, 1);
-      reorderedSkillsList.splice(destination.index, 0, movedSkill);
-
-      setSkills((prevSkills) => {
-        return {
-          ...prevSkills,
-          [sourceListId]: reorderedSkillsList,
-        }
-      });
-    }
-  };
 
   return (
     <div className={styles.resumeContainer} style={{ backgroundColor: 'white' }}>
       <header className={styles.header}>
-        <h1>{basics.headline}</h1>
+        <h1>{basics.name}</h1>
         <div className={styles.contactInfo}>
           <a href={basics.email}>{basics.email}</a> | {basics.phone}
         </div>
@@ -76,7 +21,7 @@ const Template3 = ({ downloadable }) => {
         </section>
       }
 
-      {sections?.skills.items.length !== 0 &&
+      {sections?.skills.items.length !== 0 && sections?.skills.items[0]["name"] &&
         <section className={styles.section}>
           <h2>{skills.name}</h2>
           {downloadable ?
@@ -87,66 +32,37 @@ const Template3 = ({ downloadable }) => {
                   {skill}
                 </li>))}
             </ul>
-            : <DragDropContext onDragEnd={handleDragEnd}>
-              {/* First Skills List */}
-              <Droppable droppableId="list1">
-                {(provided) => (
-                  <ul
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    className={styles.skillsList}
-                  >
-                    <h2>Suggested {sections.skills.name}</h2>
-                    {skills.list1.map((skill, index) => (
-                      <Draggable key={skill} draggableId={`list1-${skill}`} index={index}>
-                        {(provided) => (
-                          <li
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            className={styles.skillItem}
-                          >
-                            {skill}
-                          </li>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </ul>
-                )}
-              </Droppable>
-              <Droppable droppableId="list2">
-                {(provided) => (
-                  <ul
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    className={styles.skillsList}
-                  >
-                    <h2>Current {sections.skills.name}</h2>
-                    {skills.list2.map((skill, index) => (
-                      <Draggable key={skill} draggableId={`list2-${skill}`} index={index}>
-                        {(provided) => (
-                          <li
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            className={styles.skillItem}
-                          >
-                            {skill}
-                          </li>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </ul>
-                )}
-              </Droppable>
-            </DragDropContext>
+            : <Droppable droppableId="list2">
+              {(provided) => (
+                <ul
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  className={styles.skillsList}
+                >
+                  <h2>{sections.skills.name}</h2>
+                  {skills.list2.map((skill, index) => (
+                    <Draggable key={skill} draggableId={`list2-${skill}`} index={index}>
+                      {(provided) => (
+                        <li
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          className={styles.skillItem}
+                        >
+                          {skill}
+                        </li>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </ul>
+              )}
+            </Droppable>
           }
         </section>
       }
 
-      {sections?.skills.items.length !== 0 &&
+      {sections?.experience.items.length !== 0 && sections?.experience.items[0]["position"] &&
         <section className={styles.section}>
           <h2>{sections.experience.name}</h2>
           {sections.experience.items.map((experience, index) => (
@@ -164,7 +80,7 @@ const Template3 = ({ downloadable }) => {
         </section>
       }
 
-      {sections?.education.items.length !== 0 &&
+      {sections?.education.items.length !== 0 && sections?.education.items[0]["institution"] &&
         <section className={styles.section}>
           <h2>{sections.education.name}</h2>
           {sections.education.items.map((edu, index) => (
@@ -176,7 +92,7 @@ const Template3 = ({ downloadable }) => {
         </section>
       }
 
-      {sections?.certifications.items.length !== 0 &&
+      {sections?.certifications.items.length !== 0 && sections?.certifications.items[0]["name"] &&
         <section className={styles.section}>
           <h2>{sections.certifications.name}</h2>
           <ul>
@@ -187,7 +103,7 @@ const Template3 = ({ downloadable }) => {
         </section>
       }
 
-      {sections?.projects.items.length !== 0 &&
+      {sections?.projects.items.length !== 0 && sections?.projects.items[0]["name"] &&
         <section className={styles.section}>
           <h2>{sections.projects.name}</h2>
           {sections.projects.items.map((project, index) => (
@@ -199,7 +115,7 @@ const Template3 = ({ downloadable }) => {
         </section>
       }
 
-      {sections?.references.items.length !== 0 &&
+      {sections?.references.items.length !== 0 && sections?.references.items[0]["name"] &&
         <section className={styles.section}>
           <h2>{sections.references.name}</h2>
           {sections.references.items.map((reference, index) => (

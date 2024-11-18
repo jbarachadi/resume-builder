@@ -15,10 +15,11 @@ export const useStore = create((set) => ({
         list2: newData?.sections?.current_skills?.items?.map((item) => item.name) || [],
       },
     })),
-  setSkills: (skills) =>
-    set((state) => ({
-      skills: skills,
-    })),
+  setSkills: (skills) => {
+      set((state) => ({
+        skills: skills,
+      }))
+    },
   resetData: () => {
     localStorage.removeItem("uploadResponse");
     set({

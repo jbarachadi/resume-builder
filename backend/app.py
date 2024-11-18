@@ -38,7 +38,6 @@ def convert_to_json(input_text):
                     {
                         "name": "",
                         "level": 3,
-                        "description": "",
                         "visible": True
                     }
                 ]
@@ -49,7 +48,6 @@ def convert_to_json(input_text):
                     {
                         "name": "",
                         "level": 3,
-                        "description": "",
                         "visible": True
                     }
                 ]
@@ -60,7 +58,6 @@ def convert_to_json(input_text):
                     {
                         "name": "",
                         "level": 3,
-                        "description": "",
                         "visible": True
                     }
                 ]
@@ -209,7 +206,7 @@ def convert_to_json(input_text):
         }
     }
 
-    prompt = f"""I need to translate this text into this JSON format. Provide me with only the JSON as text format and nothing else, remove the ```json. The name in the basics objects must always contain the name of the resume holder. The headline in the basics object should contain the current job title. The location in the basics object should be filled if available, if not fill it with the location of the latest job, if not keep empty. The skill name should never be a list of multiple elements, keep it granular, provide the category in the description field. Fill missions list in experience object with responsabilities taken during the job. The summary section must contain the summary if available. If no language is provided, add the language in which the resume is written :
+    prompt = f"""I need to translate this text into this JSON format. Provide me with only the JSON as text format and nothing else, remove the ```json. The name in the basics objects must always contain the name of the resume holder. The headline in the basics object should contain the current job title. The location in the basics object should be filled if available, if not fill it with the location of the latest job, if not keep empty. The skill name should never be a list of multiple elements, keep it granular. Fill missions list in experience object with responsabilities taken during the job. The summary section must contain the summary if available. If no language is provided, add the language in which the resume is written :
 
     Text: {input_text}
     JSON format: {data}"""
