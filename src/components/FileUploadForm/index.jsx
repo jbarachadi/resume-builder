@@ -30,21 +30,17 @@ const FileUploadForm = () => {
     setMessage("");
 
     try {
-      const response = await axios.post("http://194.146.13.24:5050/upload_file", formData, {
+      const response = await axios.post("http://194.146.13.24:5050/resume_builder", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
       // Save response to localStorage
       // localStorage.setItem("uploadResponse", JSON.stringify(response.data));
       setData(response.data)
-      console.log(response.data)
       setMessage("File uploaded successfully!");
     } catch (error) {
       setMessage("Failed to upload file. Please try again.");
     } finally {
-      console.log("Store set successfully")
-      console.log(data)
-      console.log(skills)
       setLoading(false);
     }
   };
