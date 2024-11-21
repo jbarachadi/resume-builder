@@ -9,64 +9,11 @@ import { useStore } from "../../store"
 const ResumePreview = ({ template, downloadable = false }) => {
   const { data, setData, skills, setSkills } = useStore();
 
-  // const handleDragEnd = (result) => {
-  //   const { destination, source } = result;
-
-  //   // If there is no destination (dropped outside), return
-  //   if (!destination) return;
-
-  //   // If the item has not moved, return early
-  //   if (
-  //     destination.index === source.index &&
-  //     destination.droppableId === source.droppableId
-  //   ) {
-  //     return;
-  //   }
-
-  //   // Safeguard against undefined lists
-  //   const list1 = skills.list1 || [];
-  //   const list2 = skills.list2 || [];
-
-  //   // Handle moving items between the two lists
-  //   const sourceListId = source.droppableId;
-  //   const destinationListId = destination.droppableId;
-
-  //   // Case for moving between list1 and list2
-  //   if (
-  //     (sourceListId === "list1" && destinationListId === "list2") ||
-  //     (sourceListId === "list2" && destinationListId === "list1")
-  //   ) {
-  //     const sourceSkillsList = sourceListId === "list1" ? list1 : list2;
-  //     const destinationSkillsList = destinationListId === "list1" ? list1 : list2;
-
-  //     const [movedSkill] = sourceSkillsList.splice(source.index, 1);
-  //     destinationSkillsList.splice(destination.index, 0, movedSkill);
-
-  //     setSkills({
-  //       list1: list1,
-  //       list2: list2,
-  //     });
-  //   } else {
-  //     // Case for reordering within the same list
-  //     const sourceSkillsList = sourceListId === "list1" ? list1 : list2;
-  //     const reorderedSkillsList = Array.from(sourceSkillsList);
-  //     const [movedSkill] = reorderedSkillsList.splice(source.index, 1);
-  //     reorderedSkillsList.splice(destination.index, 0, movedSkill);
-
-  //     setSkills({
-  //       list1: sourceListId === "list1" ? reorderedSkillsList : list1,
-  //       list2: sourceListId === "list2" ? reorderedSkillsList : list2,
-  //     });
-  //   }
-  // };
-
   const handleDragEnd = (result) => {
     const { destination, source } = result;
   
-    // If there is no destination (dropped outside), return
     if (!destination) return;
   
-    // If the item has not moved, return early
     if (
       destination.index === source.index &&
       destination.droppableId === source.droppableId
@@ -74,17 +21,14 @@ const ResumePreview = ({ template, downloadable = false }) => {
       return;
     }
   
-    // Safeguard against undefined lists
     const list1 = skills.list1 || [];
     const list2 = skills.list2 || [];
     const list3 = data.sections.suggested_missions.items || [];
     const list4 = data.sections.experience.items.map((exp) => exp.missions || []);
   
-    // Extract source and destination lists
     const sourceListId = source.droppableId;
     const destinationListId = destination.droppableId;
   
-    // Helper function to get the appropriate list
     const getList = (droppableId) => {
       if (droppableId === "list1") return list1;
       if (droppableId === "list2") return list2;
@@ -96,7 +40,6 @@ const ResumePreview = ({ template, downloadable = false }) => {
       return [];
     };
   
-    // Handle drag and drop logic
     const sourceList = getList(sourceListId);
     const destinationList = getList(destinationListId);
   

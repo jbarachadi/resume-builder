@@ -32,7 +32,10 @@ function App() {
 
     // Generate the PDF from the clone
     try {
-      const canvas = await html2canvas(clone);
+      const canvas = await html2canvas(clone, {
+        scale: 3,
+        useCORS: true,
+      });
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF();
       const imgWidth = pdf.internal.pageSize.getWidth();

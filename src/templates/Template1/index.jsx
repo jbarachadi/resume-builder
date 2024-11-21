@@ -71,6 +71,27 @@ const Template1 = ({ data, skills, downloadable }) => {
                 </div>
               </section>
             }
+
+            {sections?.education.items.length !== 0 && sections?.education.items[0]["institution"] &&
+              <section className={`${styles.resume__section} ${styles.resume__experience}`}>
+                <div className={styles.resume__content}>
+                  <div className={styles.resume__sectionTitle}>
+                    <i className="fa fa-briefcase"></i>
+                    <h2>{sections.education.name}</h2>
+                  </div>
+                  {sections.education.items.map((degree, index) => (
+                    <div key={index} className={styles.xpItem}>
+                      <div className={styles.xpJob}>
+                        {degree.studyType} <span>@ {degree.institution}</span>
+                        <br />
+                        <small>{degree.area}</small>
+                      </div>
+                      <div className={styles.xpDate}>{degree.date}</div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            }            
           </div>
 
           <div className={styles.resume__side}>
