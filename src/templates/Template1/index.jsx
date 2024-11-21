@@ -80,13 +80,32 @@ const Template1 = ({ data, skills, downloadable }) => {
                     <h2>{sections.education.name}</h2>
                   </div>
                   {sections.education.items.map((degree, index) => (
-                    <div key={index} className={styles.xpItem}>
+                    <div key={index} className={styles.xpItem} style={{ marginBottom: "2em" }}>
                       <div className={styles.xpJob}>
                         {degree.studyType} <span>@ {degree.institution}</span>
                         <br />
                         <small>{degree.area}</small>
                       </div>
                       <div className={styles.xpDate}>{degree.date}</div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            }          
+
+            {sections?.certifications.items.length !== 0 && sections?.certifications.items[0]["name"] &&
+              <section className={`${styles.resume__section} ${styles.resume__experience}`}>
+                <div className={styles.resume__content}>
+                  <div className={styles.resume__sectionTitle}>
+                    <i className="fa fa-briefcase"></i>
+                    <h2>{sections.certifications.name}</h2>
+                  </div>
+                  {sections.certifications.items.map((certification, index) => (
+                    <div key={index} className={styles.xpItem} style={{ marginBottom: "2em" }}>
+                      <div className={styles.xpJob}>
+                        {certification.name} {certification?.issuer && <span>@ {certification.issuer}</span>}
+                      </div>
+                      <div className={styles.xpDate}>{certification.date}</div>
                     </div>
                   ))}
                 </div>
