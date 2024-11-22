@@ -210,13 +210,9 @@ def convert_to_json_builder(input_text):
 
         def clean_nested_json(value):
             if isinstance(value, str):
-                print("OUTPUT IS STRING")
-                print(value)
                 try:
-                    # parsed_value = ast.literal_eval(value)
                     return ast.literal_eval(value)
                 except json.JSONDecodeError:
-                    print("COULD NOT CONVERT TO STRING")
                     return value
             elif isinstance(value, dict):
                 return {k: clean_nested_json(v) for k, v in value.items()}
