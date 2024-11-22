@@ -45,13 +45,10 @@ const ResumePreview = ({ template, downloadable = false }) => {
   
     if (!sourceList || !destinationList) return;
   
-    // Remove the item from the source list
     const [movedItem] = sourceList.splice(source.index, 1);
   
-    // Add the item to the destination list
     destinationList.splice(destination.index, 0, movedItem);
   
-    // Update the state based on the lists that changed
     if (destinationListId === "list1" || destinationListId === "list2") {
       if (sourceListId === "list1" || destinationListId === "list1") {
         setSkills({ ...skills, list1 });
