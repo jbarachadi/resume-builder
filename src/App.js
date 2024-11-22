@@ -16,39 +16,72 @@ function App() {
   const resumeRef = useRef();
 
   const handleDownloadPDF = async () => {
-    if (!resumeRef.current) return;
-
-    // Clone the hidden div
+    if (!resumeRef.current) {
+      console.error('Resume reference is not set.');
+      return;
+    }
+  
+    // Clone and prepare the component for rendering
     const originalDiv = resumeRef.current;
     const clone = originalDiv.cloneNode(true);
-
-    // Style the clone to make it visible
     clone.style.display = 'block';
     clone.style.position = 'absolute';
     clone.style.top = '-9999px'; // Position it off-screen
-
-    // Append the clone to the body
     document.body.appendChild(clone);
-
-    // Generate the PDF from the clone
+  
     try {
+      // Render the component to a canvas using html2canvas
       const canvas = await html2canvas(clone, {
-        scale: 3,
+        scale: 2, // Adjust scale for better resolution
         useCORS: true,
+        windowWidth: clone.scrollWidth,
       });
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF();
-      const imgWidth = pdf.internal.pageSize.getWidth();
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+  
+      // Initialize jsPDF instance
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = pageWidth;
+      const imgHeight = (canvas.height * pageWidth) / canvas.width;
+  
+      let y = 0;
+  
+      while (y < canvas.height) {
+        // Create a canvas for the current page slice
+        const pageCanvas = document.createElement('canvas');
+        pageCanvas.width = canvas.width;
+        pageCanvas.height = Math.min(pageHeight * (canvas.width / pageWidth), canvas.height - y);
+  
+        const pageCtx = pageCanvas.getContext('2d');
+        pageCtx.drawImage(
+          canvas,
+          0,
+          y,
+          canvas.width,
+          pageCanvas.height,
+          0,
+          0,
+          canvas.width,
+          pageCanvas.height
+        );
+  
+        const pageData = pageCanvas.toDataURL('image/png');
+        if (y > 0) pdf.addPage();
+        pdf.addImage(pageData, 'PNG', 0, 0, imgWidth, pageCanvas.height * (pageWidth / canvas.width));
+  
+        y += pageCanvas.height;
+      }
+  
+      // Save the generated PDF
       pdf.save('resume.pdf');
     } catch (error) {
       console.error('Error generating PDF:', error);
     } finally {
-      // Remove the clone after generating the PDF
+      // Clean up by removing the cloned element
       document.body.removeChild(clone);
     }
   };
+  
 
   const handleInputChange = (section, updatedData) => {
     if (data) {
