@@ -10,7 +10,7 @@ const TemplateSelection = ({ onSelectTemplate }) => (
       {['Template1', 'Template2', 'Template3'].map((template, index) => (
         <Card
         sx={{
-          aspectRatio: '1 / 1', // Ensures a 1:1 aspect ratio (square)
+          aspectRatio: '1 / 1',
           width: 180,
           borderRadius: 2,
           mx: 2,
