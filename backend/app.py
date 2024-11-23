@@ -26,167 +26,6 @@ os.environ['PATH'] += ':/usr/bin:/path/to/poppler/bin'
 pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
 
 def convert_to_json_builder(data, input_text):
-    # data = {
-    #     "basics": {
-    #         "name": "",
-    #         "email": "",
-    #         "phone": "",
-    #         "headline": "",
-    #         "location": ""
-    #     },
-    #     "skills": {
-    #         "name": "Skills",
-    #         "items": [
-    #             {
-    #                 "name": "",
-    #                 "level": 3,
-    #                 "visible": True
-    #             }
-    #         ]
-    #     },
-    #     "summary": {
-    #         "name": "Summary",
-    #         "content": "",
-    #         "visible": True
-    #     },
-    #     "profiles": {
-    #         "name": "Profiles",
-    #         "items": [
-    #             {
-    #                 "name": "",
-    #                 "url": {
-    #                     "href": "",
-    #                     "label": ""
-    #                 }
-    #             }
-    #         ]
-    #     },
-    #     "projects": {
-    #         "name": "Projects",
-    #         "items": [
-    #             {
-    #                 "name": "",
-    #                 "description": "",
-    #                 "skills": [
-    #                     ""
-    #                 ]
-    #             }
-    #         ]
-    #     },
-    #     "interests": {
-    #         "name": "Interests",
-    #         "items": [
-    #             {
-    #                 "name": ""
-    #             }
-    #         ]
-    #     },
-    #     "languages": {
-    #         "name": "Languages",
-    #         "items": [
-    #             {
-    #                 "name": "",
-    #                 "level": 0,
-    #                 "proficiency": "100%"
-    #             }
-    #         ]
-    #     },
-    #     "volunteer": {
-    #         "name": "Volunteering",
-    #         "items": [
-    #             {
-    #                 "position": "",
-    #                 "company": "",
-    #                 "location": "",
-    #                 "date": "",
-    #                 "summary": "",
-    #                 "visible": True
-    #             }
-    #         ]
-    #     },
-    #     "experience": {
-    #         "name": "Experience",
-    #         "items": [
-    #             {
-    #                 "position": "",
-    #                 "company": "",
-    #                 "location": "",
-    #                 "date": "",
-    #                 "summary": "",
-    #                 "missions": [
-    #                     ""
-    #                 ],
-    #                 "visible": True
-    #             }
-    #         ]
-    #     },
-    #     "references": {
-    #         "name": "References",
-    #         "items": [],
-    #         "columns": 1,
-    #         "visible": True,
-    #         "separateLinks": True
-    #     },
-    #     "publications": {
-    #         "name": "Publications",
-    #         "items": [
-    #             {
-    #                 "name": "",
-    #                 "description": "",
-    #                 "issuer": "",
-    #                 "date": "",
-    #                 "url": {
-    #                     "href": "",
-    #                     "label": ""
-    #                 }
-    #             }
-    #         ]
-    #     },
-    #     "certifications": {
-    #         "name": "Certifications",
-    #         "items": [
-    #             {
-    #                 "name": "",
-    #                 "description": "",
-    #                 "issuer": "",
-    #                 "date": "",
-    #                 "url": {
-    #                     "href": "",
-    #                     "label": ""
-    #                 }
-    #             }
-    #         ]
-    #     },
-    #     "awards": {
-    #         "name": "Awards",
-    #         "items": [
-    #             {
-    #                 "name": "",
-    #                 "description": "",
-    #                 "issuer": "",
-    #                 "date": ""
-    #             }
-    #         ]
-    #     },
-    #     "education": {
-    #         "name": "Education",
-    #         "items": [
-    #             {
-    #                 "institution": "",
-    #                 "studyType": "",
-    #                 "area": "",
-    #                 "date": "",
-    #                 "summary": "",
-    #                 "score": "",
-    #                 "url": {
-    #                     "href": "",
-    #                     "label": ""
-    #                 }
-    #             }
-    #         ]
-    #     }
-    # }
-
     def process_section(section_name, instruction):
         prompt = f"""
         Translate the following resume text into exactly this Python Dict format for the '{section_name}' section :
@@ -222,8 +61,6 @@ def convert_to_json_builder(data, input_text):
             return value
 
         cleaned_data = clean_nested_json(output)
-
-        print(cleaned_data)
 
         try:
             return cleaned_data
@@ -264,7 +101,6 @@ def convert_to_json_builder(data, input_text):
     }
 
     for section_name, instruction in data.items():
-        print(f"Processing section: {section_name}")
         processed = process_section(section_name, instruction)
 
         if section_name == "basics":
@@ -275,235 +111,7 @@ def convert_to_json_builder(data, input_text):
             if len(items) == 1 and items[0].get("name", "").strip() == "":
                 result["sections"][section_name]["items"] = []
 
-    # prompt = f"""I need to translate this text into this JSON format, make sure the format is JSON valid and can be interpreted by json.loads(). Provide me with only the JSON as text format and nothing else, remove the ```json. The name in the basics objects must always contain the name of the resume holder. The headline in the basics object should contain the current job title. The location in the basics object should be filled if available, if not fill it with the location of the latest job, if not keep empty. The skill name should never be a list of multiple elements, keep it granular. Fill missions list in experience object with responsabilities taken during the job. The summary section must contain the summary if available. If no language is provided, add the language in which the resume is written. If there are a specific type of skills (ex: Computer Skills, Areas of strength, Soft Skills) add them to the skills sections. Make sure anything relevant to skills is being added to the skills list :
-    # Text: {input_text}
-    # JSON format: {data}"""
-
-    # response = openai.ChatCompletion.create(
-    #     model="gpt-3.5-turbo",
-    #     temperature=0.3,
-    #     max_tokens=2048,
-    #     messages=[
-    #         {"role": "system", "content": "You are a helpful assistant that converts the input into the output format based on the format given."},
-    #         {"role": "user", "content": prompt}
-    #     ]
-    # )
-
-    #return response.choices[0].message['content']
-
     return result
-
-def convert_to_json(input_text):
-    data = {
-        "basics": {
-            "name": "",
-            "email": "",
-            "phone": "",
-            "headline": "",
-            "location": ""
-        },
-        "sections": {
-            "skills": {
-                "name": "Skills",
-                "items": [
-                    {
-                        "name": "",
-                        "level": 1,
-                        "keywords": [],
-                        "description": "",
-                        "visible": True
-                    }
-                ]
-            },
-            "summary": {
-                "name": "Summary",
-                "content": "",
-                "visible": True
-            },
-            "profiles": {
-                "name": "Profiles",
-                "items": [
-                    {
-                        "url": {
-                            "href": "",
-                            "label": ""
-                        },
-                        "icon": "",
-                        "network": "",
-                        "username": "",
-                        "visible": True
-                    }
-                ]
-            },
-            "projects": {
-                "name": "Projects",
-                "items": [
-                    {
-                    "url": {
-                        "href": "",
-                        "label": ""
-                    },
-                    "date": "",
-                        "name": "",
-                        "summary": "",
-                        "keywords": [],
-                    "description": "",
-                    "visible": True
-                    }
-                ]
-            },
-            "interests": {
-                "name": "Interests",
-                "items": [
-                    {
-                        "name": "",
-                        "keywords": []
-                    }
-                ]
-            },
-            "languages": {
-                "name": "Languages",
-                "items": [
-                    {
-                        "name": "",
-                        "level": 0,
-                        "description": ""
-                    }
-                ]
-            },
-            "volunteer": {
-                "name": "Volunteering",
-                "items": [
-                    {
-                        "url": {
-                            "href": "",
-                            "label": ""
-                        },
-                        "date": "",
-                        "summary": "",
-                        "location": "",
-                        "position": "",
-                        "organization": ""
-                    }
-                ]
-            },
-            "experience": {
-                "name": "Experience",
-                "items": [
-                    {
-                        "url": {
-                            "href": "",
-                            "label": ""
-                        },
-                        "date": "",
-                        "company": "",
-                        "summary": "",
-                        "location": "",
-                        "position": ""
-                    }
-                ]
-            },
-            "references": {
-                "name": "References",
-                "items": [
-                    {
-                        "url": {
-                            "href": "",
-                            "label": ""
-                        },
-                        "name": "",
-                        "summary": "",
-                        "description": ""
-                    }
-                ],
-                "visible": True,
-                "separateLinks": True
-            },
-            "publications": {
-                "name": "Publications",
-                "items": [
-                    {
-                        "url": {
-                            "href": "",
-                            "label": ""
-                        },
-                        "date": "",
-                        "name": "",
-                        "summary": "",
-                        "publisher": ""
-                    }
-                ]
-            },
-            "certifications": {
-                "name": "Certifications",
-                "items": [
-                    {
-                        "url": {
-                            "href": "",
-                            "label": ""
-                        },
-                        "date": "",
-                        "name": "",
-                        "issuer": "",
-                        "summary": ""
-                    }
-                ]
-            },
-            "awards": {
-                "name": "Awards",
-                "items": [
-                    {
-                        "url": {
-                            "href": "",
-                            "label": ""
-                        },
-                        "date": "",
-                        "title": "",
-                        "awarder": "",
-                        "summary": "",
-                    }
-                ]
-            },
-            "education": {
-                "name": "Education",
-                "items": [
-                    {
-                        "url": {
-                            "href": "",
-                            "label": ""
-                        },
-                        "area": "",
-                        "date": "",
-                        "score": "",
-                        "summary": "",
-                        "studyType": "",
-                        "institution": "",
-                    }
-                ]
-            }
-        }
-    }
-
-    prompt = f"""I need to translate this text into this JSON format, make sure the format is JSON valid and can be interpreted by json.loads(). Provide me with only the JSON as text format and nothing else, remove the ```json. The name in the basics objects must always contain the name of the resume holder. The headline in the basics object should contain the current job title. The location in the basics object should be filled if available, if not fill it with the location of the latest job, if not keep empty. The skill name should never be a list of multiple elements, keep it granular. Fill missions list in experience object with responsabilities taken during the job. The summary section must contain the summary if available. If no language is provided, add the language in which the resume is written. If there are a specific type of skills (ex: Computer Skills, Areas of strength, Soft Skills) add them to the skills sections. Make sure anything relevant to skills is being added to the skills list :
-
-    Text: {input_text}
-    JSON format: {data}"""
-
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        temperature=0.3,
-        max_tokens=2048,
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant that converts the input into the output format based on the format given."},
-            {"role": "user", "content": prompt}
-        ]
-    )
-    return response.choices[0].message['content']
-
-@app.route('/generate_json', methods=['POST'])
-def generate_json():
-    input_text = request.get_json()["extracted_text"]
-    return convert_to_json(input_text)
 
 def get_missing_skills(resume_text, job_description):
     prompt = f""" I have a resume and a job description. Identify missing skill sets from the job description that are not covered in the resume, and provide multiple sentences for each missing skill that I can directly add to the "Projects" section of my resume.
@@ -532,41 +140,15 @@ def get_missing_skills(resume_text, job_description):
     )
     return response.choices[0].message['content']
 
-@app.route('/process_resume/', methods=['POST'])
-def process_resume():
-    data = request.get_json()
-    resume_text = data.get('resume_text', '')[:16000]
-    job_description = data.get('job_description', '')
-
-    if not resume_text or not job_description:
-        return jsonify({'error': 'Resume text and job description are required.'}), 400
-
-    # Get the missing skills from the API
-    missing_skills_json = get_missing_skills(resume_text, job_description)
-    print(missing_skills_json)
-    missing_skills_json = missing_skills_json.replace(
-        '```json', '').replace('```', '')
-    # Parse the JSON response
-    try:
-        parsed_response = json.loads(missing_skills_json)
-        return jsonify(parsed_response)
-    except json.JSONDecodeError:
-        logging.error(
-            "Error decoding the response. Ensure the API returns a valid JSON.")
-        return jsonify({"error": "Invalid JSON response from OpenAI API.", "response": missing_skills_json}), 500
-
-# Function to extract text from DOCX, preserving the order of paragraphs and tables
 def extract_text_from_docx(file_path):
     text = ""
     try:
         doc = docx.Document(file_path)
 
-        # Extract text from paragraphs in order
         paragraphs = []
         for para in doc.paragraphs:
             paragraphs.append(para.text)
 
-        # Extract text from tables in order and insert them at the appropriate position
         tables = []
         for table in doc.tables:
             table_text = "\n[Table Start]\n"
@@ -576,27 +158,21 @@ def extract_text_from_docx(file_path):
             table_text += "[Table End]\n"
             tables.append(table_text)
 
-        # Now interleave paragraphs and tables to maintain the order
-        # Let's first add all paragraphs (e.g., declaration, personal information, etc.)
         text += "\n".join(paragraphs) + "\n"
 
-        # Then add the tables in the order they were extracted
-        # Here we ensure that table text comes right after paragraphs
-        text += "\n".join(tables)  # Add tables after paragraphs
+        text += "\n".join(tables)
 
     except Exception as e:
         app.logger.error(f"Error extracting text from DOCX: {e}")
     return text
 
-# Function to extract text from PDF (text-based)
 def extract_text_from_pdf(file_path):
     try:
-        return extract_text(file_path)  # Using pdfminer to extract text from the PDF
+        return extract_text(file_path)
     except Exception as e:
         app.logger.error(f"Error extracting text from PDF: {e}")
         return ""
 
-# OCR-based text extraction for image-based PDFs
 def extract_text_from_image_pdf(file_path):
     text = ""
     try:
@@ -607,12 +183,11 @@ def extract_text_from_image_pdf(file_path):
         app.logger.error(f"Error extracting text from image-based PDF: {e}")
     return text
 
-# Function to handle both file types and extract full text
 def extract_full_text_from_file(file_path):
     file_extension = file_path.lower().split('.')[-1]
     if file_extension == 'pdf':
         text = extract_text_from_pdf(file_path)
-        if not text.strip():  # Try OCR if text extraction fails
+        if not text.strip():
             app.logger.info("No text found in PDF, attempting OCR extraction.")
             text = extract_text_from_image_pdf(file_path)
     elif file_extension == 'docx':
@@ -622,7 +197,6 @@ def extract_full_text_from_file(file_path):
         return "Unsupported file type."
     return text
 
-# Endpoint for file upload and OCR/text extraction
 @app.route('/resume_builder', methods=['POST'])
 def resume_builder():
     if 'file' not in request.files:
@@ -806,13 +380,7 @@ def resume_builder():
     file_path = os.path.join(tempfile.gettempdir(), secure_filename(file.filename))
     file.save(file_path)
     extracted_text = extract_full_text_from_file(file_path)
-    converted_text = convert_to_json_builder(data, extracted_text)
-    resume_json = converted_text
-    # try:
-    #     resume_json = json.loads(converted_text)
-    # except Exception as e:
-    #     app.logger.error(str(e))
-    #     resume_json = converted_text
+    resume_json = convert_to_json_builder(data, extracted_text)
     skills_to_add = list(resume_json["sections"]["skills"]["items"])
     missing_skills = json.loads(get_missing_skills(extracted_text, job_description))["missing_skills"]
     missing_skills_to_add = []
@@ -840,7 +408,6 @@ def resume_builder():
     return jsonify(resume_json), 200
 
 
-# Endpoint for file upload and OCR/text extraction
 @app.route('/upload_file', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
@@ -1119,12 +686,7 @@ def upload_file():
     file_path = os.path.join(tempfile.gettempdir(), secure_filename(file.filename))
     file.save(file_path)
     extracted_text = extract_full_text_from_file(file_path)
-    converted_text = convert_to_json_builder(data, extracted_text)
-    # try:
-    #     resume_json = json.loads(converted_text)
-    # except Exception as e:
-    #     app.logger.error(str(e))
-    resume_json = converted_text
+    resume_json = convert_to_json_builder(data, extracted_text)
     skills_to_add = list(resume_json["sections"]["skills"]["items"])
     missing_skills = json.loads(get_missing_skills(extracted_text, job_description))["missing_skills"]
     for skill in missing_skills:
@@ -1139,38 +701,6 @@ def upload_file():
     resume_json["sections"]["skills"]["items"] = skills_to_add
     resume_json["sections"]["custom"] = {}
     return jsonify(resume_json), 200
-
-# Endpoint for getting suggestions from OpenAI API
-@app.route('/get_suggestions', methods=['POST'])
-def get_suggestions():
-    data = request.get_json()
-    resume_text = data.get('resume_text', '')
-    job_description = data.get('job_description', '')
-
-    if not resume_text or not job_description:
-        return jsonify({'error': 'Resume text and job description are required.'}), 400
-
-    prompt = f"""I have a resume and a job description. Identify missing skill sets from the job description that are not covered in the resume, and provide multiple sentences for each missing skill.
-
-    Resume: {resume_text}
-    Job Description: {job_description}"""
-
-    try:
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "system", "content": "You are a helpful assistant."},
-                      {"role": "user", "content": prompt}]
-        )
-        suggestions = response.choices[0].message['content']
-        return jsonify({'suggestions': suggestions}), 200
-    except Exception as e:
-        app.logger.error(f"Error getting suggestions from OpenAI: {e}")
-        return jsonify({'error': str(e)}), 500
-
-# Root endpoint for serving the index page
-@app.route('/')
-def index():
-    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='5050', debug=True)
