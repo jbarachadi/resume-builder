@@ -31,7 +31,7 @@ body {
   max-width: 900px;
   height: 100%;
   width: auto;
-  aspect-ratio: 1 / 1.414;
+  /* aspect-ratio: 1 / 1.414; */
 }
 
 .resume_left {
@@ -111,7 +111,7 @@ body {
 .resume_left .resume_skills ul li {
   display: flex;
   margin-bottom: 10px;
-  color: #b1eaff;
+  color: #fff;
   justify-content: space-between;
   align-items: center;
 }

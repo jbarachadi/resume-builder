@@ -6,7 +6,7 @@
   max-width: 900px;
   height: 100%;
   width: auto;
-  aspect-ratio: 1 / 1.414;
+  /* aspect-ratio: 1 / 1.414; */
 }
 
 .header {

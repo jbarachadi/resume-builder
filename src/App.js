@@ -21,23 +21,21 @@ function App() {
       return;
     }
   
-    // Clone and prepare the component for rendering
     const originalDiv = resumeRef.current;
     const clone = originalDiv.cloneNode(true);
     clone.style.display = 'block';
     clone.style.position = 'absolute';
-    clone.style.top = '-9999px'; // Position it off-screen
+    clone.style.top = '-9999px';
+    clone.style.margin = '12px';
     document.body.appendChild(clone);
   
     try {
-      // Render the component to a canvas using html2canvas
       const canvas = await html2canvas(clone, {
-        scale: 2, // Adjust scale for better resolution
+        scale: 2,
         useCORS: true,
         windowWidth: clone.scrollWidth,
       });
   
-      // Initialize jsPDF instance
       const pdf = new jsPDF('p', 'mm', 'a4');
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
