@@ -63,7 +63,7 @@ def convert_to_json_builder(data, input_text):
         cleaned_data = clean_nested_json(output)
 
         try:
-            return cleaned_data
+            return cleaned_data, response.usage.prompt_tokens, response.usage.completion_tokens
         except json.JSONDecodeError:
             return f"Invalid JSON for section '{section_name}'. Please refine the input."
 
@@ -100,8 +100,14 @@ def convert_to_json_builder(data, input_text):
         }
     }
 
+    input_sum = 0
+    output_sum = 0
+    
     for section_name, instruction in data.items():
-        processed = process_section(section_name, instruction)
+        processed, input_price, output_price = process_section(section_name, instruction)
+
+        input_sum += input_price / 1000 * 0.00015
+        output_sum += output_price / 1000 * 0.0006
 
         if section_name == "basics":
             result["basics"] = processed
@@ -110,6 +116,8 @@ def convert_to_json_builder(data, input_text):
             items = processed.get("items", [])
             if len(items) == 1 and items[0].get("name", "").strip() == "":
                 result["sections"][section_name]["items"] = []
+
+    print("Conversion Price :\n-  Input Total : " + str(input_sum) + "\n-  Output Total : " + str(output_sum) + "\n\n=  Total : " + str(input_sum + output_sum))
 
     return result
 
@@ -138,6 +146,12 @@ def get_missing_skills(resume_text, job_description):
             {"role": "user", "content": prompt}
         ]
     )
+
+    input_price = response.usage.prompt_tokens / 1000 * 0.0005
+    output_price = response.usage.completion_tokens / 1000 * 0.0015
+
+    print("Missing Skills and Missions Price :\n-  Input Total : " + str(input_price) + "\n-  Output Total : " + str(output_price) + "\n\n=  Total : " + str(input_price + output_price))
+
     return response.choices[0].message['content']
 
 def extract_text_from_docx(file_path):
