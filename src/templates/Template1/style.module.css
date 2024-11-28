@@ -137,6 +137,7 @@ body {
   align-items: center;
   justify-content: center;
   line-height: 1.6;
+  aspect-ratio: 1;
 }
 
 .resume__sectionTitle h2 {

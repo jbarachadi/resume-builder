@@ -94,6 +94,7 @@ body {
   margin-right: 15px;
   font-size: 16px;
   position: relative;
+  aspect-ratio: 1;
 }
 
 .icon i,

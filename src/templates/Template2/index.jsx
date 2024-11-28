@@ -8,14 +8,11 @@ const Template2 = ({ data, skills, downloadable }) => {
 
   return (
     <div className={styles.resume}>
-      {/* Left Section */}
       <div className={styles.resume_left}>
-        {/* Profile */}
         <div className={styles.resume_profile}>
           <img src={basics?.photo || "https://via.placeholder.com/150"} alt="Profile Pic" />
         </div>
 
-        {/* Contact Info */}
         <div className={styles.resume_content}>
           <div className={`${styles.resume_item} ${styles.resume_info}`}>
             <div className={styles.title}>
@@ -44,7 +41,6 @@ const Template2 = ({ data, skills, downloadable }) => {
             </ul>
           </div>
 
-          {/* Skills */}
           {sections?.skills.items.length !== 0 && sections?.skills.items[0]["name"] &&
             <div className={`${styles.resume_item} ${styles.resume_skills}`}>
               {downloadable ?
@@ -93,9 +89,7 @@ const Template2 = ({ data, skills, downloadable }) => {
         </div>
       </div>
 
-      {/* Right Section */}
       <div className={styles.resume_right}>
-        {/* Summary */}
         {sections?.summary &&
           <div className={`${styles.resume_item} ${styles.resume_about}`}>
             <div className={styles.title}>
@@ -105,7 +99,6 @@ const Template2 = ({ data, skills, downloadable }) => {
           </div>
         }
 
-        {/* Work Experience */}
         {sections?.experience.items.length !== 0 && sections?.experience.items[0]["position"] &&
           <div className={`${styles.resume_item} ${styles.resume_work}`}>
             <div className={styles.title}>
@@ -126,7 +119,6 @@ const Template2 = ({ data, skills, downloadable }) => {
           </div>
         }
 
-        {/* Education */}
         {sections?.education.items.length !== 0 && sections?.education.items[0]["institution"] &&
           <div className={`${styles.resume_item} ${styles.resume_education}`}>
             <div className={styles.title}>
@@ -146,7 +138,6 @@ const Template2 = ({ data, skills, downloadable }) => {
           </div>
         }
 
-        {/* Certifications */}
         {sections?.certifications.items.length !== 0 && sections?.certifications.items[0]["name"] &&
           <div className={`${styles.resume_item} ${styles.resume_certifications}`}>
             <div className={styles.title}>
@@ -160,7 +151,6 @@ const Template2 = ({ data, skills, downloadable }) => {
           </div>
         }
 
-        {/* Projects */}
         {sections?.projects.items.length !== 0 && sections?.projects.items[0]["name"] &&
           <div className={`${styles.resume_item} ${styles.resume_projects}`}>
             <div className={styles.title}>
@@ -177,13 +167,16 @@ const Template2 = ({ data, skills, downloadable }) => {
           </div>
         }
 
-        {/* References */}
         {sections?.references.items.length !== 0 && sections?.references.items[0]["name"] &&
           <div className={`${styles.resume_item} ${styles.resume_references}`}>
             <div className={styles.title}>
               <p className={styles.bold}>{sections.references.name}</p>
             </div>
-            <p>{sections.references.text}</p>
+            {sections.references.items.map((reference, index) => (
+              <div key={index}>
+                <p>{reference.name} - {reference.email} - {reference.phone}</p>
+              </div>
+            ))}
           </div>
         }
       </div>

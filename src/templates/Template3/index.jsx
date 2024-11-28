@@ -121,8 +121,7 @@ const Template3 = ({ data, skills, downloadable }) => {
           <h2>{sections.references.name}</h2>
           {sections.references.items.map((reference, index) => (
             <div key={index}>
-              <h3>{reference.name}</h3>
-              <p>{reference.text}</p>
+              <p>{reference.name} - {reference.email} - {reference.phone}</p>
             </div>
           ))}
         </section>

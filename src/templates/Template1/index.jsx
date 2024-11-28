@@ -197,6 +197,24 @@ const Template1 = ({ data, skills, downloadable }) => {
                 </div>
               </section>
             }
+
+            {sections.references.items.length !== 0 && sections?.references.items[0]["name"] &&
+              <section className={`${styles.resume__section} ${styles.resume__languages}`}>
+                <div className={styles.resume__content}>
+                  <div className={styles.resume__sectionTitle}>
+                    <i className="fa fa-globe"></i>
+                    <h2>{sections.references.name}</h2>
+                  </div>
+                  {sections.references.items.map((reference, index) => (
+                    <div key={index} className={styles.extra}>
+                      <div className={styles.extraInfo}>
+                        {reference.name} <small>{reference.email} - {reference.phone}</small>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            }
           </div>
         </div>
       </div>
