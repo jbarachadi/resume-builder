@@ -32,6 +32,8 @@ def convert_to_json_builder(data, input_text):
         {instruction}"""
         prompt += f"""Take exactly what is present in the Summary or Description or Introduction or Objective and return it as a Python Dict unless it is more than a paragraph, in this case, make it more concise. If the text does not contain any field that represents the summary, generate a small paragraph that responds to this purpose""" if section_name == "summary" else f""""""
         prompt += f"""Make sure the summary of each experience is very concise, two or three senteces.""" if section_name == "experience" else f""""""
+        prompt += f"""Make sure the name of the of each reference is different than the name of the resume holder. If none are found, leave the items empty.""" if section_name == "references" else f""""""
+        prompt += f"""Make sure the skills are different from elements in the other sections, like certifications or languages. If none are found, leave the items empty.""" if section_name == "skills" else f""""""
         prompt += f"""Provide the Python Dict for only the '{section_name}' section without additional commentary keeping complete data integrity especially in experience missions. The output must absolutely be a valid Python Dict :
         Text: {input_text}
         """
@@ -100,14 +102,14 @@ def convert_to_json_builder(data, input_text):
         }
     }
 
-    input_sum = 0
-    output_sum = 0
+    # input_sum = 0
+    # output_sum = 0
     
     for section_name, instruction in data.items():
         processed, input_price, output_price = process_section(section_name, instruction)
 
-        input_sum += input_price / 1000 * 0.00015
-        output_sum += output_price / 1000 * 0.0006
+        # input_sum += input_price / 1000 * 0.00015
+        # output_sum += output_price / 1000 * 0.0006
 
         if section_name == "basics":
             result["basics"] = processed
@@ -117,7 +119,7 @@ def convert_to_json_builder(data, input_text):
             if len(items) == 1 and items[0].get("name", "").strip() == "":
                 result["sections"][section_name]["items"] = []
 
-    print("Conversion Price :\n-  Input Total : " + str(input_sum) + "\n-  Output Total : " + str(output_sum) + "\n\n=  Total : " + str(input_sum + output_sum))
+    # print("Conversion Price :\n-  Input Total : " + str(input_sum) + "\n-  Output Total : " + str(output_sum) + "\n\n=  Total : " + str(input_sum + output_sum))
 
     return result
 
@@ -147,10 +149,10 @@ def get_missing_skills(resume_text, job_description):
         ]
     )
 
-    input_price = response.usage.prompt_tokens / 1000 * 0.0005
-    output_price = response.usage.completion_tokens / 1000 * 0.0015
+    # input_price = response.usage.prompt_tokens / 1000 * 0.0005
+    # output_price = response.usage.completion_tokens / 1000 * 0.0015
 
-    print("Missing Skills and Missions Price :\n-  Input Total : " + str(input_price) + "\n-  Output Total : " + str(output_price) + "\n\n=  Total : " + str(input_price + output_price))
+    # print("Missing Skills and Missions Price :\n-  Input Total : " + str(input_price) + "\n-  Output Total : " + str(output_price) + "\n\n=  Total : " + str(input_price + output_price))
 
     return response.choices[0].message['content']
 
@@ -219,7 +221,7 @@ def resume_builder():
     file = request.files['file']
     if file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
-    
+
     data = {
         "basics": {
             "name": "",
