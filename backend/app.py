@@ -1,4 +1,5 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_file
+import pdfkit
 from flask_cors import CORS
 import os
 import tempfile
@@ -14,6 +15,7 @@ import openai
 import json
 import logging
 import ast
+import io
 
 load_dotenv()
 
@@ -717,6 +719,40 @@ def upload_file():
     resume_json["sections"]["skills"]["items"] = skills_to_add
     resume_json["sections"]["custom"] = {}
     return jsonify(resume_json), 200
+
+def replace_items_key(data):
+    if isinstance(data, dict):
+        return {("itms" if k == "items" else k): replace_items_key(v) for k, v in data.items()}
+    elif isinstance(data, list):
+        return [replace_items_key(item) for item in data]
+    else:
+        return data
+
+@app.route('/generate_pdf', methods=['POST'])
+def generate_pdf():
+    data = request.json
+
+    data = replace_items_key(data)
+
+    template = data.get('template', 'template1')
+    basics = data.get('basics', {})
+    sections = data.get('sections', {})
+    
+    html = render_template('resume/' + template + '.html', basics=basics, sections=sections)
+    
+    with open('test.html', 'w') as f:
+        f.write(html)
+
+    pdf = pdfkit.from_string(html, False)
+
+    pdf_stream = io.BytesIO(pdf)
+
+    return send_file(
+        pdf_stream,
+        as_attachment=True,
+        download_name="generated_file.pdf",
+        mimetype="application/pdf"
+    )
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='5050', debug=True)
