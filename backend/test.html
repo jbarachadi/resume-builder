@@ -8,520 +8,291 @@
   
   <!-- Font Face -->
   <style>
-    @font-face {
-      font-family: 'Open Sans';
-      font-style: normal;
-      font-weight: 400;
-      font-display: swap;
-      src: local('Open Sans Regular'), local('OpenSans-Regular'),
-           url('https://fonts.gstatic.com/s/opensans/v16/mem8YaGs126MiZpBA-UFVZ0b.woff2') format('woff2');
-    }
-
-    @font-face {
-      font-family: 'Roboto';
-      font-style: normal;
-      font-weight: 400;
-      font-display: swap;
-      src: local('Roboto'), local('Roboto-Regular'),
-           url('https://fonts.gstatic.com/s/roboto/v19/KFOmCnqEu92Fr1Mu4mxK.woff2') format('woff2');
-    }
-
-    /* Color Definitions */
-    :root {
-      --accentColor: #5695cd;
-      --lightAccentColor: #a0c8e8; /* Lighten by 50% */
-      --progressBackground: #d1d9e1;
-    }
-
-    /* Page Setup */
-    @page {
-      size: A4;
-    }
-
-    body {
-      print-color-adjust: exact;
-      background-color: #fff;
-      font-family: 'Open Sans', sans-serif;
-      font-weight: 300;
-      display: flex;
-      justify-content: center;
-    }
-
-    .resume {
-      display: block;
-      font-family: 'Roboto', sans-serif;
-      font-size: 13.0736px;
-      font-weight: 400;
-      line-height: 1.5;
-      min-height: 1090.41px;
+    .resumeContainer {
+      padding: 10px 80px;
+      background: #fff;
+      border: solid #666;
+      border-width: 8px 0 2px 0;
       max-width: 900px;
       height: 100%;
       width: auto;
       /* aspect-ratio: 1 / 1.414; */
     }
 
-    .resume h1 {
-      font-size: 2.86em;
-      font-weight: 600;
-      letter-spacing: -0.5px;
-    }
-
-    .resume h2 {
-      font-size: 1.43em;
-      font-weight: 600;
-      line-height: 1;
-      margin-bottom: 0;
-    }
-
-    .resume p {
-      margin-bottom: 1em;
-    }
-
-    .resume p:last-child {
-      margin-bottom: 0;
-    }
-
-    .resume ul {
-      padding-left: 20px;
-    }
-
-    .resume__header,
-    .resume__section {
-      font-family: 'Open Sans', sans-serif;
-      font-size: 0.95em;
-    }
-
-    .resume__header {
-      padding: 6em 4em 0;
-    }
-
-    .resume__section {
-      margin-bottom: 4em;
-    }
-
-    .resume__section:last-child {
-      padding-bottom: 0;
-    }
-
-    .resume__sectionTitle {
-      display: flex;
-      align-items: center;
-      margin-bottom: 1.43em;
-    }
-
-    .resume__sectionTitle i {
-      margin-right: 0.63em;
-      font-size: 1.14em;
-      background-color: var(--accentColor);
-      color: white;
-      border: 0.25em solid var(--lightAccentColor);
-      border-radius: 50%;
-      width: 2.51em;
-      height: 2.51em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 1.6;
-      aspect-ratio: 1;
-    }
-
-    .resume__sectionTitle h2 {
-      margin-top: 0;
-      font-size: 1.5em;
-    }
-
-    .resume__columns {
-      display: flex;
-      overflow: hidden;
-      padding: 4em;
-      padding-top: 0;
-    }
-
-    .resume__main {
-      float: left;
-      width: 75%;
-      padding-right: 6em;
-    }
-
-    .resume__side {
-      float: left;
-      width: 25%;
-    }
-
-    .otherInfo p > b {
-      color: #555;
-    }
-
-    .infoItem {
-      margin-bottom: 0.2em;
-      font-weight: 300;
-    }
-
-    .infoItem:last-child {
-      margin-bottom: 0;
-    }
-
-    .infoLabel {
-      display: inline-block;
-      padding-right: 0.63em;
-      font-size: 1.14em;
-      min-width: 2.19em;
+    .header {
       text-align: center;
+      margin-bottom: 2em;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 1em;
     }
 
-    .infoLabel i {
-      color: var(--accentColor);
+    .header h1 {
+      font-size: 48px;
+      color: #333;
+      line-height: 48px;
     }
 
-    .xpItem {
-      margin-bottom: 4em;
+    .contactInfo {
+      margin-top: 10px;
     }
 
-    .xpItem:last-child {
-      margin-bottom: 0;
+    .section {
+      margin-bottom: 2em;
     }
 
-    .xpJob {
-      font-size: 1.14em;
-      font-weight: 600;
-      line-height: 1.25;
-    }
-
-    .xpJob span small {
-      font-weight: 400;
-    }
-
-    .xpJob small {
-      font-size: 0.9em;
-    }
-
-    .xpDate {
-      font-size: 0.8em;
-      margin-top: 0.3em;
+    .section h2 {
+      font-size: 1.5em;
+      color: #333;
+      text-transform: uppercase;
+      border-bottom: 1px solid #ccc;
       margin-bottom: 1em;
-      color: var(--accentColor);
     }
 
-    .extra {
-      margin-bottom: 2em;
+    .job {
+      margin-bottom: 1.5em;
     }
 
-    .extra:last-child {
-      margin-bottom: 0;
+    .job h3 {
+      font-size: 1.3em;
+      color: #444;
     }
 
-    .extraInfo small {
+    .job h4 {
+      font-size: 1.1em;
       color: #666;
-      display: inline-block;
-      font-size: 0.7em;
     }
 
-    .extraDetails .extraDetails__progress {
-      border-radius: 6px;
+    .skillsList {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
-    .extraDetails {
-      margin-top: 0.5em;
-      background-color: var(--progressBackground);
-      width: 100%;
-      height: 5px;
-      position: relative;
+    ul {
+      list-style-type: none;
+      padding: 0;
     }
 
-    .extraDetails__progress {
-      background-color: var(--accentColor);
-      height: 5px;
-      position: absolute;
-      top: 0;
-      left: 0;
+    li {
+      padding: 4px 0;
     }
 
-    .langItem {
-      margin-bottom: 2em;
-    }
-
-    .langItem:last-child {
-      margin-bottom: 0;
-    }
-
-    .langLabel {
-      width: 8em;
-    }
-
-    /* Media Queries for Printing */
-    @media print {
-      body {
-        min-width: initial !important;
-      }
-
-      .btnPrint {
-        display: none;
-      }
+    .footer {
+      text-align: center;
+      border-top: 1px solid #ccc;
+      padding-top: 1em;
     }
   </style>
 </head>
 <body>
-  <div class="sheet">
-    <div class="twoColumn resume">
-      <section class="resume__section resume__header">
-        <div class="resume__content">
-          <h1>Rohit There</h1>
-          <div class="infoItem">
-            <span class="infoLabel">
-              <i class="fa fa-location-arrow"></i>
-            </span>
-            <span class="infoText">Chandrapur, Maharashtra</span>
-          </div>
-          <div class="infoItem">
-            <span class="infoLabel">
-              <i class="fa fa-envelope"></i>
-            </span>
-            <span class="infoText">rohitthere7@gmail.com</span>
-          </div>
-          <div class="infoItem">
-            <span class="infoLabel">
-              <i class="fa fa-phone"></i>
-            </span>
-            <span class="infoText">9764379190</span>
-          </div>
-        </div>
-      </section>
-
-      <div class="resume__columns">
-        <div class="resume__main">
-          <section class="resume__section resume__summary">
-            <div class="resume__content">
-              <div class="resume__sectionTitle">
-                <i class="fa fa-pencil-square-o"></i>
-                <h2>Summary</h2>
-              </div>
-              <p>Data Analytics Trainee with a strong background in data cleansing, transformation, and analysis. Proven ability to improve data accuracy and decision-making processes using tools like Power BI, Excel, Python, and SQL. Experienced in executing data-driven projects that enhance business strategies and optimize operations.</p>
-            </div>
-          </section>
-
-          
-          <section class="resume__section resume__experience">
-            <div class="resume__content">
-              <div class="resume__sectionTitle">
-                <i class="fa fa-briefcase"></i>
-                <h2>Experience</h2>
-              </div>
-              
-                <div class="xpItem">
-                  <div class="xpJob">
-                    Data Analytics Trainee <span>@ Trainity</span><br>
-                    <small></small>
-                  </div>
-                  <div class="xpDate">07/2023 - 12/2023</div>
-                  <div class="xpDetail">
-                    
-                      <p>Operation Analytics: Calculated throughput using a rolling 7-day average to optimize strategy and boost ROI.</p>
-                    
-                      <p>Amazon Sales Analytics: Interpreted sales data, creating forecasts that boosted revenue by 25%. Implemented ETL procedures and developed a Power BI dashboard for insights.</p>
-                    
-                      <p>Hiring Process Analytics: Spearheaded a data-driven approach to reduce time-to-fill positions by 15% and increase offer acceptance rate by 25%.</p>
-                    
-                      <p>Bank Loan Case Study: Streamlined data imbalance in loan applications, computing a data imbalance ratio of 1:9.</p>
-                    
-                      <p>ABC Call Volume Trend: Proposed a manpower schedule with a 10% maximum abandonment rate.</p>
-                    
-                      <p>Instagram User Analytics: Recommended popular hashtags and optimal campaign timing based on user data.</p>
-                    
-                  </div>
-                </div>
-              
-                <div class="xpItem">
-                  <div class="xpJob">
-                    Front End Web Developer: Intern <span>@ Magical Umbrella Pvt. Ltd</span><br>
-                    <small>Chandrapur, Maharashtra</small>
-                  </div>
-                  <div class="xpDate">01/2022 - 03/2022</div>
-                  <div class="xpDetail">
-                    
-                      <p></p>
-                    
-                  </div>
-                </div>
-              
-            </div>
-          </section>
-          
-
-          
-          <section class="resume__section resume__education">
-            <div class="resume__content">
-              <div class="resume__sectionTitle">
-                <i class="fa fa-graduation-cap"></i>
-                <h2>Education</h2>
-              </div>
-              
-                <div class="xpItem" style="margin-bottom: 2em;">
-                  <div class="xpJob">
-                    Bachelor of Engineering <span>@ AISSMS COE</span><br>
-                    <small>Electronics and Telecommunications</small>
-                  </div>
-                  <div class="xpDate">2019 - 2023</div>
-                </div>
-              
-                <div class="xpItem" style="margin-bottom: 2em;">
-                  <div class="xpJob">
-                    HSC <span>@ Narayana Vidyalayam</span><br>
-                    <small>Science</small>
-                  </div>
-                  <div class="xpDate">2019</div>
-                </div>
-              
-                <div class="xpItem" style="margin-bottom: 2em;">
-                  <div class="xpJob">
-                    SSC <span>@ Mount Carmel Covent Senior Secondary School, Cement Nagar</span><br>
-                    <small></small>
-                  </div>
-                  <div class="xpDate">2017</div>
-                </div>
-              
-            </div>
-          </section>
-          
-
-          
-          <section class="resume__section resume__certifications">
-            <div class="resume__content">
-              <div class="resume__sectionTitle">
-                <i class="fa fa-certificate"></i>
-                <h2>Certifications</h2>
-              </div>
-              
-                <div class="xpItem" style="margin-bottom: 2em;">
-                  <div class="xpJob">
-                    Virtual Internship
-                  </div>
-                  <div class="xpDate"></div>
-                </div>
-              
-                <div class="xpItem" style="margin-bottom: 2em;">
-                  <div class="xpJob">
-                    CSS, Bootstrap and JavaScript and Python Stack Course
-                  </div>
-                  <div class="xpDate"></div>
-                </div>
-              
-                <div class="xpItem" style="margin-bottom: 2em;">
-                  <div class="xpJob">
-                    Learn Big Data Basics
-                  </div>
-                  <div class="xpDate"></div>
-                </div>
-              
-            </div>
-          </section>
-          
-        </div>
-
-        <div class="resume__side">
-          
-          <section class="resume__section resume__skills">
-            <div class="resume__content">
-              <div class="resume__sectionTitle">
-                <i class="fa fa-cogs"></i>
-                <h2>Skills</h2>
-              </div>
-              <div class="skillsList">
-                
-                  <div class="extra">
-                    <div class="extraInfo">Power BI</div>
-                    <div class="extraDetails">
-                      <div class="extraDetails__progress" style="width: 90%;"></div>
-                    </div>
-                  </div>
-                
-                  <div class="extra">
-                    <div class="extraInfo">Excel</div>
-                    <div class="extraDetails">
-                      <div class="extraDetails__progress" style="width: 90%;"></div>
-                    </div>
-                  </div>
-                
-                  <div class="extra">
-                    <div class="extraInfo">Tableau</div>
-                    <div class="extraDetails">
-                      <div class="extraDetails__progress" style="width: 90%;"></div>
-                    </div>
-                  </div>
-                
-                  <div class="extra">
-                    <div class="extraInfo">Python</div>
-                    <div class="extraDetails">
-                      <div class="extraDetails__progress" style="width: 90%;"></div>
-                    </div>
-                  </div>
-                
-                  <div class="extra">
-                    <div class="extraInfo">Pandas</div>
-                    <div class="extraDetails">
-                      <div class="extraDetails__progress" style="width: 90%;"></div>
-                    </div>
-                  </div>
-                
-                  <div class="extra">
-                    <div class="extraInfo">Numpy</div>
-                    <div class="extraDetails">
-                      <div class="extraDetails__progress" style="width: 90%;"></div>
-                    </div>
-                  </div>
-                
-                  <div class="extra">
-                    <div class="extraInfo">MySQL</div>
-                    <div class="extraDetails">
-                      <div class="extraDetails__progress" style="width: 90%;"></div>
-                    </div>
-                  </div>
-                
-                  <div class="extra">
-                    <div class="extraInfo">HTML</div>
-                    <div class="extraDetails">
-                      <div class="extraDetails__progress" style="width: 90%;"></div>
-                    </div>
-                  </div>
-                
-                  <div class="extra">
-                    <div class="extraInfo">CSS</div>
-                    <div class="extraDetails">
-                      <div class="extraDetails__progress" style="width: 90%;"></div>
-                    </div>
-                  </div>
-                
-                  <div class="extra">
-                    <div class="extraInfo">Research Skills</div>
-                    <div class="extraDetails">
-                      <div class="extraDetails__progress" style="width: 90%;"></div>
-                    </div>
-                  </div>
-                
-                  <div class="extra">
-                    <div class="extraInfo">Client Problem Solving</div>
-                    <div class="extraDetails">
-                      <div class="extraDetails__progress" style="width: 90%;"></div>
-                    </div>
-                  </div>
-                
-                  <div class="extra">
-                    <div class="extraInfo">Communication Skills</div>
-                    <div class="extraDetails">
-                      <div class="extraDetails__progress" style="width: 90%;"></div>
-                    </div>
-                  </div>
-                
-              </div>
-            </div>
-          </section>
-          
-
-          
-
-          
-        </div>
+  <div class="resumeContainer">
+    <header class="header">
+      <h1>Rohit There</h1>
+      <div class="contactInfo">
+        <a href="mailto:rohitthere7@gmail.com">rohitthere7@gmail.com</a> | 9764379190
       </div>
-    </div>
+    </header>
+  
+    
+    <section class="section">
+      <h2>Summary</h2>
+      <p>Data Analytics Trainee with a strong background in data cleansing, transformation, and analysis. Proven ability to improve data accuracy and decision-making processes using tools like Power BI, Excel, Python, and SQL. Experienced in executing data-driven projects that enhance business strategies and optimize operations.</p>
+    </section>
+    
+  
+    
+    <section class="section">
+      <h2>Skills</h2>
+      <ul class="skillsList">
+        
+        <li class="skillItem">Power BI</li>
+        
+        <li class="skillItem">Excel</li>
+        
+        <li class="skillItem">Tableau</li>
+        
+        <li class="skillItem">Python</li>
+        
+        <li class="skillItem">Pandas</li>
+        
+        <li class="skillItem">Numpy</li>
+        
+        <li class="skillItem">MySQL</li>
+        
+        <li class="skillItem">HTML</li>
+        
+        <li class="skillItem">CSS</li>
+        
+        <li class="skillItem">Data Visualization</li>
+        
+        <li class="skillItem">ETL Procedures</li>
+        
+        <li class="skillItem">Statistical Techniques</li>
+        
+      </ul>
+    </section>
+    
+  
+    
+    <section class="section">
+      <h2>Experience</h2>
+      
+      <div class="job">
+        <h3>Data Analytics Trainee</h3>
+        <h4>Trainity - </h4>
+        <span>07/2023 - 12/2023</span>
+        <ul>
+          
+          <li>Amazon Sales Analytics: Interpreted sales data, creating forecasts and metrics that boosted revenue by 25%.</li>
+          
+          <li>Operation Analytics: Calculated throughput and optimized strategy using data insights.</li>
+          
+          <li>Hiring Process Analytics: Optimized hiring processes, reducing time-to-fill by 15% and increasing offer acceptance by 25%.</li>
+          
+          <li>Bank Loan Case Study: Streamlined data imbalance in loan applications, computing a 1:9 ratio.</li>
+          
+          <li>ABC Call Volume Trend: Proposed manpower schedules to maintain a 10% maximum abandonment rate.</li>
+          
+          <li>Instagram User Analytics: Recommended popular hashtags and optimal campaign timing.</li>
+          
+        </ul>
+      </div>
+      
+      <div class="job">
+        <h3>Front End Web Developer: Intern</h3>
+        <h4>Magical Umbrella Pvt. Ltd - Chandrapur, Maharashtra</h4>
+        <span>01/2022 - 03/2022</span>
+        <ul>
+          
+          <li></li>
+          
+        </ul>
+      </div>
+      
+      <div class="job">
+        <h3>Front End Web Developer: Intern</h3>
+        <h4>Magical Umbrella Pvt. Ltd - Chandrapur, Maharashtra</h4>
+        <span>01/2022 - 03/2022</span>
+        <ul>
+          
+          <li></li>
+          
+        </ul>
+      </div>
+      
+      <div class="job">
+        <h3>Front End Web Developer: Intern</h3>
+        <h4>Magical Umbrella Pvt. Ltd - Chandrapur, Maharashtra</h4>
+        <span>01/2022 - 03/2022</span>
+        <ul>
+          
+          <li></li>
+          
+        </ul>
+      </div>
+      
+      <div class="job">
+        <h3>Front End Web Developer: Intern</h3>
+        <h4>Magical Umbrella Pvt. Ltd - Chandrapur, Maharashtra</h4>
+        <span>01/2022 - 03/2022</span>
+        <ul>
+          
+          <li></li>
+          
+        </ul>
+      </div>
+      
+      <div class="job">
+        <h3>Front End Web Developer: Intern</h3>
+        <h4>Magical Umbrella Pvt. Ltd - Chandrapur, Maharashtra</h4>
+        <span>01/2022 - 03/2022</span>
+        <ul>
+          
+          <li></li>
+          
+        </ul>
+      </div>
+      
+    </section>
+    
+  
+    
+    <section class="section">
+      <h2>Education</h2>
+      
+      <div>
+        <h3>Bachelor of Engineering</h3>
+        <p>AISSMS COE - 2019 - 2023</p>
+      </div>
+      
+      <div>
+        <h3>HSC</h3>
+        <p>Narayana Vidyalayam - 2019</p>
+      </div>
+      
+      <div>
+        <h3>SSC</h3>
+        <p>Mount Carmel Covent Senior Secondary School, Cement Nagar - 2017</p>
+      </div>
+      
+    </section>
+    
+  
+    
+    <section class="section">
+      <h2>Certifications</h2>
+      <ul>
+        
+        <li>Virtual Internship</li>
+        
+        <li>CSS, Bootstrap and JavaScript and Python Stack Course</li>
+        
+        <li>Learn Big Data Basics</li>
+        
+      </ul>
+    </section>
+    
+  
+    
+    <section class="section">
+      <h2>Projects</h2>
+      
+      <div>
+        <h3>Amazon Sales Analytics</h3>
+        <p>Interpreted Amazon sales data, creating detailed forecasts, profit per sale, and sales quantity metrics; instrumental in guiding strategic decisions that boosted revenue by 25% in a 6-month period. Top goods Investigated, which accounted for 45% of total sales, ETL procedures were put into place to efficiently extract, convert, and load data, created an eye-catching Power BI dashboard for in-depth insights. Emphasized the country which contributed the most, accounting for 90% of profit from sales.</p>
+      </div>
+      
+      <div>
+        <h3>Operation Analytics</h3>
+        <p>Throughput calculated using a rolling 7 day average. Leveraged insights to make data-backed decisions that optimized the strategy and boosted ROI. Computed the language percentage shares of the top 5 rankers.</p>
+      </div>
+      
+      <div>
+        <h3>Hiring Process Analytics</h3>
+        <p>Spearheaded a data-driven approach to talent acquisition, leveraging past data to optimize hiring processes, resulting in a 15% reduction in time-to-fill positions and a 25% increase in offer acceptance rate.</p>
+      </div>
+      
+      <div>
+        <h3>Bank Loan Case Study Project</h3>
+        <p>Rectified, regardless of the client&#39;s potential repayment of the loan and streamlined any data imbalance in the loan application dataset and computed the data imbalance ratio, which was 1:9.</p>
+      </div>
+      
+      <div>
+        <h3>ABC Call Volume Trend</h3>
+        <p>Proposed a manpower schedule with a 10% maximum abandonment rate for each time bucket of the day.</p>
+      </div>
+      
+      <div>
+        <h3>Instagram User Analytics</h3>
+        <p>Liaised and recommended the 5 most popular hashtags on the network, as well as the top 1% oldest Instagram users, using the database that was supplied. Figured out what is the optimum time to plan a campaign(ads).</p>
+      </div>
+      
+    </section>
+    
+  
+    
   </div>
+  
 </body>
 </html>

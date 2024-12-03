@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Template</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  
+  <!-- Font Face -->
+  <style>
+    .resumeContainer {
+      padding: 10px 80px;
+      background: #fff;
+      border: solid #666;
+      border-width: 8px 0 2px 0;
+      max-width: 900px;
+      height: 100%;
+      width: auto;
+      /* aspect-ratio: 1 / 1.414; */
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2em;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 1em;
+    }
+
+    .header h1 {
+      font-size: 48px;
+      color: #333;
+      line-height: 48px;
+    }
+
+    .contactInfo {
+      margin-top: 10px;
+    }
+
+    .section {
+      margin-bottom: 2em;
+    }
+
+    .section h2 {
+      font-size: 1.5em;
+      color: #333;
+      text-transform: uppercase;
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 1em;
+    }
+
+    .job {
+      margin-bottom: 1.5em;
+    }
+
+    .job h3 {
+      font-size: 1.3em;
+      color: #444;
+    }
+
+    .job h4 {
+      font-size: 1.1em;
+      color: #666;
+    }
+
+    .skillsList {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      padding: 4px 0;
+    }
+
+    .footer {
+      text-align: center;
+      border-top: 1px solid #ccc;
+      padding-top: 1em;
+    }
+  </style>
+</head>
+<body>
+  <div class="resumeContainer">
+    <header class="header">
+      <h1>{{ basics.name }}</h1>
+      <div class="contactInfo">
+        <a href="mailto:{{ basics.email }}">{{ basics.email }}</a> | {{ basics.phone }}
+      </div>
+    </header>
+  
+    {% if sections.summary %}
+    <section class="section">
+      <h2>{{ sections.summary.name }}</h2>
+      <p>{{ sections.summary.content }}</p>
+    </section>
+    {% endif %}
+  
+    {% if sections.skills.itms and sections.skills.itms[0].name %}
+    <section class="section">
+      <h2>{{ sections.skills.name }}</h2>
+      <ul class="skillsList">
+        {% for skill in sections.skills.itms %}
+        <li class="skillItem">{{ skill.name }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+  
+    {% if sections.experience.itms and sections.experience.itms[0].position %}
+    <section class="section">
+      <h2>{{ sections.experience.name }}</h2>
+      {% for experience in sections.experience.itms %}
+      <div class="job">
+        <h3>{{ experience.position }}</h3>
+        <h4>{{ experience.company }} - {{ experience.location }}</h4>
+        <span>{{ experience.date }}</span>
+        <ul>
+          {% for mission in experience.missions %}
+          <li>{{ mission }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endfor %}
+    </section>
+    {% endif %}
+  
+    {% if sections.education.itms and sections.education.itms[0].institution %}
+    <section class="section">
+      <h2>{{ sections.education.name }}</h2>
+      {% for edu in sections.education.itms %}
+      <div>
+        <h3>{{ edu.studyType }}</h3>
+        <p>{{ edu.institution }} - {{ edu.date }}</p>
+      </div>
+      {% endfor %}
+    </section>
+    {% endif %}
+  
+    {% if sections.certifications.itms and sections.certifications.itms[0].name %}
+    <section class="section">
+      <h2>{{ sections.certifications.name }}</h2>
+      <ul>
+        {% for cert in sections.certifications.itms %}
+        <li>{{ cert.name }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+  
+    {% if sections.projects.itms and sections.projects.itms[0].name %}
+    <section class="section">
+      <h2>{{ sections.projects.name }}</h2>
+      {% for project in sections.projects.itms %}
+      <div>
+        <h3>{{ project.name }}</h3>
+        <p>{{ project.description }}</p>
+      </div>
+      {% endfor %}
+    </section>
+    {% endif %}
+  
+    {% if sections.references.itms and sections.references.itms[0].name %}
+    <section class="section">
+      <h2>{{ sections.references.name }}</h2>
+      {% for reference in sections.references.itms %}
+      <div>
+        <p>{{ reference.name }} - {{ reference.email }} - {{ reference.phone }}</p>
+      </div>
+      {% endfor %}
+    </section>
+    {% endif %}
+  </div>
+  
+</body>
+</html>

@@ -257,7 +257,7 @@
         <div class="resume_item resume_info">
           <div class="title">
             <p class="bold">{{ basics.name or 'Name Not Provided' }}</p>
-            <p class="regular">{{ basics.headline or '' }}</p>
+            <p class="regular">{{ basics.headline }}</p>
           </div>
           <ul>
             <li>
@@ -287,7 +287,7 @@
             <div class="title">
               <p class="bold">{{ sections.skills.name }}</p>
             </div>
-            {% for skill in skills.list2 %}
+            {% for skill in sections.skills.itms %}
             <li class="skillItem">{{ skill.name }}</li>
             {% endfor %}
           </ul>
@@ -318,6 +318,11 @@
             <div class="info">
               <p class="semi_bold">{{ experience.position }}</p>
               <p>{{ experience.company }}, {{ experience.location }}</p>
+              <ul>
+                {% for mission in experience.missions %}
+                <li>{{ mission }}</li>
+                {% endfor %}
+              </ul>
             </div>
           </li>
           {% endfor %}
@@ -387,6 +392,5 @@
       {% endif %}
     </div>
   </div>
-  
 </body>
 </html>
