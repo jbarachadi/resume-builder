@@ -11,6 +11,7 @@ export const useStore = create((set) => ({
     list4: [],
   },
   selectedTemplate: 'Template1',
+  profilePicture: null,
   setData: (newData) =>
     set((state) => ({
       data: newData,
@@ -35,4 +36,5 @@ export const useStore = create((set) => ({
     });
   },
   setSelectedTemplate: (template) => set({ selectedTemplate: template }),
+  setProfilePicture: (picture) => set({ profilePicture: picture }),
 }));

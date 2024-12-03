@@ -8,10 +8,23 @@ const FileUploadForm = () => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const { data, setData, skills, setSkills } = useStore();
+
+  const { data, setData, skills, setSkills, profilePicture, setProfilePicture } = useStore();
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
+  };
+
+  const handleProfilePictureChange = (event) => {
+    const selectedFile = event.target.files[0];
+
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setProfilePicture(reader.result);
+      };
+      reader.readAsDataURL(selectedFile);
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -81,6 +94,28 @@ const FileUploadForm = () => {
               <Typography variant="body2" sx={{ mt: 1 }}>
                 Selected File: {file.name}
               </Typography>
+            )}
+          </Grid>
+
+          {/* Profile Picture Upload Field */}
+          <Grid item xs={12}>
+            <Button variant="contained" component="label" fullWidth>
+              Upload Profile Picture
+              <input
+                type="file"
+                hidden
+                accept="image/*"
+                onChange={handleProfilePictureChange}
+              />
+            </Button>
+            {profilePicture && (
+              <Box sx={{ mt: 2 }}>
+                <img
+                  src={profilePicture}
+                  alt="Profile Preview"
+                  style={{ width: "100%", maxHeight: "200px", objectFit: "contain" }}
+                />
+              </Box>
             )}
           </Grid>
 

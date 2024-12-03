@@ -732,16 +732,27 @@ def replace_items_key(data):
 def generate_pdf():
     data = request.json
 
+    print(data["skills"]["list2"])
+
     data = replace_items_key(data)
 
     template = data.get('template', 'template1')
     basics = data.get('basics', {})
     sections = data.get('sections', {})
+    sections["skills"]["itms"] = [
+        {
+            "level": 3,
+            "name": skill,
+            "visible": True
+        }
+        for skill in data["skills"]["list2"]
+    ]
+    photo = data.get("photo", "https://via.placeholder.com/150")
     
-    html = render_template('resume/' + template + '.html', basics=basics, sections=sections)
+    html = render_template('resume/' + template + '.html', basics=basics, sections=sections, photo=photo)
     
-    with open('test.html', 'w') as f:
-        f.write(html)
+    # with open('test.html', 'w') as f:
+    #     f.write(html)
 
     pdf = pdfkit.from_string(html, False)
 

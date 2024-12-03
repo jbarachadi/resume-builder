@@ -3,14 +3,18 @@ import { Droppable, Draggable } from "react-beautiful-dnd";
 import DraggableMissions from "../DraggableMissions";
 import styles from "./style.module.css";
 
+import { useStore } from "../../store"
+
 const Template2 = ({ data, skills, downloadable }) => {
   const { basics, sections } = data;
+
+  const { profilePicture } = useStore()
 
   return (
     <div className={styles.resume}>
       <div className={styles.resume_left}>
         <div className={styles.resume_profile}>
-          <img src={basics?.photo || "https://via.placeholder.com/150"} alt="Profile Pic" />
+          <img src={profilePicture || "https://via.placeholder.com/150"} alt="Profile Pic" />
         </div>
 
         <div className={styles.resume_content}>

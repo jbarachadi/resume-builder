@@ -8,7 +8,7 @@ import { useStore } from "./store"
 import axios from 'axios';
 
 function App() {
-  const { data, setData, skills, setSkills, selectedTemplate, setSelectedTemplate } = useStore();
+  const { data, setData, skills, setSkills, selectedTemplate, setSelectedTemplate, profilePicture } = useStore();
   const resumeRef = useRef();
 
   const handleTemplateChange = (template) => setSelectedTemplate(template);
@@ -16,6 +16,7 @@ function App() {
   const downloadPDF = async () => {
     data["template"] = selectedTemplate
     data["skills"] = skills
+    data["photo"] = profilePicture
 
     try {
       const response = await axios.post('http://194.146.13.24:5050/generate_pdf', data, {
