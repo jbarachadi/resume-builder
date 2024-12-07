@@ -19,7 +19,7 @@ function App() {
     data["photo"] = profilePicture
 
     try {
-      const response = await axios.post('http://194.146.13.24:5050/generate_pdf', data, {
+      const response = await axios.post('http://localhost:5050/generate_pdf', data, {
         headers: {
           'Content-Type': 'application/json',
         },

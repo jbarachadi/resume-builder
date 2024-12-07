@@ -106,7 +106,18 @@
       <h2>{{ sections.skills.name }}</h2>
       <ul class="skillsList">
         {% for skill in sections.skills.itms %}
-        <li class="skillItem">{{ skill.name }}</li>
+        <li class="skillItem"> • {{ skill.name }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+  
+    {% if sections.languages.itms and sections.languages.itms[0].name %}
+    <section class="section">
+      <h2>{{ sections.languages.name }}</h2>
+      <ul class="skillsList">
+        {% for language in sections.languages.itms %}
+        <li class="skillItem"> • {{ language.name }}</li>
         {% endfor %}
       </ul>
     </section>

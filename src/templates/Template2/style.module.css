@@ -86,7 +86,9 @@ body {
 }
 
 .resume_left ul li .icon {
+  min-width: 35px;
   width: 35px;
+  min-height: 35px;
   height: 35px;
   background: #fff;
   color: #0bb5f4;
@@ -94,7 +96,7 @@ body {
   margin-right: 15px;
   font-size: 16px;
   position: relative;
-  aspect-ratio: 1;
+  aspect-ratio: 1 / 1;
 }
 
 .icon i,
@@ -107,6 +109,9 @@ body {
 
 .resume_left ul li .data {
   color: #b1eaff;
+  word-break: break-word;
+  white-space: normal;
+  overflow: hidden;
 }
 
 .resume_left .resume_skills ul li {

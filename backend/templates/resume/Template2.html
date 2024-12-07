@@ -96,7 +96,9 @@
     }
 
     .resume_left ul li .icon {
+      min-width: 35px;
       width: 35px;
+      min-height: 35px;
       height: 35px;
       background: #fff;
       color: #0bb5f4;
@@ -104,7 +106,7 @@
       margin-right: 15px;
       font-size: 16px;
       position: relative;
-      aspect-ratio: 1;
+      aspect-ratio: 1 / 1;
     }
 
     .icon i,
@@ -117,6 +119,9 @@
 
     .resume_left ul li .data {
       color: #b1eaff;
+      word-break: break-word;
+      white-space: normal;
+      overflow: hidden;
     }
 
     .resume_left .resume_skills ul li {
@@ -289,6 +294,20 @@
             </div>
             {% for skill in sections.skills.itms %}
             <li class="skillItem">{{ skill.name }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        
+        {% if sections.languages.itms and sections.languages.itms[0].name %}
+        <div class="resume_item resume_skills">
+          <ul class="skillsList">
+            <div class="title">
+              <p class="bold">{{ sections.languages.name }}</p>
+            </div>
+            {% for language in sections.languages.itms %}
+            <li class="skillItem">{{ language.name }}</li>
             {% endfor %}
           </ul>
         </div>

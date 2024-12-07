@@ -90,6 +90,19 @@ const Template2 = ({ data, skills, downloadable }) => {
               }
             </div>
           }
+          {sections?.languages.items.length !== 0 && sections?.languages.items[0]["name"] &&
+            <div className={`${styles.resume_item} ${styles.resume_skills}`}>
+              <ul className={styles.skillsList}>
+                <div className={styles.title}>
+                  <p className={styles.bold}>{sections.languages.name}</p>
+                </div>
+                {sections?.languages.items.map((language) => (
+                  <li className={styles.skillItem}>
+                    {language.name}
+                  </li>))}
+              </ul>
+            </div>
+          }
         </div>
       </div>
 

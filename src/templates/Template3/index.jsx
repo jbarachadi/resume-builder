@@ -31,7 +31,7 @@ const Template3 = ({ data, skills, downloadable }) => {
               <ul className={styles.skillsList}>
                 {skills.list2.map((skill) => (
                   <li className={styles.skillItem}>
-                    {skill}
+                    • {skill}
                   </li>))}
               </ul>
             </>
@@ -53,7 +53,7 @@ const Template3 = ({ data, skills, downloadable }) => {
                             {...provided.dragHandleProps}
                             className={styles.skillItem}
                           >
-                            {skill}
+                            • {skill}
                           </li>
                         )}
                       </Draggable>
@@ -64,6 +64,18 @@ const Template3 = ({ data, skills, downloadable }) => {
               )}
             </Droppable>
           }
+        </section>
+      }
+
+      {sections?.languages.items.length !== 0 && sections?.languages.items[0]["name"] &&
+        <section className={styles.section}>
+          <h2>{sections.languages.name}</h2>
+          <ul className={styles.skillsList}>
+            {sections.languages.items.map((language) => (
+              <li className={styles.skillItem}>
+                • {language.name}
+              </li>))}
+          </ul>
         </section>
       }
 

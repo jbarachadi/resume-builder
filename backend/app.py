@@ -16,6 +16,7 @@ import json
 import logging
 import ast
 import io
+from weasyprint import HTML
 
 load_dotenv()
 
@@ -732,7 +733,7 @@ def replace_items_key(data):
 def generate_pdf():
     data = request.json
 
-    print(data["skills"]["list2"])
+    # print(data["skills"]["list2"])
 
     data = replace_items_key(data)
 
@@ -754,7 +755,13 @@ def generate_pdf():
     # with open('test.html', 'w') as f:
     #     f.write(html)
 
-    pdf = pdfkit.from_string(html, False)
+    pdf = pdfkit.from_string(html, False, options={
+        "enable-internal-links": "",
+        "no-outline": "",
+        "encoding": "UTF-8",
+    })
+
+    # pdf = HTML(string=html).write_pdf()
 
     pdf_stream = io.BytesIO(pdf)
 
