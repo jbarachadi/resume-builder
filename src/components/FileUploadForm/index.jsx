@@ -9,7 +9,7 @@ const FileUploadForm = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const { data, setData, skills, setSkills, profilePicture, setProfilePicture } = useStore();
+  const { setData, profilePicture, setProfilePicture } = useStore();
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
