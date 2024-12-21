@@ -60,11 +60,98 @@ const FileUploadForm = () => {
 
   return (
     <Box sx={{ p: 3, maxWidth: 400, mx: "auto", textAlign: "center" }}>
-      <Typography variant="h5" gutterBottom>
-        Upload File
-      </Typography>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
+          {/* Profile Picture Upload Field */}
+          <Grid
+            item
+            xs={12}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                border: "2px dashed #ccc",
+                borderRadius: "50%",
+                width: "160px",
+                mb: 2,
+                aspectRatio: 1,
+                backgroundColor: "#f9f9f9",
+                position: "relative", // Allow absolute positioning inside
+              }}
+            >
+              <img
+                src={profilePicture ? profilePicture : "assets/placeholder_pp.jpg"}
+                alt="Profile Preview"
+                style={{
+                  width: "100%",
+                  objectFit: "cover",
+                  borderRadius: "50%",
+                  aspectRatio: 1,
+                }}
+              />
+              <Button
+                variant="contained"
+                component="label"
+                sx={{
+                  position: "absolute",
+                  bottom: "5px",
+                  right: "5px",
+                  backgroundColor: "#0D1E30",
+                  color: "#fff",
+                  textTransform: "none",
+                  borderRadius: "50%",
+                  padding: "8px",
+                  minWidth: "35px",
+                  height: "35px",
+                  fontWeight: "bold",
+                  "&:hover": {
+                    backgroundColor: "#0A1723",
+                  },
+                }}
+              >
+                <input
+                  type="file"
+                  hidden
+                  accept="image/*"
+                  onChange={handleProfilePictureChange}
+                />
+                ✎ {/* Edit icon or text */}
+              </Button>
+            </Box>
+            <Button
+              variant="contained"
+              component="label"
+              sx={{
+                backgroundColor: "#0D1E30",
+                color: "#fff",
+                textTransform: "none",
+                borderRadius: "8px",
+                padding: "10px 20px",
+                fontWeight: "bold",
+                "&:hover": {
+                  backgroundColor: "#0A1723",
+                },
+              }}
+              fullWidth
+            >
+              Upload Profile Picture
+              <input
+                type="file"
+                hidden
+                accept="image/*"
+                onChange={handleProfilePictureChange}
+              />
+            </Button>
+          </Grid>
+
           {/* Text Input Field */}
           <Grid item xs={12}>
             <TextField
@@ -94,28 +181,6 @@ const FileUploadForm = () => {
               <Typography variant="body2" sx={{ mt: 1 }}>
                 Selected File: {file.name}
               </Typography>
-            )}
-          </Grid>
-
-          {/* Profile Picture Upload Field */}
-          <Grid item xs={12}>
-            <Button variant="contained" component="label" fullWidth>
-              Upload Profile Picture
-              <input
-                type="file"
-                hidden
-                accept="image/*"
-                onChange={handleProfilePictureChange}
-              />
-            </Button>
-            {profilePicture && (
-              <Box sx={{ mt: 2 }}>
-                <img
-                  src={profilePicture}
-                  alt="Profile Preview"
-                  style={{ width: "100%", maxHeight: "200px", objectFit: "contain" }}
-                />
-              </Box>
             )}
           </Grid>
 
