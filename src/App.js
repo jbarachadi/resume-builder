@@ -7,7 +7,7 @@ import Builder from './components/Builder';
 
 function App() {
   return (
-    <Box sx={{ width: "100vw", height: "100vh" }}>
+    <Box>
       <Router>
         <Routes>
           <Route

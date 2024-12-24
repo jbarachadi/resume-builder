@@ -8,6 +8,10 @@
   padding: 0;
 }
 
+#root {
+  width: 100vw;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
   background-color: #f0f4f8;
@@ -16,15 +20,15 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  /* min-height: 100vh; */
 }
 
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 90%;
-  max-width: 1200px;
+  /* width: 90%;
+  max-width: 1200px; */
   padding: 20px;
   background-color: #ffffff;
   border-radius: 10px;

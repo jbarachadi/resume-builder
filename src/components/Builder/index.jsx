@@ -132,14 +132,14 @@ const Builder = () => {
             <FileUploadForm />
           </Box>
           {data && (
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: "center" }}>
               <TemplateSelection onSelectTemplate={handleTemplateChange} />
-              <div ref={resumeRef} style={{ display: 'none' }}>
+              {/* <div ref={resumeRef} style={{ display: 'none' }}>
                 <ResumePreview
                   template={selectedTemplate}
                   downloadable={true}
                 />
-              </div>
+              </div> */}
               <ResumePreview
                 template={selectedTemplate}
               />
