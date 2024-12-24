@@ -2,7 +2,7 @@ import React from 'react';
 import Template1 from '../../templates/Template1';
 import Template2 from '../../templates/Template2';
 import Template3 from '../../templates/Template3';
-import { Box, Paper } from '@mui/material';
+import { Box, Paper, Divider } from '@mui/material';
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useStore } from "../../store"
 
@@ -96,53 +96,65 @@ const ResumePreview = ({ template, downloadable = false }) => {
           </Paper>
           {!downloadable &&
             <Paper elevation={3} sx={{ display: "flex", flexDirection: "column" }}>
-              <Box elevation={3} sx={{ display: "flex", p: 8, width: "600px" }}>
+              <Box elevation={3} sx={{ display: "flex", width: "600px" }}>
                 <Droppable droppableId="list3">
                   {(provided) => (
                     <ul
                       {...provided.droppableProps}
                       ref={provided.innerRef}
+                      style={{ width: "100%" }}
                     >
-                      <h2 style={{ marginBottom: "24px" }}>{data.sections.suggested_missions.name}</h2>
-                      {data.sections.suggested_missions.items.map((suggested_mission, index) => (
-                        <Draggable key={suggested_mission} draggableId={`list3-${suggested_mission}`} index={index}>
-                          {(provided) => (
-                            <li
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                            >
-                              {suggested_mission}
-                            </li>
-                          )}
-                        </Draggable>
-                      ))}
+                      <h2 style={{ padding: "24px", backgroundColor: "#002855", width: "100%", color: "white" }}>{data.sections.suggested_missions.name}</h2>
+                      <Box sx={{ p: 3, pt: 1 }}>
+                        {data.sections.suggested_missions.items.map((suggested_mission, index) => (
+                          <>
+                            <Draggable key={suggested_mission} draggableId={`list3-${suggested_mission}`} index={index}>
+                              {(provided) => (
+                                <li
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                >
+                                  {suggested_mission}
+                                </li>
+                              )}
+                            </Draggable>
+                            {index !== data.sections.suggested_missions.items.length - 1 && <Divider />}
+                          </>
+                        ))}
+                      </Box>
                       {provided.placeholder}
                     </ul>
                   )}
                 </Droppable>
               </Box>
-              <Box elevation={3} sx={{ display: "flex", p: 8, width: "600px" }}>
+              <Box elevation={3} sx={{ display: "flex", width: "600px" }}>
                 <Droppable droppableId="list1">
                   {(provided) => (
                     <ul
                       {...provided.droppableProps}
                       ref={provided.innerRef}
+                      style={{ width: "100%" }}
                     >
-                      <h2 style={{ marginBottom: "24px" }}>Suggested {data.sections.skills.name}</h2>
-                      {skills.list1.map((skill, index) => (
-                        <Draggable key={skill} draggableId={`list1-${skill}`} index={index}>
-                          {(provided) => (
-                            <li
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                            >
-                              {skill}
-                            </li>
-                          )}
-                        </Draggable>
-                      ))}
+                      <h2 style={{ padding: "24px", backgroundColor: "#002855", width: "100%", color: "white" }}>Suggested {data.sections.skills.name}</h2>
+                      <Box sx={{ p: 3, pt: 1 }}>
+                        {skills.list1.map((skill, index) => (
+                          <>
+                            <Draggable key={skill} draggableId={`list1-${skill}`} index={index}>
+                              {(provided) => (
+                                <li
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                >
+                                  {skill}
+                                </li>
+                              )}
+                            </Draggable>
+                            {index !== skills.list1.length - 1 && <Divider />}
+                          </>
+                        ))}
+                      </Box>
                       {provided.placeholder}
                     </ul>
                   )}

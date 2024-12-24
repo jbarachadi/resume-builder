@@ -311,8 +311,6 @@ const FileUploadForm = () => {
                   onChange={handleFileChange}
                 />
               </Button>
-              
-
               {file && (
                 <Typography variant="body2" sx={{ mt: 1 }}>
                   Selected File: {file.name}

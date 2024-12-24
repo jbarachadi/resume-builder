@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Template1 from '../../templates/Template1';
 import Template2 from '../../templates/Template2';
 import Template3 from '../../templates/Template3';
@@ -7,7 +8,8 @@ import { Box } from '@mui/material';
 import 'font-awesome/css/font-awesome.min.css';
 import { useStore } from "../../store"
 
-const Download = () => { 
+const Download = () => {
+  const navigate = useNavigate();
   const { data, skills, selectedTemplate} = useStore();
 
   // const data = {
@@ -484,9 +486,9 @@ const Download = () => {
   //   list2: data.sections.skills.items.map((skill) => skill.name)
   // }
 
-  const template = selectedTemplate // "Template3"
+  const template = selectedTemplate
 
-  const [isVisible, setIsVisible] = useState(true);
+  // const [isVisible, setIsVisible] = useState(true);
 
   const handlePrint = () => {
     setTimeout(() => {
@@ -498,7 +500,8 @@ const Download = () => {
     handlePrint();
 
     const handleAfterPrint = () => {
-      setIsVisible(true);
+      // setIsVisible(true);
+      navigate("/")
     };
 
     window.addEventListener("afterprint", handleAfterPrint);
@@ -509,7 +512,7 @@ const Download = () => {
   }, []);
    
   return (
-    <Box sx={{ display: 'flex', flexDirection: "row", gap: 3, bgcolor: 'white' }}>
+    <Box sx={{ display: 'flex', flexDirection: "row", gap: 3, bgcolor: 'white', justifyContent: "center" }}>
       <DragDropContext>
         {template === 'Template1' && <Template1 data={data} skills={skills} />}
         {template === 'Template2' && <Template2 data={data} skills={skills} />}

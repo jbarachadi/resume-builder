@@ -79,7 +79,7 @@ const Builder = () => {
         console.error("User data not found in users data");
       }
     } else {
-      //  window.location.href = "https://www.interviewaxis.com/login";
+      // window.location.href = "https://www.interviewaxis.com/login";
     }
   };
 
@@ -146,12 +146,23 @@ const Builder = () => {
               <Box sx={{ mt: 3, textAlign: 'center' }}>
                 <Button
                   variant="contained"
-                  color="primary"
+                  component="label"
+                  fullWidth
+                  sx={{
+                    backgroundColor: "#002855",
+                    color: "#fff",
+                    textTransform: "none",
+                    padding: "12px 24px",
+                    borderRadius: "8px",
+                    "&:hover": {
+                      backgroundColor: "#004080",
+                    },
+                  }}
                   onClick={
                     () => navigate("/download")
                   }
                 >
-                  Download as PDF
+                  DOWNLOAD AS PDF
                 </Button>
               </Box>
             </div>
