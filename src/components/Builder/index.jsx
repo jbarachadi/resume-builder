@@ -79,7 +79,7 @@ const Builder = () => {
         console.error("User data not found in users data");
       }
     } else {
-      // window.location.href = "https://www.interviewaxis.com/login";
+      window.location.href = "https://www.interviewaxis.com/login";
     }
   };
 

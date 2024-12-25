@@ -13,24 +13,30 @@ const Template1 = ({ data, skills, downloadable }) => {
           <div className={styles.resume__content}>
             <h1>{basics.name}</h1>
 
-            <div className={styles.infoItem}>
-              <span className={styles.infoLabel}>
-                <i className="fa fa-location-arrow"></i>
-              </span>
-              <span className={styles.infoText}>{basics.location}</span>
-            </div>
-            <div className={styles.infoItem}>
-              <span className={styles.infoLabel}>
-                <i className="fa fa-envelope"></i>
-              </span>
-              <span className={styles.infoText}>{basics.email}</span>
-            </div>
-            <div className={styles.infoItem}>
-              <span className={styles.infoLabel}>
-                <i className="fa fa-phone"></i>
-              </span>
-              <span className={styles.infoText}>{basics.phone}</span>
-            </div>
+            {basics?.location &&
+              <div className={styles.infoItem}>
+                <span className={styles.infoLabel}>
+                  <i className="fa fa-location-arrow"></i>
+                </span>
+                <span className={styles.infoText}>{basics.location}</span>
+              </div>
+            }
+            {basics?.email &&
+              <div className={styles.infoItem}>
+                <span className={styles.infoLabel}>
+                  <i className="fa fa-envelope"></i>
+                </span>
+                <span className={styles.infoText}>{basics.email}</span>
+              </div>
+            }
+            {basics?.phone && 
+              <div className={styles.infoItem}>
+                <span className={styles.infoLabel}>
+                  <i className="fa fa-phone"></i>
+                </span>
+                <span className={styles.infoText}>{basics.phone}</span>
+              </div>
+            }
           </div>
         </section>
 

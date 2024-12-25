@@ -24,24 +24,30 @@ const Template2 = ({ data, skills, downloadable }) => {
               <p className={styles.regular}>{basics.headline}</p>
             </div>
             <ul>
-              <li>
-                <div className={styles.icon}>
-                  <i className="fas fa-map-signs"></i>
-                </div>
-                <div className={styles.data}>{basics.location || "Location Not Provided"}</div>
-              </li>
-              <li>
-                <div className={styles.icon}>
-                  <i className="fas fa-mobile-alt"></i>
-                </div>
-                <div className={styles.data}>{basics.phone || "Phone Not Provided"}</div>
-              </li>
-              <li>
-                <div className={styles.icon}>
-                  <i className="fas fa-envelope"></i>
-                </div>
-                <div className={styles.data}>{basics.email || "Email Not Provided"}</div>
-              </li>
+              {basics?.location && 
+                <li>
+                  <div className={styles.icon}>
+                    <i className="fas fa-map-signs"></i>
+                  </div>
+                  <div className={styles.data}>{basics.location || "Location Not Provided"}</div>
+                </li>
+              }
+              {basics?.phone &&
+                <li>
+                  <div className={styles.icon}>
+                    <i className="fas fa-mobile-alt"></i>
+                  </div>
+                  <div className={styles.data}>{basics.phone || "Phone Not Provided"}</div>
+                </li>
+              }
+              {basics?.email &&
+                <li>
+                  <div className={styles.icon}>
+                    <i className="fas fa-envelope"></i>
+                  </div>
+                  <div className={styles.data}>{basics.email || "Email Not Provided"}</div>
+                </li>
+              }
             </ul>
           </div>
 
