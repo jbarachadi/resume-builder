@@ -13,9 +13,11 @@ const Template2 = ({ data, skills, downloadable }) => {
   return (
     <div className={styles.resume}>
       <div className={styles.resume_left}>
-        <div className={styles.resume_profile}>
-          <img src={profilePicture || "https://via.placeholder.com/150"} alt="Profile Pic" />
-        </div>
+        {profilePicture &&
+          <div className={styles.resume_profile}>
+            <img src={profilePicture || "https://via.placeholder.com/150"} alt="Profile Pic" />
+          </div>
+        }
 
         <div className={styles.resume_content}>
           <div className={`${styles.resume_item} ${styles.resume_info}`}>

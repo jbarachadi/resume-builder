@@ -127,7 +127,7 @@ const Navbar = () => {
                 </Button>
               </>
             )
-          }          
+          }
         </Box>
 
         {/* Mobile Menu */}
