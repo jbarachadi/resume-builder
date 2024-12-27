@@ -708,6 +708,7 @@ def upload_file():
     resume_json = convert_to_json_builder(data, extracted_text)
     skills_to_add = list(resume_json["sections"]["skills"]["items"])
     missing_skills = json.loads(get_missing_skills(extracted_text, job_description))["missing_skills"]
+    suggested_missions_to_add = []
     for skill in missing_skills:
         skills_to_add.append({
             "name": skill,
@@ -716,9 +717,23 @@ def upload_file():
             "description": "",
             "visible": True
         })
+        for item in missing_skills[skill]:
+            suggested_missions_to_add.append({
+                "url": {
+                    "href": "",
+                    "label": ""
+                },
+                "date": "",
+                "company": "",
+                "summary": item,
+                "location": "",
+                "position": skill,
+                "visible": True
+            })
 
     resume_json["sections"]["skills"]["items"] = skills_to_add
     resume_json["sections"]["custom"] = {}
+    resume_json["sections"]["experience"]["items"] += suggested_missions_to_add
     return jsonify(resume_json), 200
 
 def replace_items_key(data):
