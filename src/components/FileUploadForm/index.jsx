@@ -50,6 +50,7 @@ const FileUploadForm = () => {
       // Save response to localStorage
       // localStorage.setItem("uploadResponse", JSON.stringify(response.data));
       setData(response.data)
+      localStorage.setItem("resume_data", JSON.stringify(response.data));
       setMessage("File uploaded successfully!");
     } catch (error) {
       setMessage("Failed to upload file. Please try again.");

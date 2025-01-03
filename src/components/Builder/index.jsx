@@ -12,8 +12,51 @@ import axios from 'axios';
 
 const Builder = () => {
   const navigate = useNavigate();
-  const { data, skills, selectedTemplate, setSelectedTemplate, profilePicture, userData, setUserData } = useStore();
+  const { data, setData, skills, selectedTemplate, setSelectedTemplate, profilePicture, userData, setUserData } = useStore();
   const resumeRef = useRef();
+
+  const initPdfDownload = async () => {
+    try {
+      console.log(userData.user_email)
+
+      const response = await axios.post(
+        "https://www.interviewaxis.com/api/v1/checkCredit",
+        {
+          email: userData.user_email,
+        },
+        { 
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true
+        }
+      );
+
+      console.log("checkCredit : ", response.data)
+
+      if (response.data.status !== 404) {
+        navigate("/download")
+      } else {
+        const response = await axios.post(
+          "http://194.146.13.24:5050/get_token",
+          {
+            user_id: userData.user_id,
+            user_email: userData.user_email
+          },
+          { 
+            headers: {
+              'Accept': 'application/json',
+            },
+          }
+        );
+        localStorage.setItem("token", response.data.access_token);
+        window.location.href = "https://interviewaxis.com/pricing-plan?rid=" + response.data.access_token
+      }
+    } catch (error) {
+      console.error("Error fetching users data:", error);
+      return [];
+    }
+  }
 
   const fetchAllUsersData = async () => {
     try {
@@ -66,15 +109,18 @@ const Builder = () => {
 
     if (sessionData && sessionData.logged_in===true) {
       const loggedInUser = sessionData.user;
-      const matchedUser = usersData.find((user) => user.id === loggedInUser.id);     
+      const matchedUser = usersData.find((user) => user.id === loggedInUser.id);  
+      
+      console.log()
 
       if (matchedUser) {
         setUserData({
           user_id: matchedUser.id,
           user_name: matchedUser.name,
           user_role: loggedInUser.role,
+          user_email: loggedInUser.email,
         });
-        
+
       } else {
         console.error("User data not found in users data");
       }
@@ -85,6 +131,13 @@ const Builder = () => {
 
   useEffect(() => {
     processSessionData();
+    if (data !== null) {
+      try {
+        setData({...data, data: localStorage.getItem("resume_data")})
+      } catch {
+        console.log("no data")
+      }
+    }
   }, []);
 
   const handleTemplateChange = (template) => setSelectedTemplate(template);
@@ -158,9 +211,7 @@ const Builder = () => {
                       backgroundColor: "#004080",
                     },
                   }}
-                  onClick={
-                    () => navigate("/download")
-                  }
+                  onClick={initPdfDownload}
                 >
                   DOWNLOAD AS PDF
                 </Button>

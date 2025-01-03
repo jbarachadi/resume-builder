@@ -17,6 +17,7 @@ import logging
 import ast
 import io
 from weasyprint import HTML
+from flask_jwt_extended import JWTManager, create_access_token
 
 load_dotenv()
 
@@ -24,6 +25,9 @@ openai.api_key = "sk-proj-ywRYiLhwWKFLk6Uc-snBJkVXKb7IJdQk4tzylnUEM2_VxJ231lZpQx
 
 app = Flask(__name__)
 CORS(app)
+
+app.config["JWT_SECRET_KEY"] = "interviewaxis"
+jwt = JWTManager(app)
 
 os.environ['PATH'] += ':/usr/bin:/path/to/poppler/bin'
 pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
@@ -426,6 +430,12 @@ def resume_builder():
     resume_json["sections"]["suggested_missions"]["items"] = suggested_missions_to_add
     return jsonify(resume_json), 200
 
+@app.route('/get_token', methods=['POST'])
+def get_token():
+    user_id = request.form.get("user_id")
+    user_email = request.form.get("user_email")
+    access_token = create_access_token(identity={"user_id": user_id, "user_email": user_email})
+    return jsonify({"access_token": access_token}), 200
 
 @app.route('/upload_file', methods=['POST'])
 def upload_file():
