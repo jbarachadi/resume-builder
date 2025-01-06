@@ -43,7 +43,7 @@ const FileUploadForm = () => {
     setMessage("");
 
     try {
-      const response = await axios.post("http://194.146.13.24:5050/resume_builder", formData, {
+      const response = await axios.post("https://api.interviewaxis.com/resume_builder", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -305,7 +305,7 @@ const FileUploadForm = () => {
                   },
                 }}
               >
-                Upload Filech
+                Upload File
                 <input
                   type="file"
                   hidden
@@ -355,7 +355,7 @@ const FileUploadForm = () => {
                 },
               }}
             >
-              {loading ? "Uploading..." : "Submit"}
+              {loading ? "Uploading..." : "Upload File"}
             </Button>
           </Grid>
         </Grid>

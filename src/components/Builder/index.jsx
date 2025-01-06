@@ -32,13 +32,13 @@ const Builder = () => {
         }
       );
 
-      console.log("checkCredit : ", response.data)
+      // console.log("checkCredit : ", response.data)
 
       if (response.data.status !== 404) {
         navigate("/download")
       } else {
         const response = await axios.post(
-          "http://194.146.13.24:5050/get_token",
+          "https://api.interviewaxis.com/get_token",
           {
             user_id: userData.user_id,
             user_email: userData.user_email
@@ -149,7 +149,7 @@ const Builder = () => {
   //   data["photo"] = profilePicture
 
   //   try {
-  //     const response = await axios.post('http://194.146.13.24:5050/generate_pdf', data, {
+  //     const response = await axios.post('https://api.interviewaxis.com/generate_pdf', data, {
   //       headers: {
   //         'Content-Type': 'application/json',
   //       },

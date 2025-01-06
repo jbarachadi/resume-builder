@@ -1,5 +1,5 @@
-from flask import Flask, request, jsonify, render_template, send_file
-import pdfkit
+from flask import Flask, request, jsonify
+# import pdfkit
 from flask_cors import CORS
 import os
 import tempfile
@@ -9,14 +9,14 @@ from pdf2image import convert_from_path
 import openai
 import pytesseract
 from werkzeug.utils import secure_filename
-from pdf2docx import Converter
+# from pdf2docx import Converter
 from dotenv import load_dotenv
 import openai
 import json
-import logging
+# import logging
 import ast
-import io
-from weasyprint import HTML
+# import io
+# from weasyprint import HTML
 from flask_jwt_extended import JWTManager, create_access_token
 
 load_dotenv()
@@ -220,7 +220,7 @@ def extract_full_text_from_file(file_path):
         return "Unsupported file type."
     return text
 
-@app.route('/resume_builder', methods=['POST'])
+@app.route('/api/resume_builder', methods=['POST'])
 def resume_builder():
     if 'file' not in request.files:
         return jsonify({'error': 'No file provided'}), 400
@@ -430,14 +430,14 @@ def resume_builder():
     resume_json["sections"]["suggested_missions"]["items"] = suggested_missions_to_add
     return jsonify(resume_json), 200
 
-@app.route('/get_token', methods=['POST'])
+@app.route('/api/get_token', methods=['POST'])
 def get_token():
     user_id = request.form.get("user_id")
     user_email = request.form.get("user_email")
     access_token = create_access_token(identity={"user_id": user_id, "user_email": user_email})
     return jsonify({"access_token": access_token}), 200
 
-@app.route('/upload_file', methods=['POST'])
+@app.route('/api/upload_file', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
         return jsonify({'error': 'No file provided'}), 400
@@ -746,56 +746,56 @@ def upload_file():
     resume_json["sections"]["experience"]["items"] += suggested_missions_to_add
     return jsonify(resume_json), 200
 
-def replace_items_key(data):
-    if isinstance(data, dict):
-        return {("itms" if k == "items" else k): replace_items_key(v) for k, v in data.items()}
-    elif isinstance(data, list):
-        return [replace_items_key(item) for item in data]
-    else:
-        return data
+# def replace_items_key(data):
+#     if isinstance(data, dict):
+#         return {("itms" if k == "items" else k): replace_items_key(v) for k, v in data.items()}
+#     elif isinstance(data, list):
+#         return [replace_items_key(item) for item in data]
+#     else:
+#         return data
 
-@app.route('/generate_pdf', methods=['POST'])
-def generate_pdf():
-    data = request.json
+# @app.route('/generate_pdf', methods=['POST'])
+# def generate_pdf():
+#     data = request.json
 
-    # print(data["skills"]["list2"])
+#     # print(data["skills"]["list2"])
 
-    data = replace_items_key(data)
+#     data = replace_items_key(data)
 
-    template = data.get('template', 'template1')
-    basics = data.get('basics', {})
-    sections = data.get('sections', {})
-    sections["skills"]["itms"] = [
-        {
-            "level": 3,
-            "name": skill,
-            "visible": True
-        }
-        for skill in data["skills"]["list2"]
-    ]
-    photo = data.get("photo", "https://via.placeholder.com/150")
+#     template = data.get('template', 'template1')
+#     basics = data.get('basics', {})
+#     sections = data.get('sections', {})
+#     sections["skills"]["itms"] = [
+#         {
+#             "level": 3,
+#             "name": skill,
+#             "visible": True
+#         }
+#         for skill in data["skills"]["list2"]
+#     ]
+#     photo = data.get("photo", "https://via.placeholder.com/150")
     
-    html = render_template('resume/' + template + '.html', basics=basics, sections=sections, photo=photo)
+#     html = render_template('resume/' + template + '.html', basics=basics, sections=sections, photo=photo)
     
-    # with open('test.html', 'w') as f:
-    #     f.write(html)
+#     # with open('test.html', 'w') as f:
+#     #     f.write(html)
 
-    pdf = pdfkit.from_string(html, False, options={
-        "enable-internal-links": "",
-        "no-outline": "",
-        "encoding": "UTF-8",
-    })
+#     pdf = pdfkit.from_string(html, False, options={
+#         "enable-internal-links": "",
+#         "no-outline": "",
+#         "encoding": "UTF-8",
+#     })
 
-    # pdf = HTML(string=html).write_pdf()
+#     # pdf = HTML(string=html).write_pdf()
 
-    pdf_stream = io.BytesIO(pdf)
+#     pdf_stream = io.BytesIO(pdf)
 
-    return send_file(
-        pdf_stream,
-        as_attachment=True,
-        download_name="generated_file.pdf",
-        mimetype="application/pdf"
-    )
+#     return send_file(
+#         pdf_stream,
+#         as_attachment=True,
+#         download_name="generated_file.pdf",
+#         mimetype="application/pdf"
+#     )
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='5050', debug=True)

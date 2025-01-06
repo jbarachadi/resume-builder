@@ -1,4 +1,4 @@
-#!/home/ubuntu/projects/resume-builder/backend/venv/bin/python3
+#!/home/ubuntu/projects/interviewaxis/resume-builder/backend/venv/bin/python3.10
 """A command line tool for extracting text and images from PDF and
 output it to plain text, html, xml or tags."""
 import argparse
