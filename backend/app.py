@@ -38,7 +38,7 @@ def convert_to_json_builder(data, input_text):
         Translate the following resume text into exactly this Python Dict format for the '{section_name}' section :
         {instruction}"""
         prompt += f"""Take exactly what is present in the Summary or Description or Introduction or Objective and return it as a Python Dict unless it is more than a paragraph, in this case, make it more concise. If the text does not contain any field that represents the summary, generate a small paragraph that responds to this purpose""" if section_name == "summary" else f""""""
-        prompt += f"""Make sure the summary of each experience is very concise, two or three senteces.""" if section_name == "experience" else f""""""
+        # prompt += f"""Make sure the summary of each experience is very concise, two or three senteces.""" if section_name == "experience" else f""""""
         prompt += f"""Make sure the name of the of each reference is different than the name of the resume holder. If none are found, leave the items empty.""" if section_name == "references" else f""""""
         prompt += f"""Make sure the skills are different from elements in the other sections, like certifications or languages. If none are found, leave the items empty.""" if section_name == "skills" else f""""""
         prompt += f"""Provide the Python Dict for only the '{section_name}' section without additional commentary keeping complete data integrity especially in experience missions. The output must absolutely be a valid Python Dict :
@@ -48,7 +48,7 @@ def convert_to_json_builder(data, input_text):
         response = openai.ChatCompletion.create(
             model="gpt-4o-mini",
             temperature=0.1,
-            max_tokens=2048,
+            max_tokens=4096,
             messages=[
                 {"role": "system", "content": "You are a helpful assistant. You are an expert in Python Dict formatting and in reading, making and reviewing resumes."},
                 {"role": "user", "content": prompt}

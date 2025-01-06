@@ -60,7 +60,7 @@ const FileUploadForm = () => {
   };
 
   return (
-    <Box sx={{ p: 3, maxWidth: 700, mx: "auto", textAlign: "center" }}>
+    <Box sx={{ p: 3, maxWidth: { xs: "none", md: 700 }, mx: "auto", textAlign: "center" }}>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2} style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           {/* Profile Picture Upload Field */}
@@ -206,7 +206,7 @@ const FileUploadForm = () => {
                 border: "1px solid #e0e0e0",
                 borderRadius: "8px",
                 textAlign: "center",
-                width: "30vw",
+                width: { xs: "100%", md: "30vw" },
                 margin: "0 auto",
               }}
             >
@@ -280,7 +280,7 @@ const FileUploadForm = () => {
                 border: "1px solid #e0e0e0",
                 borderRadius: "8px",
                 textAlign: "center",
-                width: "30vw",
+                width: { xs: "100%", md: "30vw" },
                 margin: "0 auto",
               }}
             >
@@ -305,7 +305,7 @@ const FileUploadForm = () => {
                   },
                 }}
               >
-                Upload File
+                Upload Filech
                 <input
                   type="file"
                   hidden
@@ -341,7 +341,7 @@ const FileUploadForm = () => {
               fullWidth
               disabled={loading}
               sx={{
-                width: "30vw",
+                width: { xs: "100%", md: "30vw" },
                 backgroundColor: "red",
                 color: "white",
                 borderRadius: "8px",
