@@ -220,7 +220,7 @@ def extract_full_text_from_file(file_path):
         return "Unsupported file type."
     return text
 
-@app.route('/api/resume_builder', methods=['POST'])
+@app.route('/modifier/resume_builder', methods=['POST'])
 def resume_builder():
     if 'file' not in request.files:
         return jsonify({'error': 'No file provided'}), 400
@@ -430,14 +430,14 @@ def resume_builder():
     resume_json["sections"]["suggested_missions"]["items"] = suggested_missions_to_add
     return jsonify(resume_json), 200
 
-@app.route('/api/get_token', methods=['POST'])
+@app.route('/modifier/get_token', methods=['POST'])
 def get_token():
     user_id = request.form.get("user_id")
     user_email = request.form.get("user_email")
     access_token = create_access_token(identity={"user_id": user_id, "user_email": user_email})
     return jsonify({"access_token": access_token}), 200
 
-@app.route('/api/upload_file', methods=['POST'])
+@app.route('/transform/upload_file', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
         return jsonify({'error': 'No file provided'}), 400
@@ -745,6 +745,122 @@ def upload_file():
     resume_json["sections"]["custom"] = {}
     resume_json["sections"]["experience"]["items"] += suggested_missions_to_add
     return jsonify(resume_json), 200
+
+@app.route("/interviewbot/question", methods=["POST"])
+def get_question():
+    global sub_category_display
+    if request.method == "POST":
+        data = request.json
+        category = data.get("category", "")
+        sub_category = data["sub_category"]
+        child_category = data.get("child_category", "")
+        level_type = data["level_type"]
+
+        try:
+        #if 1:
+            prompt = f"""Generate 20 interview questions on the following topics : {sub_category}
+
+                The difficulty level of the questions must be : {level_type}
+                
+                The questions need to be very concise (1 sentence each).
+
+                The questions must not be repeated.
+        
+                Your output should be a JSON Array of questions.
+            """
+
+            response = openai.ChatCompletion.create(
+                model="gpt-4o-mini",
+                temperature=0.3,
+                max_tokens=2048,
+                messages=[{"role": "user", "content": prompt}],
+            )
+
+            questions = ast.literal_eval(
+                response.choices[0]
+                .message["content"]
+                .replace("```json", "")
+                .replace("```python", "")
+                .replace("```", "")
+            )
+
+            data = []
+
+            for question in questions:
+                audio = QuizBot.text_to_speech(question)
+                if audio:
+                    audio_base64 = base64.b64encode(audio).decode("utf-8")
+                else:
+                    audio_base64 = ""
+                data.append({"question": question, "audio": audio_base64})
+
+            return jsonify(data)
+        except Exception as e:
+            print(e)
+            return jsonify({"error": "No questions could be generated for the selected sub-category and level type."}), 500
+
+@app.route("/interviewbot/answer", methods=["POST"])
+def check_answer():
+    data = request.json
+    user_answer = data["user_answer"]
+
+    try:
+        question = data["question"]
+
+        prompt = f"""You are a highly knowledgeable expert in the topic of the question, tasked with evaluating a candidate's response during an interview. Analyze the answer carefully to determine if it addresses the question in a technically accurate, relevant, and original manner.
+
+            Input:
+
+                - Candidate's Answer: {user_answer}
+                - Question: {question}
+
+            Output: Return a JSON object with the following fields:
+
+                - score: Rate the candidate's answer using the scale below:
+                    - 0–49: The answer is incorrect, insufficient, irrelevant, empty repeats the question, or contains major conceptual errors and inaccuracies.
+                    - 50–100: The answer is correct, technically sufficient, and relevant to the question.
+                - explanation: Provide feedback to the candidate:
+                    - If the answer is incorrect, incomplete, or irrelevant, explain why and encourage the candidate to focus on providing specific, technical details.
+                    - If the answer repeats the question, explicitly mention that repeating the question does not demonstrate understanding and a valid response must include original content.
+                    - If the answer is conceptually incorrect (e.g., stating that deep copies affect the original object), correct these misunderstandings with clear and concise explanations.
+                    - If the answer is correct, acknowledge its strengths and suggest ways to make it even clearer or more comprehensive.
+
+            Pay special attention to:
+
+                - Answers that are identical or similar to the question: Assign a score of 0 and explain that a valid response must contain original content.
+                - Empty or irrelevant answers: Assign a score of 0 and encourage the candidate to attempt an answer.
+                - Ensure your explanation is concise (2 sentences) and written in a professional and supportive tone.
+                - Write the explanation as if addressing the candidate directly without mentioning the expected answer.
+                - Use an encouraging tone and praise the effort of the candidate.
+        """
+    except Exception as e:
+        return jsonify({"error": "Failed to evaluate the answer."}), 500
+
+    response = openai.ChatCompletion.create(
+        model="gpt-4o-mini",
+        temperature=1,
+        max_tokens=512,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    
+    parsed_response = ast.literal_eval(
+        response.choices[0]
+        .message["content"]
+        .replace("```json", "")
+        .replace("```python", "")
+        .replace("```", "")
+        .replace("true", "True")
+        .replace("false", "False")
+    )
+
+    return jsonify(
+        {
+            "user_answer": user_answer,
+            "question": question,
+            "similarity_score": parsed_response["score"],
+            "explanation": parsed_response["explanation"],
+        }
+    )
 
 # def replace_items_key(data):
 #     if isinstance(data, dict):

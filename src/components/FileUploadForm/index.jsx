@@ -43,7 +43,7 @@ const FileUploadForm = () => {
     setMessage("");
 
     try {
-      const response = await axios.post("https://api.interviewaxis.com/resume_builder", formData, {
+      const response = await axios.post("https://api.interviewaxis.com/modifier/resume_builder", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

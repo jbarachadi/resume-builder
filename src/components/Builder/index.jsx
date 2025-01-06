@@ -38,7 +38,7 @@ const Builder = () => {
         navigate("/download")
       } else {
         const response = await axios.post(
-          "https://api.interviewaxis.com/get_token",
+          "https://api.interviewaxis.com/modifier/get_token",
           {
             user_id: userData.user_id,
             user_email: userData.user_email
