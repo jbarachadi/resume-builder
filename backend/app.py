@@ -1,22 +1,18 @@
-from flask import Flask, request, jsonify
-# import pdfkit
-from flask_cors import CORS
 import os
-import tempfile
-import docx
-from pdfminer.high_level import extract_text
-from pdf2image import convert_from_path
-import openai
-import pytesseract
-from werkzeug.utils import secure_filename
-# from pdf2docx import Converter
-from dotenv import load_dotenv
-import openai
-import json
-# import logging
 import ast
-# import io
-# from weasyprint import HTML
+import json
+import docx
+import openai
+import base64
+import tempfile
+import pytesseract
+from gtts import gTTS
+from flask_cors import CORS
+from dotenv import load_dotenv
+from pdf2image import convert_from_path
+from flask import Flask, request, jsonify
+from werkzeug.utils import secure_filename
+from pdfminer.high_level import extract_text
 from flask_jwt_extended import JWTManager, create_access_token
 
 load_dotenv()
@@ -219,6 +215,18 @@ def extract_full_text_from_file(file_path):
         app.logger.error("Unsupported file type.")
         return "Unsupported file type."
     return text
+
+def text_to_speech(text):
+    if text:
+        tts = gTTS(text=text, slow=False)
+        audio_buffer = BytesIO()
+        tts.write_to_fp(audio_buffer)
+        audio_data = audio_buffer.getvalue()
+        return audio_data
+    else:
+        # Handle the case where no text is provided
+        print("No text provided for speech synthesis.")
+        return None
 
 @app.route('/modifier/resume_builder', methods=['POST'])
 def resume_builder():
@@ -751,13 +759,10 @@ def get_question():
     global sub_category_display
     if request.method == "POST":
         data = request.json
-        category = data.get("category", "")
         sub_category = data["sub_category"]
-        child_category = data.get("child_category", "")
         level_type = data["level_type"]
 
         try:
-        #if 1:
             prompt = f"""Generate 20 interview questions on the following topics : {sub_category}
 
                 The difficulty level of the questions must be : {level_type}
@@ -787,7 +792,7 @@ def get_question():
             data = []
 
             for question in questions:
-                audio = QuizBot.text_to_speech(question)
+                audio = text_to_speech(question)
                 if audio:
                     audio_base64 = base64.b64encode(audio).decode("utf-8")
                 else:
@@ -861,57 +866,6 @@ def check_answer():
             "explanation": parsed_response["explanation"],
         }
     )
-
-# def replace_items_key(data):
-#     if isinstance(data, dict):
-#         return {("itms" if k == "items" else k): replace_items_key(v) for k, v in data.items()}
-#     elif isinstance(data, list):
-#         return [replace_items_key(item) for item in data]
-#     else:
-#         return data
-
-# @app.route('/generate_pdf', methods=['POST'])
-# def generate_pdf():
-#     data = request.json
-
-#     # print(data["skills"]["list2"])
-
-#     data = replace_items_key(data)
-
-#     template = data.get('template', 'template1')
-#     basics = data.get('basics', {})
-#     sections = data.get('sections', {})
-#     sections["skills"]["itms"] = [
-#         {
-#             "level": 3,
-#             "name": skill,
-#             "visible": True
-#         }
-#         for skill in data["skills"]["list2"]
-#     ]
-#     photo = data.get("photo", "https://via.placeholder.com/150")
-    
-#     html = render_template('resume/' + template + '.html', basics=basics, sections=sections, photo=photo)
-    
-#     # with open('test.html', 'w') as f:
-#     #     f.write(html)
-
-#     pdf = pdfkit.from_string(html, False, options={
-#         "enable-internal-links": "",
-#         "no-outline": "",
-#         "encoding": "UTF-8",
-#     })
-
-#     # pdf = HTML(string=html).write_pdf()
-
-#     pdf_stream = io.BytesIO(pdf)
-
-#     return send_file(
-#         pdf_stream,
-#         as_attachment=True,
-#         download_name="generated_file.pdf",
-#         mimetype="application/pdf"
-#     )
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='5050', debug=True)
