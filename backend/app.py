@@ -4,29 +4,51 @@ import json
 import docx
 import openai
 import base64
+import logging
 import tempfile
 import pytesseract
 from gtts import gTTS
 from flask_cors import CORS
+from datetime import datetime
 from dotenv import load_dotenv
 from pdf2image import convert_from_path
 from flask import Flask, request, jsonify
 from werkzeug.utils import secure_filename
 from pdfminer.high_level import extract_text
+from logging.handlers import RotatingFileHandler
 from flask_jwt_extended import JWTManager, create_access_token
 
+# Load environment variables from .env file
 load_dotenv()
 
+# Set OpenAI API key
 openai.api_key = "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"
 
+# Initialize Flask app
 app = Flask(__name__)
 CORS(app)
 
+# Configure JWT
 app.config["JWT_SECRET_KEY"] = "interviewaxis"
 jwt = JWTManager(app)
 
+# Set environment variables for external binaries
 os.environ['PATH'] += ':/usr/bin:/path/to/poppler/bin'
 pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
+
+# Configure logging
+log_formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+log_handler = RotatingFileHandler(
+    filename=f'logger_{datetime.now().strftime("%Y%m%d%H%M%S")}.log',
+    maxBytes=1 * 1024 * 1024 * 1024,  # 1GB
+    backupCount=10  # Keep up to 10 backup logs
+)
+log_handler.setFormatter(log_formatter)
+app.logger.addHandler(log_handler)
+app.logger.setLevel(logging.INFO)
+
+# Log application start
+app.logger.info("Application started")
 
 def convert_to_json_builder(data, input_text):
     def process_section(section_name, instruction):
@@ -34,7 +56,6 @@ def convert_to_json_builder(data, input_text):
         Translate the following resume text into exactly this Python Dict format for the '{section_name}' section :
         {instruction}"""
         prompt += f"""Take exactly what is present in the Summary or Description or Introduction or Objective and return it as a Python Dict unless it is more than a paragraph, in this case, make it more concise. If the text does not contain any field that represents the summary, generate a small paragraph that responds to this purpose""" if section_name == "summary" else f""""""
-        # prompt += f"""Make sure the summary of each experience is very concise, two or three senteces.""" if section_name == "experience" else f""""""
         prompt += f"""Make sure the name of the of each reference is different than the name of the resume holder. If none are found, leave the items empty.""" if section_name == "references" else f""""""
         prompt += f"""Make sure the skills are different from elements in the other sections, like certifications or languages. If none are found, leave the items empty.""" if section_name == "skills" else f""""""
         prompt += f"""Provide the Python Dict for only the '{section_name}' section without additional commentary keeping complete data integrity especially in experience missions. The output must absolutely be a valid Python Dict :
@@ -105,14 +126,8 @@ def convert_to_json_builder(data, input_text):
         }
     }
 
-    # input_sum = 0
-    # output_sum = 0
-    
     for section_name, instruction in data.items():
         processed, input_price, output_price = process_section(section_name, instruction)
-
-        # input_sum += input_price / 1000 * 0.00015
-        # output_sum += output_price / 1000 * 0.0006
 
         if section_name == "basics":
             result["basics"] = processed
@@ -121,8 +136,6 @@ def convert_to_json_builder(data, input_text):
             items = processed.get("items", [])
             if len(items) == 1 and items[0].get("name", "").strip() == "":
                 result["sections"][section_name]["items"] = []
-
-    # print("Conversion Price :\n-  Input Total : " + str(input_sum) + "\n-  Output Total : " + str(output_sum) + "\n\n=  Total : " + str(input_sum + output_sum))
 
     return result
 
@@ -151,11 +164,6 @@ def get_missing_skills(resume_text, job_description):
             {"role": "user", "content": prompt}
         ]
     )
-
-    # input_price = response.usage.prompt_tokens / 1000 * 0.0005
-    # output_price = response.usage.completion_tokens / 1000 * 0.0015
-
-    # print("Missing Skills and Missions Price :\n-  Input Total : " + str(input_price) + "\n-  Output Total : " + str(output_price) + "\n\n=  Total : " + str(input_price + output_price))
 
     return response.choices[0].message['content']
 
@@ -224,17 +232,18 @@ def text_to_speech(text):
         audio_data = audio_buffer.getvalue()
         return audio_data
     else:
-        # Handle the case where no text is provided
-        print("No text provided for speech synthesis.")
+        app.logger.error("No text provided for speech synthesis.")
         return None
 
 @app.route('/modifier/resume_builder', methods=['POST'])
 def resume_builder():
     if 'file' not in request.files:
+        app.logger.error("No file provided in request")
         return jsonify({'error': 'No file provided'}), 400
 
     file = request.files['file']
     if file.filename == '':
+        app.logger.error("No selected file")
         return jsonify({'error': 'No selected file'}), 400
 
     data = {
@@ -448,10 +457,12 @@ def get_token():
 @app.route('/transform/upload_file', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
+        app.logger.error("No file provided in request")
         return jsonify({'error': 'No file provided'}), 400
 
     file = request.files['file']
     if file.filename == '':
+        app.logger.error("No selected file")
         return jsonify({'error': 'No selected file'}), 400
     
     data = {
@@ -801,7 +812,7 @@ def get_question():
 
             return jsonify(data)
         except Exception as e:
-            print(e)
+            app.logger.error(f"Error generating questions: {e}")
             return jsonify({"error": "No questions could be generated for the selected sub-category and level type."}), 500
 
 @app.route("/interviewbot/answer", methods=["POST"])
@@ -839,6 +850,7 @@ def check_answer():
                 - Use an encouraging tone and praise the effort of the candidate.
         """
     except Exception as e:
+        app.logger.error(f"Error evaluating answer: {e}")
         return jsonify({"error": "Failed to evaluate the answer."}), 500
 
     response = openai.ChatCompletion.create(
