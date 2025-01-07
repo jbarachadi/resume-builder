@@ -19,6 +19,10 @@ from pdfminer.high_level import extract_text
 from logging.handlers import RotatingFileHandler
 from flask_jwt_extended import JWTManager, create_access_token
 
+# Initialize Flask app
+app = Flask(__name__)
+CORS(app)
+
 # Load environment variables from .env file
 load_dotenv()
 app.logger.info(f"Loaded environment variables: {os.environ}")
@@ -26,10 +30,6 @@ app.logger.info(f"Loaded environment variables: {os.environ}")
 # Set OpenAI API key
 openai.api_key = "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"
 app.logger.info(f"OpenAI API key set: {openai.api_key}")
-
-# Initialize Flask app
-app = Flask(__name__)
-CORS(app)
 
 # Configure JWT
 app.config["JWT_SECRET_KEY"] = "interviewaxis"
@@ -282,6 +282,177 @@ def resume_builder():
     if file.filename == '':
         app.logger.error("No selected file")
         return jsonify({'error': 'No selected file'}), 400
+    
+    data = {
+        "basics": {
+            "name": "",
+            "email": "",
+            "phone": "",
+            "headline": "",
+            "location": "",
+            "url": {
+                "href": "",
+                "label": ""
+            },
+            "picture": {
+                "url": ""
+            },
+            "customFields": []
+        },
+        "skills": {
+            "name": "Skills",
+            "items": [
+                {
+                    "name": "",
+                    "level": 3,
+                    "visible": True
+                }
+            ]
+        },
+        "summary": {
+            "name": "Summary",
+            "content": "",
+            "visible": True
+        },
+        "profiles": {
+            "name": "Profiles",
+            "items": [
+                {
+                    "name": "",
+                    "url": {
+                        "href": "",
+                        "label": ""
+                    }
+                }
+            ]
+        },
+        "projects": {
+            "name": "Projects",
+            "items": [
+                {
+                    "name": "",
+                    "description": "",
+                    "skills": [
+                        ""
+                    ]
+                }
+            ]
+        },
+        "interests": {
+            "name": "Interests",
+            "items": [
+                {
+                    "name": ""
+                }
+            ]
+        },
+        "languages": {
+            "name": "Languages",
+            "items": [
+                {
+                    "name": "",
+                    "level": 0,
+                    "proficiency": "100%"
+                }
+            ]
+        },
+        "volunteer": {
+            "name": "Volunteering",
+            "items": [
+                {
+                    "position": "",
+                    "company": "",
+                    "location": "",
+                    "date": "",
+                    "summary": "",
+                    "visible": True
+                }
+            ]
+        },
+        "experience": {
+            "name": "Experience",
+            "items": [
+                {
+                    "position": "",
+                    "company": "",
+                    "location": "",
+                    "date": "",
+                    "summary": "",
+                    "missions": [
+                        ""
+                    ],
+                    "visible": True
+                }
+            ]
+        },
+        "references": {
+            "name": "References",
+            "items": [],
+            "columns": 1,
+            "visible": True,
+            "separateLinks": True
+        },
+        "publications": {
+            "name": "Publications",
+            "items": [
+                {
+                    "name": "",
+                    "description": "",
+                    "issuer": "",
+                    "date": "",
+                    "url": {
+                        "href": "",
+                        "label": ""
+                    }
+                }
+            ]
+        },
+        "certifications": {
+            "name": "Certifications",
+            "items": [
+                {
+                    "name": "",
+                    "description": "",
+                    "issuer": "",
+                    "date": "",
+                    "url": {
+                        "href": "",
+                        "label": ""
+                    }
+                }
+            ]
+        },
+        "awards": {
+            "name": "Awards",
+            "items": [
+                {
+                    "name": "",
+                    "description": "",
+                    "issuer": "",
+                    "date": ""
+                }
+            ]
+        },
+        "education": {
+            "name": "Education",
+            "items": [
+                {
+                    "institution": "",
+                    "studyType": "",
+                    "area": "",
+                    "date": "",
+                    "summary": "",
+                    "score": "",
+                    "url": {
+                        "href": "",
+                        "label": ""
+                    }
+                }
+            ]
+        }
+    }
+
+    job_description = request.form.get("job_description")
 
     app.logger.info(f"Processing file: {file.filename}")
     file_path = os.path.join(tempfile.gettempdir(), secure_filename(file.filename))
@@ -345,6 +516,272 @@ def upload_file():
     if file.filename == '':
         app.logger.error("No selected file")
         return jsonify({'error': 'No selected file'}), 400
+    
+    data = {
+        "basics": {
+            "name": "",
+            "headline": "",
+            "email": "",
+            "phone": "",
+            "location": "",
+            "url": {
+                "label": "",
+                "href": "https://default"
+            },
+            "customFields": [],
+            "picture": {
+                "url": "",
+                "size": 64,
+                "aspectRatio": 1,
+                "borderRadius": 0,
+                "effects": {
+                    "hidden": False,
+                    "border": False,
+                    "grayscale": False,
+                },
+            },
+        },
+        "skills": {
+            "id": "skills",
+            "name": "Skills",
+            "columns": 1,
+            "separateLinks": True,
+            "visible": True,
+            "items": [
+                {
+                    "name": "",
+                    "level": 1,
+                    "keywords": [],
+                    "description": "",
+                    "visible": True
+                }
+            ]
+        },
+        "summary": {
+            "id": "summary",
+            "name": "Summary",
+            "content": "",
+            "columns": 1,
+            "separateLinks": True,
+            "visible": True,
+        },
+        "profiles": {
+            "id": "profiles",
+            "name": "Profiles",
+            "columns": 1,
+            "separateLinks": True,
+            "visible": True,
+            "items": [
+                {
+                    "url": {
+                        "href": "",
+                        "label": ""
+                    },
+                    "icon": "",
+                    "network": "",
+                    "username": "",
+                    "visible": True
+                }
+            ]
+        },
+        "projects": {
+            "id": "projects",
+            "name": "Projects",
+            "columns": 1,
+            "separateLinks": True,
+            "visible": True,
+            "items": [
+                {
+                    "url": {
+                        "href": "",
+                        "label": ""
+                    },
+                    "date": "",
+                    "name": "",
+                    "summary": "",
+                    "keywords": [],
+                    "description": "",
+                    "visible": True
+                }
+            ]
+        },
+        "interests": {
+            "name": "Interests",
+            "id": "interests",
+            "columns": 1,
+            "separateLinks": True,
+            "visible": True,
+            "items": [
+                {
+                    "name": "",
+                    "keywords": [],
+                    "visible": True
+                }
+            ]
+        },
+        "languages": {
+            "name": "Languages",
+            "id": "languages",
+            "columns": 1,
+            "separateLinks": True,
+            "visible": True,
+            "items": [
+                {
+                    "name": "",
+                    "level": 0,
+                    "description": "",
+                    "visible": True
+                }
+            ]
+        },
+        "volunteer": {
+            "name": "Volunteering",
+            "id": "volunteer",
+            "columns": 1,
+            "separateLinks": True,
+            "visible": True,
+            "items": [
+                {
+                    "url": {
+                        "href": "",
+                        "label": ""
+                    },
+                    "date": "",
+                    "summary": "",
+                    "location": "",
+                    "position": "",
+                    "organization": "",
+                    "visible": True
+                }
+            ]
+        },
+        "experience": {
+            "name": "Experience",
+            "id": "experience",
+            "columns": 1,
+            "separateLinks": True,
+            "visible": True,
+            "items": [
+                {
+                    "url": {
+                        "href": "",
+                        "label": ""
+                    },
+                    "date": "",
+                    "company": "",
+                    "summary": "",
+                    "location": "",
+                    "position": "",
+                    "visible": True
+                }
+            ]
+        },
+        "references": {
+            "name": "References",
+            "id": "references",
+            "columns": 1,
+            "separateLinks": True,
+            "visible": True,
+            "items": [
+                {
+                    "url": {
+                        "href": "",
+                        "label": ""
+                    },
+                    "name": "",
+                    "summary": "",
+                    "description": "",
+                    "visible": True
+                }
+            ],
+            "visible": True,
+            "separateLinks": True
+        },
+        "publications": {
+            "name": "Publications",
+            "id": "publications",
+            "columns": 1,
+            "separateLinks": True,
+            "visible": True,
+            "items": [
+                {
+                    "url": {
+                        "href": "",
+                        "label": ""
+                    },
+                    "date": "",
+                    "name": "",
+                    "summary": "",
+                    "publisher": "",
+                    "visible": True
+                }
+            ]
+        },
+        "certifications": {
+            "id": "certifications",
+            "columns": 1,
+            "separateLinks": True,
+            "visible": True,
+            "name": "Certifications",
+            "items": [
+                {
+                    "url": {
+                        "href": "",
+                        "label": ""
+                    },
+                    "date": "",
+                    "name": "",
+                    "issuer": "",
+                    "summary": "",
+                    "visible": True
+                }
+            ]
+        },
+        "awards": {
+            "id": "awards",
+            "columns": 1,
+            "separateLinks": True,
+            "visible": True,
+            "name": "Awards",
+            "items": [
+                {
+                    "url": {
+                        "href": "",
+                        "label": ""
+                    },
+                    "date": "",
+                    "title": "",
+                    "awarder": "",
+                    "summary": "",
+                    "visible": True
+                }
+            ]
+        },
+        "education": {
+            "id": "education",
+            "columns": 1,
+            "separateLinks": True,
+            "visible": True,
+            "name": "Education",
+            "items": [
+                {
+                    "url": {
+                        "href": "",
+                        "label": ""
+                    },
+                    "area": "",
+                    "date": "",
+                    "score": "",
+                    "summary": "",
+                    "studyType": "",
+                    "institution": "",
+                    "visible": True
+                }
+            ]
+        }        
+    }
+
+    job_description = request.form.get("job_description")
 
     app.logger.info(f"Processing file: {file.filename}")
     file_path = os.path.join(tempfile.gettempdir(), secure_filename(file.filename))
