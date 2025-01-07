@@ -110,9 +110,7 @@ const Builder = () => {
 
     if (sessionData && sessionData.logged_in===true) {
       const loggedInUser = sessionData.user;
-      const matchedUser = usersData.find((user) => user.id === loggedInUser.id);  
-      
-      console.log()
+      const matchedUser = usersData.find((user) => user.id === loggedInUser.id);
 
       if (matchedUser) {
         setUserData({
@@ -132,12 +130,11 @@ const Builder = () => {
 
   useEffect(() => {
     processSessionData();
-    if (data !== null) {
-      try {
-        setData({...data, data: localStorage.getItem("resume_data")})
-      } catch {
-        console.log("no data")
-      }
+    console.log(data)
+    try {
+      setData({...data, ...JSON.parse(localStorage.getItem("resume_data"))})
+    } catch {
+      console.log("no data")
     }
   }, []);
 

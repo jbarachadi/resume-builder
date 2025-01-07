@@ -14,14 +14,14 @@ export const useStore = create((set) => ({
   profilePicture: null,
   userData: {},
 
-  setData: (newData) =>
+  setData: (newData) => {
     set((state) => ({
       data: newData,
       skills: {
         list1: newData?.sections?.missing_skills?.items?.map((item) => item.name) || [],
         list2: newData?.sections?.current_skills?.items?.map((item) => item.name) || [],
       },
-    })),
+    }))},
   setSkills: (skills) => {
       set((state) => ({
         skills: skills,
