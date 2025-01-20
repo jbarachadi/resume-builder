@@ -182,7 +182,7 @@ const Builder = () => {
             </Typography>
             <FileUploadForm />
           </Box>
-          {data && (
+          {data && Object.keys(data).length > 0 && (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: "center" }}>
               <TemplateSelection onSelectTemplate={handleTemplateChange} />
               {/* <div ref={resumeRef} style={{ display: 'none' }}>
