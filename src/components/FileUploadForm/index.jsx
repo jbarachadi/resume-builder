@@ -228,8 +228,8 @@ const FileUploadForm = () => {
           }
         );
 
-        setData(responseUpdateData)
-        localStorage.setItem("resume_data", JSON.stringify(responseUpdateData));
+        setData(responseUpdateData.data)
+        localStorage.setItem("resume_data", JSON.stringify(responseUpdateData.data));
         setMessage("File uploaded successfully!");
 
       } catch (error) {
