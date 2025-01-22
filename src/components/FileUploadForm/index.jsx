@@ -6,10 +6,9 @@ import { useStore } from "../../store"
 const FileUploadForm = () => {
   const [text, setText] = useState("");
   const [file, setFile] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const { setData, profilePicture, setProfilePicture } = useStore();
+  const { setData, profilePicture, setProfilePicture, loading, setLoading } = useStore();
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -36,22 +35,215 @@ const FileUploadForm = () => {
     }
 
     const formData = new FormData();
-    formData.append("job_description", text);
     formData.append("file", file);
 
     setLoading(true);
     setMessage("");
 
     try {
-      const response = await axios.post("https://api.interviewaxis.com/modifier/resume_builder", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      try {
+        const responseTextExtraction = await axios.post(
+          "https://api.interviewaxis.com/modifier/text_extraction",
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" }
+          }
+        );
 
-      // Save response to localStorage
-      // localStorage.setItem("uploadResponse", JSON.stringify(response.data));
-      setData(response.data)
-      localStorage.setItem("resume_data", JSON.stringify(response.data));
-      setMessage("File uploaded successfully!");
+        const endpoints = [
+          "basics",
+          "summary",
+          "profiles",
+          "projects",
+          "interests",
+          "languages",
+          "volunteer",
+          "experience",
+          "references",
+          "publications",
+          "certifications",
+          "awards",
+          "education",
+          "skills",
+        ];
+
+        const data = {
+          "basics": {
+            "name": "",
+            "email": "",
+            "phone": "",
+            "headline": "",
+            "location": "",
+            "url": { "href": "", "label": "" },
+            "picture": { "url": "" },
+            "customFields": [],
+          },
+          "sections": {
+            "skills": {
+              "name": "Skills",
+              "items": [{ "name": "", "level": 3, "visible": true }],
+            },
+            "summary": { "name": "Summary", "content": "", "visible": true },
+            "profiles": {
+              "name": "Profiles",
+              "items": [{ "name": "", "url": { "href": "", "label": "" } }],
+            },
+            "projects": {
+              "name": "Projects",
+              "items": [{ "name": "", "description": "", "skills": [""] }],
+            },
+            "interests": { "name": "Interests", "items": [{ "name": "" }] },
+            "languages": {
+              "name": "Languages",
+              "items": [{ "name": "", "level": 0, "proficiency": "100%" }],
+            },
+            "volunteer": {
+              "name": "Volunteering",
+              "items": [
+                {
+                  "position": "",
+                  "company": "",
+                  "location": "",
+                  "date": "",
+                  "summary": "",
+                  "visible": true,
+                }
+              ],
+            },
+            "experience": {
+              "name": "Experience",
+              "items": [
+                {
+                  "position": "",
+                  "company": "",
+                  "location": "",
+                  "date": "",
+                  "summary": "",
+                  "missions": [""],
+                  "visible": true,
+                }
+              ],
+            },
+            "references": {
+              "name": "References",
+              "items": [],
+              "columns": 1,
+              "visible": true,
+              "separateLinks": true,
+            },
+            "publications": {
+              "name": "Publications",
+              "items": [
+                {
+                  "name": "",
+                  "description": "",
+                  "issuer": "",
+                  "date": "",
+                  "url": { "href": "", "label": "" },
+                }
+              ],
+            },
+            "certifications": {
+              "name": "Certifications",
+              "items": [
+                {
+                  "name": "",
+                  "description": "",
+                  "issuer": "",
+                  "date": "",
+                  "url": { "href": "", "label": "" },
+                }
+              ],
+            },
+            "awards": {
+              "name": "Awards",
+              "items": [{ "name": "", "description": "", "issuer": "", "date": "" }],
+            },
+            "education": {
+              "name": "Education",
+              "items": [
+                {
+                  "institution": "",
+                  "studyType": "",
+                  "area": "",
+                  "date": "",
+                  "summary": "",
+                  "score": "",
+                  "url": { "href": "", "label": "" },
+                }
+              ],
+            },
+            "current_skills": {
+              "name": "Current Skills",
+              "items": [{ "name": "", "level": 3, "visible": true }],
+            },
+            "missing_skills": {
+              "name": "Missing Skills",
+              "items": [{ "name": "", "level": 3, "visible": true }],
+            },
+            "suggested_missions": {
+              "name": "Suggested Missions",
+              "items": [""],
+            },
+          },
+        };
+
+        for (const endpoint of endpoints) {
+          try {
+            const response = await axios.post(
+              `https://api.interviewaxis.com/modifier/${endpoint}`,
+              {
+                text_extraction: responseTextExtraction.data,
+              },
+              {
+                headers: { "Content-Type": "application/json" },
+              }
+            );
+            if (endpoint === "basics") {
+              data["basics"] = response.data
+            } else {
+              data["sections"][endpoint] = response.data;
+            }
+
+            setData(data);
+          } catch (error) {
+            console.error(`Error in ${endpoint}:`, error);
+            if (endpoint === "basics") {
+              data["basics"] = null
+            } else {
+              data["sections"][endpoint] = null;
+            }
+          }
+        }
+
+        const responseUpdateData = await axios.post(
+          "https://api.interviewaxis.com/modifier/update_data",
+          {
+            job_description: text,
+            resume_json: data,
+            extracted_text: responseTextExtraction.data,
+          },
+          {
+            headers: { "Content-Type": "application/json" }
+          }
+        );
+
+        setData(responseUpdateData)
+        localStorage.setItem("resume_data", JSON.stringify(responseUpdateData));
+        setMessage("File uploaded successfully!");
+
+      } catch (error) {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          console.error("Server responded with an error:", error.response.status, error.response.data);
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.error("No response received:", error.request);
+        } else {
+          // Something else went wrong
+          console.error("Error:", error.message);
+        }
+      }
     } catch (error) {
       setMessage("Failed to upload file. Please try again.");
     } finally {
@@ -222,7 +414,7 @@ const FileUploadForm = () => {
                 variant="outlined"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                multiline 
+                multiline
                 rows={4}
               />
             </Paper>
@@ -355,7 +547,7 @@ const FileUploadForm = () => {
                 },
               }}
             >
-              {loading ? "Uploading..." : "Upload File"}
+              {loading ? "Uploading..." : "Submit"}
             </Button>
           </Grid>
         </Grid>

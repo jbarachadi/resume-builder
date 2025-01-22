@@ -13,6 +13,7 @@ export const useStore = create((set) => ({
   selectedTemplate: 'Template1',
   profilePicture: null,
   userData: {},
+  loading: false,
 
   setData: (newData) => {
     set((state) => ({
@@ -39,5 +40,6 @@ export const useStore = create((set) => ({
   },
   setSelectedTemplate: (template) => set({ selectedTemplate: template }),
   setProfilePicture: (picture) => set({ profilePicture: picture }),
-  setUserData: (user) => set(( state ) => ({ userData: { ...state.userData, ...user } }))
+  setUserData: (user) => set(( state ) => ({ userData: { ...state.userData, ...user } })),
+  setLoading: (value) => set(() => ({ loading: value }))
 }));
