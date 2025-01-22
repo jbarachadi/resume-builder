@@ -51,7 +51,7 @@ const Builder = () => {
         );
         localStorage.setItem("token", response.data.access_token);
         alert("You will be redirected to the pricing page. Please purchase plan 2 to be able to proceed with the download")
-        window.location.href = "https://interviewaxis.com/pricing-plan?rid=" + response.data.access_token
+        window.location.href = "https://interviewaxis.com/pricing-plan?mid=" + response.data.access_token
       }
     } catch (error) {
       console.error("Error fetching users data:", error);
