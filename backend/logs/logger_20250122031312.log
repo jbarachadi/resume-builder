@@ -1,0 +1,109 @@
+2025-01-22 03:13:12,404 INFO Application started
+2025-01-22 03:13:17,605 INFO Processing file: SrinivasAdivi_15 years_PythonDev_Bangalore.pdf
+2025-01-22 03:13:17,606 INFO File saved to temporary path: /tmp/SrinivasAdivi_15_years_PythonDev_Bangalore.pdf
+2025-01-22 03:13:17,606 INFO Starting extract_full_text_from_file function
+2025-01-22 03:13:17,606 INFO File extension: pdf
+2025-01-22 03:13:17,606 INFO Starting extract_text_from_pdf function
+2025-01-22 03:13:17,953 INFO Finished extract_text_from_pdf function
+2025-01-22 03:13:17,954 INFO Finished extract_full_text_from_file function
+2025-01-22 03:13:17,954 INFO Extracted text from file: SrinivasAdivi_15 years_PythonDev_Bangalore.pdf
+2025-01-22 03:13:17,954 INFO Finished processing /modifier/text_extraction request
+2025-01-22 03:13:18,525 INFO Starting basics function
+2025-01-22 03:13:18,526 INFO Processing section: basics
+2025-01-22 03:13:18,526 INFO Sending prompt to OpenAI API for section: basics
+2025-01-22 03:13:25,157 INFO Received response from OpenAI API for section: basics
+2025-01-22 03:13:25,157 INFO OpenAI API usage - Prompt tokens: 4181, Completion tokens: 178, Total tokens: 4359
+2025-01-22 03:13:25,158 INFO Successfully processed section: basics
+2025-01-22 03:13:25,158 INFO Finished basics function
+2025-01-22 03:13:26,238 INFO Starting summary function
+2025-01-22 03:13:26,239 INFO Processing section: summary
+2025-01-22 03:13:26,239 INFO Sending prompt to OpenAI API for section: summary
+2025-01-22 03:13:28,642 INFO Received response from OpenAI API for section: summary
+2025-01-22 03:13:28,643 INFO OpenAI API usage - Prompt tokens: 4208, Completion tokens: 79, Total tokens: 4287
+2025-01-22 03:13:28,643 INFO Successfully processed section: summary
+2025-01-22 03:13:28,643 INFO Finished summary function
+2025-01-22 03:13:29,334 INFO Starting profiles function
+2025-01-22 03:13:29,334 INFO Processing section: profiles
+2025-01-22 03:13:29,335 INFO Sending prompt to OpenAI API for section: profiles
+2025-01-22 03:13:32,985 INFO Received response from OpenAI API for section: profiles
+2025-01-22 03:13:32,986 INFO OpenAI API usage - Prompt tokens: 4159, Completion tokens: 163, Total tokens: 4322
+2025-01-22 03:13:32,986 INFO Successfully processed section: profiles
+2025-01-22 03:13:32,986 INFO Finished profiles function
+2025-01-22 03:13:33,839 INFO Starting projects function
+2025-01-22 03:13:33,840 INFO Processing section: projects
+2025-01-22 03:13:33,840 INFO Sending prompt to OpenAI API for section: projects
+2025-01-22 03:14:00,408 INFO Received response from OpenAI API for section: projects
+2025-01-22 03:14:00,408 INFO OpenAI API usage - Prompt tokens: 4156, Completion tokens: 1448, Total tokens: 5604
+2025-01-22 03:14:00,409 INFO Successfully processed section: projects
+2025-01-22 03:14:00,410 INFO Finished projects function
+2025-01-22 03:14:00,089 INFO Starting interests function
+2025-01-22 03:14:00,090 INFO Processing section: interests
+2025-01-22 03:14:00,090 INFO Sending prompt to OpenAI API for section: interests
+2025-01-22 03:14:05,062 INFO Received response from OpenAI API for section: interests
+2025-01-22 03:14:05,062 INFO OpenAI API usage - Prompt tokens: 4151, Completion tokens: 21, Total tokens: 4172
+2025-01-22 03:14:05,062 INFO Successfully processed section: interests
+2025-01-22 03:14:05,062 INFO Finished interests function
+2025-01-22 03:14:08,188 INFO Starting languages function
+2025-01-22 03:14:08,189 INFO Processing section: languages
+2025-01-22 03:14:08,190 INFO Sending prompt to OpenAI API for section: languages
+2025-01-22 03:14:11,605 INFO Received response from OpenAI API for section: languages
+2025-01-22 03:14:11,605 INFO OpenAI API usage - Prompt tokens: 4161, Completion tokens: 55, Total tokens: 4216
+2025-01-22 03:14:11,606 INFO Successfully processed section: languages
+2025-01-22 03:14:11,606 INFO Finished languages function
+2025-01-22 03:14:12,262 INFO Starting volunteer function
+2025-01-22 03:14:12,263 INFO Processing section: volunteer
+2025-01-22 03:14:12,263 INFO Sending prompt to OpenAI API for section: volunteer
+2025-01-22 03:14:13,979 INFO Received response from OpenAI API for section: volunteer
+2025-01-22 03:14:13,980 INFO OpenAI API usage - Prompt tokens: 4172, Completion tokens: 18, Total tokens: 4190
+2025-01-22 03:14:13,980 INFO Successfully processed section: volunteer
+2025-01-22 03:14:13,980 INFO Finished volunteer function
+2025-01-22 03:14:15,045 INFO Starting experience function
+2025-01-22 03:14:15,046 INFO Processing section: experience
+2025-01-22 03:14:15,046 INFO Sending prompt to OpenAI API for section: experience
+2025-01-22 03:14:40,088 INFO Received response from OpenAI API for section: experience
+2025-01-22 03:14:40,089 INFO OpenAI API usage - Prompt tokens: 4173, Completion tokens: 1252, Total tokens: 5425
+2025-01-22 03:14:40,090 INFO Successfully processed section: experience
+2025-01-22 03:14:40,091 INFO Finished experience function
+2025-01-22 03:14:41,208 INFO Starting references function
+2025-01-22 03:14:41,209 INFO Processing section: references
+2025-01-22 03:14:41,210 INFO Sending prompt to OpenAI API for section: references
+2025-01-22 03:14:44,749 INFO Received response from OpenAI API for section: references
+2025-01-22 03:14:44,749 INFO OpenAI API usage - Prompt tokens: 4190, Completion tokens: 33, Total tokens: 4223
+2025-01-22 03:14:44,750 INFO Successfully processed section: references
+2025-01-22 03:14:44,750 INFO Finished references function
+2025-01-22 03:14:45,432 INFO Starting publications function
+2025-01-22 03:14:45,434 INFO Processing section: publications
+2025-01-22 03:14:45,435 INFO Sending prompt to OpenAI API for section: publications
+2025-01-22 03:14:47,147 INFO Received response from OpenAI API for section: publications
+2025-01-22 03:14:47,147 INFO OpenAI API usage - Prompt tokens: 4174, Completion tokens: 17, Total tokens: 4191
+2025-01-22 03:14:47,148 INFO Successfully processed section: publications
+2025-01-22 03:14:47,148 INFO Finished publications function
+2025-01-22 03:14:48,717 INFO Starting certifications function
+2025-01-22 03:14:48,719 INFO Processing section: certifications
+2025-01-22 03:14:48,719 INFO Sending prompt to OpenAI API for section: certifications
+2025-01-22 03:14:51,333 INFO Received response from OpenAI API for section: certifications
+2025-01-22 03:14:51,334 INFO OpenAI API usage - Prompt tokens: 4174, Completion tokens: 63, Total tokens: 4237
+2025-01-22 03:14:51,334 INFO Successfully processed section: certifications
+2025-01-22 03:14:51,334 INFO Finished certifications function
+2025-01-22 03:14:52,018 INFO Starting awards function
+2025-01-22 03:14:52,019 INFO Processing section: awards
+2025-01-22 03:14:52,019 INFO Sending prompt to OpenAI API for section: awards
+2025-01-22 03:14:53,969 INFO Received response from OpenAI API for section: awards
+2025-01-22 03:14:53,969 INFO OpenAI API usage - Prompt tokens: 4162, Completion tokens: 32, Total tokens: 4194
+2025-01-22 03:14:53,970 INFO Successfully processed section: awards
+2025-01-22 03:14:53,970 INFO Finished awards function
+2025-01-22 03:14:54,343 INFO Starting education function
+2025-01-22 03:14:54,344 INFO Processing section: education
+2025-01-22 03:14:54,345 INFO Sending prompt to OpenAI API for section: education
+2025-01-22 03:14:57,172 INFO Received response from OpenAI API for section: education
+2025-01-22 03:14:57,172 INFO OpenAI API usage - Prompt tokens: 4180, Completion tokens: 79, Total tokens: 4259
+2025-01-22 03:14:57,172 INFO Successfully processed section: education
+2025-01-22 03:14:57,172 INFO Finished education function
+2025-01-22 03:14:58,781 INFO Starting skills function
+2025-01-22 03:14:58,781 INFO Processing section: skills
+2025-01-22 03:14:58,781 INFO Sending prompt to OpenAI API for section: skills
+2025-01-22 03:15:05,074 INFO Received response from OpenAI API for section: skills
+2025-01-22 03:15:05,075 INFO OpenAI API usage - Prompt tokens: 4186, Completion tokens: 380, Total tokens: 4566
+2025-01-22 03:15:05,076 INFO Successfully processed section: skills
+2025-01-22 03:15:05,076 INFO Finished education function
+2025-01-22 03:15:05,744 INFO Received request for /modifier/update_data

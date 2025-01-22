@@ -1,0 +1,11 @@
+2025-01-22 02:19:32,319 INFO Application started
+2025-01-22 02:19:32,622 INFO Application started
+2025-01-22 02:20:50,717 INFO Processing file: SrinivasAdivi_15 years_PythonDev_Bangalore.pdf
+2025-01-22 02:20:50,723 INFO File saved to temporary path: /tmp/SrinivasAdivi_15_years_PythonDev_Bangalore.pdf
+2025-01-22 02:20:50,723 INFO Starting extract_full_text_from_file function
+2025-01-22 02:20:50,723 INFO File extension: pdf
+2025-01-22 02:20:50,724 INFO Starting extract_text_from_pdf function
+2025-01-22 02:20:51,089 INFO Finished extract_text_from_pdf function
+2025-01-22 02:20:51,089 INFO Finished extract_full_text_from_file function
+2025-01-22 02:20:51,089 INFO Extracted text from file: SrinivasAdivi_15 years_PythonDev_Bangalore.pdf
+2025-01-22 02:20:51,090 INFO Finished processing /modifier/text_extraction request

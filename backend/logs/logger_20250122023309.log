@@ -1,0 +1,86 @@
+2025-01-22 02:33:09,731 INFO Application started
+2025-01-22 02:33:18,999 INFO Processing file: SrinivasAdivi_15 years_PythonDev_Bangalore.pdf
+2025-01-22 02:33:19,002 INFO File saved to temporary path: /tmp/SrinivasAdivi_15_years_PythonDev_Bangalore.pdf
+2025-01-22 02:33:19,002 INFO Starting extract_full_text_from_file function
+2025-01-22 02:33:19,002 INFO File extension: pdf
+2025-01-22 02:33:19,002 INFO Starting extract_text_from_pdf function
+2025-01-22 02:33:19,335 INFO Finished extract_text_from_pdf function
+2025-01-22 02:33:19,336 INFO Finished extract_full_text_from_file function
+2025-01-22 02:33:19,338 INFO Extracted text from file: SrinivasAdivi_15 years_PythonDev_Bangalore.pdf
+2025-01-22 02:33:19,338 INFO Finished processing /modifier/text_extraction request
+2025-01-22 02:33:20,038 INFO Starting basics function
+2025-01-22 02:33:20,039 INFO Processing section: basics
+2025-01-22 02:33:20,039 INFO Sending prompt to OpenAI API for section: basics
+2025-01-22 02:33:21,917 INFO Received response from OpenAI API for section: basics
+2025-01-22 02:33:21,918 INFO OpenAI API usage - Prompt tokens: 4181, Completion tokens: 178, Total tokens: 4359
+2025-01-22 02:33:21,918 INFO Successfully processed section: basics
+2025-01-22 02:33:21,918 INFO Finished basics function
+2025-01-22 02:33:27,688 INFO Received request for /modifier/update_data
+2025-01-22 02:33:52,243 INFO Processing file: SrinivasAdivi_15 years_PythonDev_Bangalore.pdf
+2025-01-22 02:33:52,244 INFO File saved to temporary path: /tmp/SrinivasAdivi_15_years_PythonDev_Bangalore.pdf
+2025-01-22 02:33:52,244 INFO Starting extract_full_text_from_file function
+2025-01-22 02:33:52,245 INFO File extension: pdf
+2025-01-22 02:33:52,245 INFO Starting extract_text_from_pdf function
+2025-01-22 02:33:52,598 INFO Finished extract_text_from_pdf function
+2025-01-22 02:33:52,598 INFO Finished extract_full_text_from_file function
+2025-01-22 02:33:52,598 INFO Extracted text from file: SrinivasAdivi_15 years_PythonDev_Bangalore.pdf
+2025-01-22 02:33:52,599 INFO Finished processing /modifier/text_extraction request
+2025-01-22 02:33:53,673 INFO Starting basics function
+2025-01-22 02:33:53,674 INFO Processing section: basics
+2025-01-22 02:33:53,674 INFO Sending prompt to OpenAI API for section: basics
+2025-01-22 02:33:55,972 INFO Received response from OpenAI API for section: basics
+2025-01-22 02:33:55,972 INFO OpenAI API usage - Prompt tokens: 4181, Completion tokens: 178, Total tokens: 4359
+2025-01-22 02:33:55,977 INFO Successfully processed section: basics
+2025-01-22 02:33:55,977 INFO Finished basics function
+2025-01-22 02:34:00,204 INFO Received request for /modifier/update_data
+2025-01-22 02:37:01,961 INFO Processing file: SrinivasAdivi_15 years_PythonDev_Bangalore.pdf
+2025-01-22 02:37:01,963 INFO File saved to temporary path: /tmp/SrinivasAdivi_15_years_PythonDev_Bangalore.pdf
+2025-01-22 02:37:01,963 INFO Starting extract_full_text_from_file function
+2025-01-22 02:37:01,963 INFO File extension: pdf
+2025-01-22 02:37:01,963 INFO Starting extract_text_from_pdf function
+2025-01-22 02:37:02,343 INFO Finished extract_text_from_pdf function
+2025-01-22 02:37:02,343 INFO Finished extract_full_text_from_file function
+2025-01-22 02:37:02,344 INFO Extracted text from file: SrinivasAdivi_15 years_PythonDev_Bangalore.pdf
+2025-01-22 02:37:02,344 INFO Finished processing /modifier/text_extraction request
+2025-01-22 02:37:02,698 INFO Starting basics function
+2025-01-22 02:37:02,699 INFO Processing section: basics
+2025-01-22 02:37:02,699 INFO Sending prompt to OpenAI API for section: basics
+2025-01-22 02:37:06,907 INFO Received response from OpenAI API for section: basics
+2025-01-22 02:37:06,908 INFO OpenAI API usage - Prompt tokens: 4181, Completion tokens: 178, Total tokens: 4359
+2025-01-22 02:37:06,908 INFO Successfully processed section: basics
+2025-01-22 02:37:06,908 INFO Finished basics function
+2025-01-22 02:37:11,665 INFO Received request for /modifier/update_data
+2025-01-22 02:37:46,114 INFO Processing file: SrinivasAdivi_15 years_PythonDev_Bangalore.pdf
+2025-01-22 02:37:46,115 INFO File saved to temporary path: /tmp/SrinivasAdivi_15_years_PythonDev_Bangalore.pdf
+2025-01-22 02:37:46,115 INFO Starting extract_full_text_from_file function
+2025-01-22 02:37:46,115 INFO File extension: pdf
+2025-01-22 02:37:46,115 INFO Starting extract_text_from_pdf function
+2025-01-22 02:37:46,452 INFO Finished extract_text_from_pdf function
+2025-01-22 02:37:46,453 INFO Finished extract_full_text_from_file function
+2025-01-22 02:37:46,454 INFO Extracted text from file: SrinivasAdivi_15 years_PythonDev_Bangalore.pdf
+2025-01-22 02:37:46,454 INFO Finished processing /modifier/text_extraction request
+2025-01-22 02:37:46,811 INFO Starting basics function
+2025-01-22 02:37:46,812 INFO Processing section: basics
+2025-01-22 02:37:46,812 INFO Sending prompt to OpenAI API for section: basics
+2025-01-22 02:37:51,635 INFO Received response from OpenAI API for section: basics
+2025-01-22 02:37:51,635 INFO OpenAI API usage - Prompt tokens: 4181, Completion tokens: 186, Total tokens: 4367
+2025-01-22 02:37:51,636 INFO Successfully processed section: basics
+2025-01-22 02:37:51,636 INFO Finished basics function
+2025-01-22 02:37:53,175 INFO Received request for /modifier/update_data
+2025-01-22 02:41:01,197 INFO Processing file: SrinivasAdivi_15 years_PythonDev_Bangalore.pdf
+2025-01-22 02:41:01,198 INFO File saved to temporary path: /tmp/SrinivasAdivi_15_years_PythonDev_Bangalore.pdf
+2025-01-22 02:41:01,198 INFO Starting extract_full_text_from_file function
+2025-01-22 02:41:01,198 INFO File extension: pdf
+2025-01-22 02:41:01,198 INFO Starting extract_text_from_pdf function
+2025-01-22 02:41:01,552 INFO Finished extract_text_from_pdf function
+2025-01-22 02:41:01,553 INFO Finished extract_full_text_from_file function
+2025-01-22 02:41:01,553 INFO Extracted text from file: SrinivasAdivi_15 years_PythonDev_Bangalore.pdf
+2025-01-22 02:41:01,553 INFO Finished processing /modifier/text_extraction request
+2025-01-22 02:41:01,924 INFO Starting basics function
+2025-01-22 02:41:01,925 INFO Processing section: basics
+2025-01-22 02:41:01,925 INFO Sending prompt to OpenAI API for section: basics
+2025-01-22 02:41:06,097 INFO Received response from OpenAI API for section: basics
+2025-01-22 02:41:06,098 INFO OpenAI API usage - Prompt tokens: 4181, Completion tokens: 178, Total tokens: 4359
+2025-01-22 02:41:06,098 INFO Successfully processed section: basics
+2025-01-22 02:41:06,098 INFO Finished basics function
+2025-01-22 02:41:09,923 INFO Received request for /modifier/update_data

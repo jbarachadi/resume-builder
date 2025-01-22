@@ -37,8 +37,8 @@ jwt = JWTManager(app)
 app.logger.info(f"JWT secret key set: {app.config['JWT_SECRET_KEY']}")
 
 # Set environment variables for external binaries
-os.environ['PATH'] += ':/usr/bin:/path/to/poppler/bin'
-pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
+os.environ["PATH"] += ":/usr/bin:/path/to/poppler/bin"
+pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
 app.logger.info(f"Environment PATH updated: {os.environ['PATH']}")
 
 # Ensure the 'logs' directory exists
@@ -48,11 +48,13 @@ if not os.path.exists(logs_dir):
     app.logger.info(f"Created logs directory: {logs_dir}")
 
 # Configure logging
-log_formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+log_formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
 log_handler = RotatingFileHandler(
-    filename=os.path.join(logs_dir, f'logger_{datetime.now().strftime("%Y%m%d%H%M%S")}.log'),
+    filename=os.path.join(
+        logs_dir, f'logger_{datetime.now().strftime("%Y%m%d%H%M%S")}.log'
+    ),
     maxBytes=1 * 1024 * 1024 * 1024,  # 1GB
-    backupCount=10  # Keep up to 10 backup logs
+    backupCount=10,  # Keep up to 10 backup logs
 )
 log_handler.setFormatter(log_formatter)
 app.logger.addHandler(log_handler)
@@ -61,16 +63,30 @@ app.logger.setLevel(logging.INFO)
 # Log application start
 app.logger.info("Application started")
 
+
 def convert_to_json_builder(data, input_text):
     app.logger.info("Starting convert_to_json_builder function")
+
     def process_section(section_name, instruction):
         app.logger.info(f"Processing section: {section_name}")
         prompt = f"""
         Translate the following resume text into exactly this Python Dict format for the '{section_name}' section :
         {instruction}"""
-        prompt += f"""Take exactly what is present in the Summary or Description or Introduction or Objective and return it as a Python Dict unless it is more than a paragraph, in this case, make it more concise. If the text does not contain any field that represents the summary, generate a small paragraph that responds to this purpose""" if section_name == "summary" else f""""""
-        prompt += f"""Make sure the name of the of each reference is different than the name of the resume holder. If none are found, leave the items empty.""" if section_name == "references" else f""""""
-        prompt += f"""Make sure the skills are different from elements in the other sections, like certifications or languages. If none are found, leave the items empty.""" if section_name == "skills" else f""""""
+        prompt += (
+            f"""Take exactly what is present in the Summary or Description or Introduction or Objective and return it as a Python Dict unless it is more than a paragraph, in this case, make it more concise. If the text does not contain any field that represents the summary, generate a small paragraph that responds to this purpose"""
+            if section_name == "summary"
+            else f""""""
+        )
+        prompt += (
+            f"""Make sure the name of the of each reference is different than the name of the resume holder. If none are found, leave the items empty."""
+            if section_name == "references"
+            else f""""""
+        )
+        prompt += (
+            f"""Make sure the skills are different from elements in the other sections, like certifications or languages. If none are found, leave the items empty."""
+            if section_name == "skills"
+            else f""""""
+        )
         prompt += f"""Provide the Python Dict for only the '{section_name}' section without additional commentary keeping complete data integrity especially in experience missions. The output must absolutely be a valid Python Dict :
         Text: {input_text}
         """
@@ -81,14 +97,27 @@ def convert_to_json_builder(data, input_text):
             temperature=0.1,
             max_tokens=4096,
             messages=[
-                {"role": "system", "content": "You are a helpful assistant. You are an expert in Python Dict formatting and in reading, making and reviewing resumes."},
-                {"role": "user", "content": prompt}
-            ]
+                {
+                    "role": "system",
+                    "content": "You are a helpful assistant. You are an expert in Python Dict formatting and in reading, making and reviewing resumes.",
+                },
+                {"role": "user", "content": prompt},
+            ],
         )
-        app.logger.info(f"Received response from OpenAI API for section: {section_name}")
-        app.logger.info(f"OpenAI API usage - Prompt tokens: {response.usage.prompt_tokens}, Completion tokens: {response.usage.completion_tokens}, Total tokens: {response.usage.total_tokens}")
+        app.logger.info(
+            f"Received response from OpenAI API for section: {section_name}"
+        )
+        app.logger.info(
+            f"OpenAI API usage - Prompt tokens: {response.usage.prompt_tokens} (${response.usage.prompt_tokens / 1000 * 0.0006}), Completion tokens: {response.usage.completion_tokens} (${response.usage.completion_tokens / 1000 * 0.00015}), Total tokens: {response.usage.total_tokens} (${response.usage.prompt_tokens / 1000 * 0.0006 + response.usage.completion_tokens / 1000 * 0.00015})"
+        )
 
-        output = response.choices[0].message['content'].replace("```json", "").replace("```python", "").replace("```", "")
+        output = (
+            response.choices[0]
+            .message["content"]
+            .replace("```json", "")
+            .replace("```python", "")
+            .replace("```", "")
+        )
 
         def clean_nested_json(value):
             if isinstance(value, str):
@@ -106,46 +135,41 @@ def convert_to_json_builder(data, input_text):
 
         try:
             app.logger.info(f"Successfully processed section: {section_name}")
-            return cleaned_data, response.usage.prompt_tokens, response.usage.completion_tokens
+            return (
+                cleaned_data,
+                response.usage.prompt_tokens,
+                response.usage.completion_tokens,
+            )
         except json.JSONDecodeError:
-            app.logger.error(f"Invalid JSON for section '{section_name}'. Please refine the input.")
-            return f"Invalid JSON for section '{section_name}'. Please refine the input."
+            app.logger.error(
+                f"Invalid JSON for section '{section_name}'. Please refine the input."
+            )
+            return (
+                f"Invalid JSON for section '{section_name}'. Please refine the input."
+            )
 
     result = {
-        "basics": {
-        },
+        "basics": {},
         "sections": {
             "current_skills": {
                 "name": "Current Skills",
-                "items": [
-                    {
-                        "name": "",
-                        "level": 3,
-                        "visible": True
-                    }
-                ]
+                "items": [{"name": "", "level": 3, "visible": True}],
             },
             "missing_skills": {
                 "name": "Missing Skills",
-                "items": [
-                    {
-                        "name": "",
-                        "level": 3,
-                        "visible": True
-                    }
-                ]
+                "items": [{"name": "", "level": 3, "visible": True}],
             },
             "suggested_missions": {
                 "name": "Suggested Missions",
-                "items": [
-                    ""
-                ],
+                "items": [""],
             },
-        }
+        },
     }
 
     for section_name, instruction in data.items():
-        processed, input_price, output_price = process_section(section_name, instruction)
+        processed, input_price, output_price = process_section(
+            section_name, instruction
+        )
 
         if section_name == "basics":
             result["basics"] = processed
@@ -158,8 +182,9 @@ def convert_to_json_builder(data, input_text):
     app.logger.info("Finished convert_to_json_builder function")
     return result
 
-def get_missing_skills(resume_text, job_description):
-    app.logger.info("Starting get_missing_skills function")
+
+def get_suggestions(resume_text, job_description):
+    app.logger.info("Starting get_suggestions function")
     prompt = f""" I have a resume and a job description. Identify missing skill sets from the job description that are not covered in the resume, and provide multiple sentences for each missing skill that I can directly add to the "Projects" section of my resume.
 
     Please ensure that each sentence relates to a each skill missing from the job description and the project mentioned in the resume that is missing or not fully covered in the resume. Format the output strictly as JSON so that it can pass json.loads without error.
@@ -181,15 +206,21 @@ def get_missing_skills(resume_text, job_description):
         temperature=0.3,
         max_tokens=2048,
         messages=[
-            {"role": "system", "content": "You are a helpful assistant that provides suggestions for improving resumes based on job descriptions."},
-            {"role": "user", "content": prompt}
-        ]
+            {
+                "role": "system",
+                "content": "You are a helpful assistant that provides suggestions for improving resumes based on job descriptions.",
+            },
+            {"role": "user", "content": prompt},
+        ],
     )
     app.logger.info(f"Received response from OpenAI API for missing skills")
-    app.logger.info(f"OpenAI API usage - Prompt tokens: {response.usage.prompt_tokens}, Completion tokens: {response.usage.completion_tokens}, Total tokens: {response.usage.total_tokens}")
+    app.logger.info(
+        f"OpenAI API usage - Prompt tokens: {response.usage.prompt_tokens} (${response.usage.prompt_tokens / 1000 * 0.0006}), Completion tokens: {response.usage.completion_tokens} (${response.usage.completion_tokens / 1000 * 0.00015}), Total tokens: {response.usage.total_tokens} (${response.usage.prompt_tokens / 1000 * 0.0006 + response.usage.completion_tokens / 1000 * 0.00015})"
+    )
 
-    app.logger.info("Finished get_missing_skills function")
-    return response.choices[0].message['content']
+    app.logger.info("Finished get_suggestions function")
+    return response.choices[0].message["content"]
+
 
 def extract_text_from_docx(file_path):
     app.logger.info("Starting extract_text_from_docx function")
@@ -219,6 +250,7 @@ def extract_text_from_docx(file_path):
     app.logger.info("Finished extract_text_from_docx function")
     return text
 
+
 def extract_text_from_pdf(file_path):
     app.logger.info("Starting extract_text_from_pdf function")
     try:
@@ -228,6 +260,7 @@ def extract_text_from_pdf(file_path):
     except Exception as e:
         app.logger.error(f"Error extracting text from PDF: {e}")
         return ""
+
 
 def extract_text_from_image_pdf(file_path):
     app.logger.info("Starting extract_text_from_image_pdf function")
@@ -241,22 +274,24 @@ def extract_text_from_image_pdf(file_path):
     app.logger.info("Finished extract_text_from_image_pdf function")
     return text
 
+
 def extract_full_text_from_file(file_path):
     app.logger.info("Starting extract_full_text_from_file function")
-    file_extension = file_path.lower().split('.')[-1]
+    file_extension = file_path.lower().split(".")[-1]
     app.logger.info(f"File extension: {file_extension}")
-    if file_extension == 'pdf':
+    if file_extension == "pdf":
         text = extract_text_from_pdf(file_path)
         if not text.strip():
             app.logger.info("No text found in PDF, attempting OCR extraction.")
             text = extract_text_from_image_pdf(file_path)
-    elif file_extension == 'docx':
+    elif file_extension == "docx":
         text = extract_text_from_docx(file_path)
     else:
         app.logger.error("Unsupported file type.")
         return "Unsupported file type."
     app.logger.info("Finished extract_full_text_from_file function")
     return text
+
 
 def text_to_speech(text):
     app.logger.info("Starting text_to_speech function")
@@ -271,18 +306,399 @@ def text_to_speech(text):
         app.logger.error("No text provided for speech synthesis")
         return None
 
-@app.route('/modifier/resume_builder', methods=['POST'])
-def resume_builder():
-    app.logger.info("Received request for /modifier/resume_builder")
-    if 'file' not in request.files:
-        app.logger.error("No file provided in request")
-        return jsonify({'error': 'No file provided'}), 400
 
-    file = request.files['file']
-    if file.filename == '':
+@app.route("/modifier/text_extraction", methods=["POST"])
+def text_extraction():
+    if "file" not in request.files:
+        app.logger.error("No file provided in request")
+        return jsonify({"error": "No file provided"}), 400
+
+    file = request.files["file"]
+    if file.filename == "":
         app.logger.error("No selected file")
-        return jsonify({'error': 'No selected file'}), 400
-    
+        return jsonify({"error": "No selected file"}), 400
+
+    app.logger.info(f"Processing file: {file.filename}")
+    file_path = os.path.join(tempfile.gettempdir(), secure_filename(file.filename))
+    file.save(file_path)
+    app.logger.info(f"File saved to temporary path: {file_path}")
+
+    extracted_text = extract_full_text_from_file(file_path)
+    app.logger.info(f"Extracted text from file: {file.filename}")
+
+    app.logger.info("Finished processing /modifier/text_extraction request")
+
+    return extracted_text
+
+
+@app.route("/modifier/basics", methods=["POST"])
+def basics():
+    app.logger.info("Starting basics function")
+
+    text_extraction = request.json.get("text_extraction")
+
+    processed, input_price, output_price = process_section(
+        "basics",
+        {
+            "name": "",
+            "email": "",
+            "phone": "",
+            "headline": "",
+            "location": "",
+            "url": {"href": "", "label": ""},
+            "picture": {"url": ""},
+            "customFields": [],
+        },
+        text_extraction
+    )
+
+    app.logger.info("Finished basics function")
+    return processed
+
+
+@app.route("/modifier/summary", methods=["POST"])
+def summary():
+    app.logger.info("Starting summary function")
+
+    text_extraction = request.json.get("text_extraction")
+
+    processed, input_price, output_price = process_section(
+        "summary",
+        {"name": "Summary", "content": "", "visible": True},
+        text_extraction
+    )
+
+    app.logger.info("Finished summary function")
+    return processed
+
+
+@app.route("/modifier/profiles", methods=["POST"])
+def profiles():
+    app.logger.info("Starting profiles function")
+
+    text_extraction = request.json.get("text_extraction")
+
+    processed, input_price, output_price = process_section(
+        "profiles",
+        {
+            "name": "Profiles",
+            "items": [{ "name": "", "url": { "href": "", "label": "" } }],
+        },
+        text_extraction
+    )
+
+    items = processed.get("items", [])
+    if len(items) == 1 and items[0].get("name", "").strip() == "":
+        processed["items"] = []
+
+    app.logger.info("Finished profiles function")
+    return processed
+
+
+@app.route("/modifier/projects", methods=["POST"])
+def projects():
+    app.logger.info("Starting projects function")
+
+    text_extraction = request.json.get("text_extraction")
+
+    processed, input_price, output_price = process_section(
+        "projects",
+        {
+            "name": "Projects",
+            "items": [{ "name": "", "description": "", "skills": [""] }],
+        },
+        text_extraction
+    )
+
+    items = processed.get("items", [])
+    if len(items) == 1 and items[0].get("name", "").strip() == "":
+        processed["items"] = []
+
+    app.logger.info("Finished projects function")
+    return processed
+
+
+@app.route("/modifier/interests", methods=["POST"])
+def interests():
+    app.logger.info("Starting interests function")
+
+    text_extraction = request.json.get("text_extraction")
+
+    processed, input_price, output_price = process_section(
+        "interests",
+        {"name": "Interests", "items": [{ "name": "" }]},
+        text_extraction
+    )
+
+    items = processed.get("items", [])
+    if len(items) == 1 and items[0].get("name", "").strip() == "":
+        processed["items"] = []
+
+    app.logger.info("Finished interests function")
+    return processed
+
+
+@app.route("/modifier/languages", methods=["POST"])
+def languages():
+    app.logger.info("Starting languages function")
+
+    text_extraction = request.json.get("text_extraction")
+
+    processed, input_price, output_price = process_section(
+        "languages",
+        {
+            "name": "Languages",
+            "items": [{ "name": "", "level": 0, "proficiency": "100%" }],
+        },
+        text_extraction
+    )
+
+    items = processed.get("items", [])
+    if len(items) == 1 and items[0].get("name", "").strip() == "":
+        processed["items"] = []
+
+    app.logger.info("Finished languages function")
+    return processed
+
+
+@app.route("/modifier/volunteer", methods=["POST"])
+def volunteer():
+    app.logger.info("Starting volunteer function")
+
+    text_extraction = request.json.get("text_extraction")
+
+    processed, input_price, output_price = process_section(
+        "volunteer",
+        {
+            "name": "Volunteering",
+            "items": [
+            {
+                "position": "",
+                "company": "",
+                "location": "",
+                "date": "",
+                "summary": "",
+                "visible": True,
+            }
+            ],
+        },
+        text_extraction
+    )
+
+    items = processed.get("items", [])
+    if len(items) == 1 and items[0].get("name", "").strip() == "":
+        processed["items"] = []
+
+    app.logger.info("Finished volunteer function")
+    return processed
+
+
+@app.route("/modifier/experience", methods=["POST"])
+def experience():
+    app.logger.info("Starting experience function")
+
+    text_extraction = request.json.get("text_extraction")
+
+    processed, input_price, output_price = process_section(
+        "experience",
+        {
+            "name": "Experience",
+            "items": [
+            {
+                "position": "",
+                "company": "",
+                "location": "",
+                "date": "",
+                "summary": "",
+                "missions": [""],
+                "visible": True,
+            }
+            ],
+        },
+        text_extraction
+    )
+
+    items = processed.get("items", [])
+    if len(items) == 1 and items[0].get("name", "").strip() == "":
+        processed["items"] = []
+
+    app.logger.info("Finished experience function")
+    return processed
+
+
+@app.route("/modifier/references", methods=["POST"])
+def references():
+    app.logger.info("Starting references function")
+
+    text_extraction = request.json.get("text_extraction")
+
+    processed, input_price, output_price = process_section(
+        "references",
+        {
+            "name": "References",
+            "items": [],
+            "columns": 1,
+            "visible": True,
+            "separateLinks": True,
+        },
+        text_extraction
+    )
+
+    items = processed.get("items", [])
+    if len(items) == 1 and items[0].get("name", "").strip() == "":
+        processed["items"] = []
+
+    app.logger.info("Finished references function")
+    return processed
+
+
+@app.route("/modifier/publications", methods=["POST"])
+def publications():
+    app.logger.info("Starting publications function")
+
+    text_extraction = request.json.get("text_extraction")
+
+    processed, input_price, output_price = process_section(
+        "publications",
+        {
+            "name": "Publications",
+            "items": [
+            {
+                "name": "",
+                "description": "",
+                "issuer": "",
+                "date": "",
+                "url": { "href": "", "label": "" },
+            }
+            ],
+        },
+        text_extraction
+    )
+
+    items = processed.get("items", [])
+    if len(items) == 1 and items[0].get("name", "").strip() == "":
+        processed["items"] = []
+
+    app.logger.info("Finished publications function")
+    return processed
+
+
+@app.route("/modifier/certifications", methods=["POST"])
+def certifications():
+    app.logger.info("Starting certifications function")
+
+    text_extraction = request.json.get("text_extraction")
+
+    processed, input_price, output_price = process_section(
+        "certifications",
+        {
+            "name": "Certifications",
+            "items": [
+            {
+                "name": "",
+                "description": "",
+                "issuer": "",
+                "date": "",
+                "url": { "href": "", "label": "" },
+            }
+            ],
+        },
+        text_extraction
+    )
+
+    items = processed.get("items", [])
+    if len(items) == 1 and items[0].get("name", "").strip() == "":
+        processed["items"] = []
+
+    app.logger.info("Finished certifications function")
+    return processed
+
+
+@app.route("/modifier/awards", methods=["POST"])
+def awards():
+    app.logger.info("Starting awards function")
+
+    text_extraction = request.json.get("text_extraction")
+
+    processed, input_price, output_price = process_section(
+        "awards",
+        {
+            "name": "Awards",
+            "items": [{ "name": "", "description": "", "issuer": "", "date": "" }],
+        },
+        text_extraction
+    )
+
+    items = processed.get("items", [])
+    if len(items) == 1 and items[0].get("name", "").strip() == "":
+        processed["items"] = []
+
+    app.logger.info("Finished awards function")
+    return processed
+
+
+@app.route("/modifier/education", methods=["POST"])
+def education():
+    app.logger.info("Starting education function")
+
+    text_extraction = request.json.get("text_extraction")
+
+    processed, input_price, output_price = process_section(
+        "education",
+        {
+            "name": "Education",
+            "items": [
+            {
+                "institution": "",
+                "studyType": "",
+                "area": "",
+                "date": "",
+                "summary": "",
+                "score": "",
+                "url": { "href": "", "label": "" },
+            }
+            ],
+        },
+        text_extraction
+    )
+
+    items = processed.get("items", [])
+    if len(items) == 1 and items[0].get("name", "").strip() == "":
+        processed["items"] = []
+
+    app.logger.info("Finished education function")
+    return processed
+
+
+@app.route("/modifier/skills", methods=["POST"])
+def skills():
+    app.logger.info("Starting skills function")
+
+    text_extraction = request.json.get("text_extraction")
+
+    processed, input_price, output_price = process_section(
+        "skills",
+        {
+            "name": "Skills",
+            "items": [{"name": "", "level": 3, "visible": True}],
+        },
+        text_extraction
+    )
+
+    items = processed.get("items", [])
+    if len(items) == 1 and items[0].get("name", "").strip() == "":
+        processed["items"] = []
+
+    app.logger.info("Finished education function")
+    return processed
+
+
+@app.route("/modifier/convert_to_json", methods=["POST"])
+def convert_to_json():
+    app.logger.info("Received request for /modifier/convert_to_json")
+
+    extracted_text = request.form.get("extracted_text")
+
     data = {
         "basics": {
             "name": "",
@@ -290,71 +706,27 @@ def resume_builder():
             "phone": "",
             "headline": "",
             "location": "",
-            "url": {
-                "href": "",
-                "label": ""
-            },
-            "picture": {
-                "url": ""
-            },
-            "customFields": []
+            "url": {"href": "", "label": ""},
+            "picture": {"url": ""},
+            "customFields": [],
         },
         "skills": {
             "name": "Skills",
-            "items": [
-                {
-                    "name": "",
-                    "level": 3,
-                    "visible": True
-                }
-            ]
+            "items": [{"name": "", "level": 3, "visible": True}],
         },
-        "summary": {
-            "name": "Summary",
-            "content": "",
-            "visible": True
-        },
+        "summary": {"name": "Summary", "content": "", "visible": True},
         "profiles": {
             "name": "Profiles",
-            "items": [
-                {
-                    "name": "",
-                    "url": {
-                        "href": "",
-                        "label": ""
-                    }
-                }
-            ]
+            "items": [{"name": "", "url": {"href": "", "label": ""}}],
         },
         "projects": {
             "name": "Projects",
-            "items": [
-                {
-                    "name": "",
-                    "description": "",
-                    "skills": [
-                        ""
-                    ]
-                }
-            ]
+            "items": [{"name": "", "description": "", "skills": [""]}],
         },
-        "interests": {
-            "name": "Interests",
-            "items": [
-                {
-                    "name": ""
-                }
-            ]
-        },
+        "interests": {"name": "Interests", "items": [{"name": ""}]},
         "languages": {
             "name": "Languages",
-            "items": [
-                {
-                    "name": "",
-                    "level": 0,
-                    "proficiency": "100%"
-                }
-            ]
+            "items": [{"name": "", "level": 0, "proficiency": "100%"}],
         },
         "volunteer": {
             "name": "Volunteering",
@@ -365,9 +737,9 @@ def resume_builder():
                     "location": "",
                     "date": "",
                     "summary": "",
-                    "visible": True
+                    "visible": True,
                 }
-            ]
+            ],
         },
         "experience": {
             "name": "Experience",
@@ -378,19 +750,17 @@ def resume_builder():
                     "location": "",
                     "date": "",
                     "summary": "",
-                    "missions": [
-                        ""
-                    ],
-                    "visible": True
+                    "missions": [""],
+                    "visible": True,
                 }
-            ]
+            ],
         },
         "references": {
             "name": "References",
             "items": [],
             "columns": 1,
             "visible": True,
-            "separateLinks": True
+            "separateLinks": True,
         },
         "publications": {
             "name": "Publications",
@@ -400,12 +770,9 @@ def resume_builder():
                     "description": "",
                     "issuer": "",
                     "date": "",
-                    "url": {
-                        "href": "",
-                        "label": ""
-                    }
+                    "url": {"href": "", "label": ""},
                 }
-            ]
+            ],
         },
         "certifications": {
             "name": "Certifications",
@@ -415,23 +782,13 @@ def resume_builder():
                     "description": "",
                     "issuer": "",
                     "date": "",
-                    "url": {
-                        "href": "",
-                        "label": ""
-                    }
+                    "url": {"href": "", "label": ""},
                 }
-            ]
+            ],
         },
         "awards": {
             "name": "Awards",
-            "items": [
-                {
-                    "name": "",
-                    "description": "",
-                    "issuer": "",
-                    "date": ""
-                }
-            ]
+            "items": [{"name": "", "description": "", "issuer": "", "date": ""}],
         },
         "education": {
             "name": "Education",
@@ -443,80 +800,166 @@ def resume_builder():
                     "date": "",
                     "summary": "",
                     "score": "",
-                    "url": {
-                        "href": "",
-                        "label": ""
-                    }
+                    "url": {"href": "", "label": ""},
                 }
-            ]
-        }
+            ],
+        },
     }
 
-    job_description = request.form.get("job_description")
-
-    app.logger.info(f"Processing file: {file.filename}")
-    file_path = os.path.join(tempfile.gettempdir(), secure_filename(file.filename))
-    file.save(file_path)
-    app.logger.info(f"File saved to temporary path: {file_path}")
-
-    extracted_text = extract_full_text_from_file(file_path)
-    app.logger.info(f"Extracted text from file: {file.filename}")
-
     resume_json = convert_to_json_builder(data, extracted_text)
-    app.logger.info(f"Generated JSON from extracted text for file: {file.filename}")
+    app.logger.info(f"Generated JSON from extracted text")
+
+    app.logger.info("Finished processing /modifier/convert_to_json request")
+
+    return resume_json
+
+
+def process_section(section_name, instruction, input_text):
+    app.logger.info(f"Processing section: {section_name}")
+    prompt = f"""
+    Translate the following resume text into exactly this Python Dict format for the '{section_name}' section :
+    {instruction}"""
+    prompt += (
+        f"""Take exactly what is present in the Summary or Description or Introduction or Objective and return it as a Python Dict unless it is more than a paragraph, in this case, make it more concise. If the text does not contain any field that represents the summary, generate a small paragraph that responds to this purpose"""
+        if section_name == "summary"
+        else f""""""
+    )
+    prompt += (
+        f"""Make sure the name of the of each reference is different than the name of the resume holder. If none are found, leave the items empty."""
+        if section_name == "references"
+        else f""""""
+    )
+    prompt += (
+        f"""Make sure the skills are different from elements in the other sections, like certifications or languages. If none are found, leave the items empty."""
+        if section_name == "skills"
+        else f""""""
+    )
+    prompt += f"""Provide the Python Dict for only the '{section_name}' section without additional commentary keeping complete data integrity especially in experience missions. The output must absolutely be a valid Python Dict :
+    Text: {input_text}
+    """
+
+    app.logger.info(f"Sending prompt to OpenAI API for section: {section_name}")
+    response = openai.ChatCompletion.create(
+        model="gpt-4o-mini",
+        temperature=0.1,
+        max_tokens=4096,
+        messages=[
+            {
+                "role": "system",
+                "content": "You are a helpful assistant. You are an expert in Python Dict formatting and in reading, making and reviewing resumes.",
+            },
+            {"role": "user", "content": prompt},
+        ],
+    )
+    app.logger.info(
+        f"Received response from OpenAI API for section: {section_name}"
+    )
+    app.logger.info(
+        f"OpenAI API usage - Prompt tokens: {response.usage.prompt_tokens} (${response.usage.prompt_tokens / 1000 * 0.0006}), Completion tokens: {response.usage.completion_tokens} (${response.usage.completion_tokens / 1000 * 0.00015}), Total tokens: {response.usage.total_tokens} (${response.usage.prompt_tokens / 1000 * 0.0006 + response.usage.completion_tokens / 1000 * 0.00015})"
+    )
+
+    output = (
+        response.choices[0]
+        .message["content"]
+        .replace("```json", "")
+        .replace("```python", "")
+        .replace("```", "")
+    )
+
+    def clean_nested_json(value):
+        if isinstance(value, str):
+            try:
+                return ast.literal_eval(value)
+            except json.JSONDecodeError:
+                return value
+        elif isinstance(value, dict):
+            return {k: clean_nested_json(v) for k, v in value.items()}
+        elif isinstance(value, list):
+            return [clean_nested_json(v) for v in value]
+        return value
+
+    cleaned_data = clean_nested_json(output)
+
+    try:
+        app.logger.info(f"Successfully processed section: {section_name}")
+        return (
+            cleaned_data,
+            response.usage.prompt_tokens,
+            response.usage.completion_tokens,
+        )
+    except json.JSONDecodeError:
+        app.logger.error(
+            f"Invalid JSON for section '{section_name}'. Please refine the input."
+        )
+        return (
+            f"Invalid JSON for section '{section_name}'. Please refine the input."
+        )
+
+
+@app.route("/modifier/update_data", methods=["POST"])
+def update_data():
+    app.logger.info("Received request for /modifier/update_data")
+
+    job_description = request.json.get("job_description")
+    resume_json = request.json.get("resume_json")
+    extracted_text = request.json.get("extracted_text")
 
     skills_to_add = list(resume_json["sections"]["skills"]["items"])
-    missing_skills = json.loads(get_missing_skills(extracted_text, job_description))["missing_skills"]
-    app.logger.info(f"Identified missing skills: {missing_skills}")
+    suggestions = json.loads(get_suggestions(extracted_text, job_description))[
+        "missing_skills"
+    ]
+    app.logger.info(f"Identified suggestions: {suggestions}")
 
     missing_skills_to_add = []
     suggested_missions_to_add = []
-    for skill in missing_skills:
-        skills_to_add.append({
-            "name": skill,
-            "level": 3,
-            "description": "",
-            "visible": True
-        })
-        missing_skills_to_add.append({
-            "name": skill,
-            "level": 3,
-            "description": "",
-            "visible": True
-        })
-        for item in missing_skills[skill]:
+    for skill in suggestions:
+        skills_to_add.append(
+            {"name": skill, "level": 3, "description": "", "visible": True}
+        )
+        missing_skills_to_add.append(
+            {"name": skill, "level": 3, "description": "", "visible": True}
+        )
+        for item in suggestions[skill]:
             suggested_missions_to_add.append(item)
 
-    resume_json["sections"]["current_skills"]["items"] = resume_json["sections"]["skills"]["items"]
+    resume_json["sections"]["current_skills"]["items"] = resume_json["sections"][
+        "skills"
+    ]["items"]
     resume_json["sections"]["skills"]["items"] = skills_to_add
     resume_json["sections"]["missing_skills"]["items"] = missing_skills_to_add
     resume_json["sections"]["suggested_missions"]["items"] = suggested_missions_to_add
 
-    app.logger.info("Finished processing /modifier/resume_builder request")
+    app.logger.info("Finished processing /modifier/update_data request")
     return jsonify(resume_json), 200
 
-@app.route('/modifier/get_token', methods=['POST'])
+
+@app.route("/modifier/get_token", methods=["POST"])
 def get_token():
     app.logger.info("Received request for /modifier/get_token")
     user_id = request.form.get("user_id")
     user_email = request.form.get("user_email")
-    app.logger.info(f"Generating token for user_id: {user_id}, user_email: {user_email}")
-    access_token = create_access_token(identity={"user_id": user_id, "user_email": user_email})
+    app.logger.info(
+        f"Generating token for user_id: {user_id}, user_email: {user_email}"
+    )
+    access_token = create_access_token(
+        identity={"user_id": user_id, "user_email": user_email}
+    )
     app.logger.info("Finished processing /modifier/get_token request")
     return jsonify({"access_token": access_token}), 200
 
-@app.route('/transform/upload_file', methods=['POST'])
+
+@app.route("/transform/upload_file", methods=["POST"])
 def upload_file():
     app.logger.info("Received request for /transform/upload_file")
-    if 'file' not in request.files:
+    if "file" not in request.files:
         app.logger.error("No file provided in request")
-        return jsonify({'error': 'No file provided'}), 400
+        return jsonify({"error": "No file provided"}), 400
 
-    file = request.files['file']
-    if file.filename == '':
+    file = request.files["file"]
+    if file.filename == "":
         app.logger.error("No selected file")
-        return jsonify({'error': 'No selected file'}), 400
-    
+        return jsonify({"error": "No selected file"}), 400
+
     data = {
         "basics": {
             "name": "",
@@ -524,10 +967,7 @@ def upload_file():
             "email": "",
             "phone": "",
             "location": "",
-            "url": {
-                "label": "",
-                "href": "https://default"
-            },
+            "url": {"label": "", "href": "https://default"},
             "customFields": [],
             "picture": {
                 "url": "",
@@ -553,9 +993,9 @@ def upload_file():
                     "level": 1,
                     "keywords": [],
                     "description": "",
-                    "visible": True
+                    "visible": True,
                 }
-            ]
+            ],
         },
         "summary": {
             "id": "summary",
@@ -573,16 +1013,13 @@ def upload_file():
             "visible": True,
             "items": [
                 {
-                    "url": {
-                        "href": "",
-                        "label": ""
-                    },
+                    "url": {"href": "", "label": ""},
                     "icon": "",
                     "network": "",
                     "username": "",
-                    "visible": True
+                    "visible": True,
                 }
-            ]
+            ],
         },
         "projects": {
             "id": "projects",
@@ -592,18 +1029,15 @@ def upload_file():
             "visible": True,
             "items": [
                 {
-                    "url": {
-                        "href": "",
-                        "label": ""
-                    },
+                    "url": {"href": "", "label": ""},
                     "date": "",
                     "name": "",
                     "summary": "",
                     "keywords": [],
                     "description": "",
-                    "visible": True
+                    "visible": True,
                 }
-            ]
+            ],
         },
         "interests": {
             "name": "Interests",
@@ -611,13 +1045,7 @@ def upload_file():
             "columns": 1,
             "separateLinks": True,
             "visible": True,
-            "items": [
-                {
-                    "name": "",
-                    "keywords": [],
-                    "visible": True
-                }
-            ]
+            "items": [{"name": "", "keywords": [], "visible": True}],
         },
         "languages": {
             "name": "Languages",
@@ -625,14 +1053,7 @@ def upload_file():
             "columns": 1,
             "separateLinks": True,
             "visible": True,
-            "items": [
-                {
-                    "name": "",
-                    "level": 0,
-                    "description": "",
-                    "visible": True
-                }
-            ]
+            "items": [{"name": "", "level": 0, "description": "", "visible": True}],
         },
         "volunteer": {
             "name": "Volunteering",
@@ -642,18 +1063,15 @@ def upload_file():
             "visible": True,
             "items": [
                 {
-                    "url": {
-                        "href": "",
-                        "label": ""
-                    },
+                    "url": {"href": "", "label": ""},
                     "date": "",
                     "summary": "",
                     "location": "",
                     "position": "",
                     "organization": "",
-                    "visible": True
+                    "visible": True,
                 }
-            ]
+            ],
         },
         "experience": {
             "name": "Experience",
@@ -663,18 +1081,15 @@ def upload_file():
             "visible": True,
             "items": [
                 {
-                    "url": {
-                        "href": "",
-                        "label": ""
-                    },
+                    "url": {"href": "", "label": ""},
                     "date": "",
                     "company": "",
                     "summary": "",
                     "location": "",
                     "position": "",
-                    "visible": True
+                    "visible": True,
                 }
-            ]
+            ],
         },
         "references": {
             "name": "References",
@@ -684,18 +1099,15 @@ def upload_file():
             "visible": True,
             "items": [
                 {
-                    "url": {
-                        "href": "",
-                        "label": ""
-                    },
+                    "url": {"href": "", "label": ""},
                     "name": "",
                     "summary": "",
                     "description": "",
-                    "visible": True
+                    "visible": True,
                 }
             ],
             "visible": True,
-            "separateLinks": True
+            "separateLinks": True,
         },
         "publications": {
             "name": "Publications",
@@ -705,17 +1117,14 @@ def upload_file():
             "visible": True,
             "items": [
                 {
-                    "url": {
-                        "href": "",
-                        "label": ""
-                    },
+                    "url": {"href": "", "label": ""},
                     "date": "",
                     "name": "",
                     "summary": "",
                     "publisher": "",
-                    "visible": True
+                    "visible": True,
                 }
-            ]
+            ],
         },
         "certifications": {
             "id": "certifications",
@@ -725,17 +1134,14 @@ def upload_file():
             "name": "Certifications",
             "items": [
                 {
-                    "url": {
-                        "href": "",
-                        "label": ""
-                    },
+                    "url": {"href": "", "label": ""},
                     "date": "",
                     "name": "",
                     "issuer": "",
                     "summary": "",
-                    "visible": True
+                    "visible": True,
                 }
-            ]
+            ],
         },
         "awards": {
             "id": "awards",
@@ -745,17 +1151,14 @@ def upload_file():
             "name": "Awards",
             "items": [
                 {
-                    "url": {
-                        "href": "",
-                        "label": ""
-                    },
+                    "url": {"href": "", "label": ""},
                     "date": "",
                     "title": "",
                     "awarder": "",
                     "summary": "",
-                    "visible": True
+                    "visible": True,
                 }
-            ]
+            ],
         },
         "education": {
             "id": "education",
@@ -765,20 +1168,17 @@ def upload_file():
             "name": "Education",
             "items": [
                 {
-                    "url": {
-                        "href": "",
-                        "label": ""
-                    },
+                    "url": {"href": "", "label": ""},
                     "area": "",
                     "date": "",
                     "score": "",
                     "summary": "",
                     "studyType": "",
                     "institution": "",
-                    "visible": True
+                    "visible": True,
                 }
-            ]
-        }        
+            ],
+        },
     }
 
     job_description = request.form.get("job_description")
@@ -795,31 +1195,34 @@ def upload_file():
     app.logger.info(f"Generated JSON from extracted text for file: {file.filename}")
 
     skills_to_add = list(resume_json["sections"]["skills"]["items"])
-    missing_skills = json.loads(get_missing_skills(extracted_text, job_description))["missing_skills"]
-    app.logger.info(f"Identified missing skills: {missing_skills}")
+    suggestions = json.loads(get_suggestions(extracted_text, job_description))[
+        "missing_skills"
+    ]
+    app.logger.info(f"Identified suggestions: {suggestions}")
 
     suggested_missions_to_add = []
-    for skill in missing_skills:
-        skills_to_add.append({
-            "name": skill,
-            "level": 3,
-            "keywords": [],
-            "description": "",
-            "visible": True
-        })
-        for item in missing_skills[skill]:
-            suggested_missions_to_add.append({
-                "url": {
-                    "href": "",
-                    "label": ""
-                },
-                "date": "",
-                "company": "",
-                "summary": item,
-                "location": "",
-                "position": skill,
-                "visible": True
-            })
+    for skill in suggestions:
+        skills_to_add.append(
+            {
+                "name": skill,
+                "level": 3,
+                "keywords": [],
+                "description": "",
+                "visible": True,
+            }
+        )
+        for item in suggestions[skill]:
+            suggested_missions_to_add.append(
+                {
+                    "url": {"href": "", "label": ""},
+                    "date": "",
+                    "company": "",
+                    "summary": item,
+                    "location": "",
+                    "position": skill,
+                    "visible": True,
+                }
+            )
 
     resume_json["sections"]["skills"]["items"] = skills_to_add
     resume_json["sections"]["custom"] = {}
@@ -827,6 +1230,7 @@ def upload_file():
 
     app.logger.info("Finished processing /transform/upload_file request")
     return jsonify(resume_json), 200
+
 
 @app.route("/interviewbot/question", methods=["POST"])
 def get_question():
@@ -836,7 +1240,9 @@ def get_question():
         sub_category = data["sub_category"]
         level_type = data["level_type"]
 
-        app.logger.info(f"Generating questions for sub-category: {sub_category}, level: {level_type}")
+        app.logger.info(
+            f"Generating questions for sub-category: {sub_category}, level: {level_type}"
+        )
         try:
             prompt = f"""Generate 20 interview questions on the following topics : {sub_category}
 
@@ -856,7 +1262,9 @@ def get_question():
                 messages=[{"role": "user", "content": prompt}],
             )
             app.logger.info(f"Received response from OpenAI API for questions")
-            app.logger.info(f"OpenAI API usage - Prompt tokens: {response.usage.prompt_tokens}, Completion tokens: {response.usage.completion_tokens}, Total tokens: {response.usage.total_tokens}")
+            app.logger.info(
+                f"OpenAI API usage - Prompt tokens: {response.usage.prompt_tokens} (${response.usage.prompt_tokens / 1000 * 0.0006}), Completion tokens: {response.usage.completion_tokens} (${response.usage.completion_tokens / 1000 * 0.00015}), Total tokens: {response.usage.total_tokens} (${response.usage.prompt_tokens / 1000 * 0.0006 + response.usage.completion_tokens / 1000 * 0.00015})"
+            )
 
             questions = ast.literal_eval(
                 response.choices[0]
@@ -876,11 +1284,21 @@ def get_question():
                     audio_base64 = ""
                 data.append({"question": question, "audio": audio_base64})
 
-            app.logger.info(f"Generated {len(questions)} questions for sub-category: {sub_category}, level: {level_type}")
+            app.logger.info(
+                f"Generated {len(questions)} questions for sub-category: {sub_category}, level: {level_type}"
+            )
             return jsonify(data)
         except Exception as e:
             app.logger.error(f"Error generating questions: {e}")
-            return jsonify({"error": "No questions could be generated for the selected sub-category and level type."}), 500
+            return (
+                jsonify(
+                    {
+                        "error": "No questions could be generated for the selected sub-category and level type."
+                    }
+                ),
+                500,
+            )
+
 
 @app.route("/interviewbot/answer", methods=["POST"])
 def check_answer():
@@ -925,7 +1343,9 @@ def check_answer():
             messages=[{"role": "user", "content": prompt}],
         )
         app.logger.info(f"Received response from OpenAI API for answer evaluation")
-        app.logger.info(f"OpenAI API usage - Prompt tokens: {response.usage.prompt_tokens}, Completion tokens: {response.usage.completion_tokens}, Total tokens: {response.usage.total_tokens}")
+        app.logger.info(
+            f"OpenAI API usage - Prompt tokens: {response.usage.prompt_tokens} (${response.usage.prompt_tokens / 1000 * 0.0006}), Completion tokens: {response.usage.completion_tokens} (${response.usage.completion_tokens / 1000 * 0.00015}), Total tokens: {response.usage.total_tokens} (${response.usage.prompt_tokens / 1000 * 0.0006 + response.usage.completion_tokens / 1000 * 0.00015})"
+        )
 
         parsed_response = ast.literal_eval(
             response.choices[0]
@@ -950,5 +1370,6 @@ def check_answer():
         app.logger.error(f"Error evaluating answer: {e}")
         return jsonify({"error": "Failed to evaluate the answer."}), 500
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port='5050', debug=True)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port="5050", debug=True)
