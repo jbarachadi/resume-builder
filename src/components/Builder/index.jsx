@@ -97,11 +97,30 @@ const Builder = () => {
 
       console.log("checkSessionStatus : ", data)
   
-      return data; 
+      return data;
     } catch (error) {
       console.error("Error checking session status:", error);
       return null;
     }
+  };
+
+  const resetCredentials = async () => {
+    // Clear only this site's cookies
+    document.cookie.split(";").forEach((cookie) => {
+      const [name] = cookie.split("=");
+      // Clear cookies for the current domain and its subdomains
+      document.cookie = `${name.trim()}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.interviewaxis.com;`;
+    });
+  
+    // Clear localStorage items starting with "twk_"
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith("twk_")) {
+        localStorage.removeItem(key);
+      }
+    });
+  
+    // Redirect to login page
+    window.location.href = "https://www.interviewaxis.com/login";
   };
 
   const processSessionData = async () => {
@@ -124,7 +143,7 @@ const Builder = () => {
         console.error("User data not found in users data");
       }
     } else {
-      window.location.href = "https://www.interviewaxis.com/login";
+      resetCredentials();
     }
   };
 
