@@ -493,7 +493,7 @@ const Download = () => {
   const handlePrint = () => {
     setTimeout(() => {
       window.print();
-    }, 0);
+    }, 100);
   };
 
   useEffect(() => {

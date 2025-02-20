@@ -78,12 +78,19 @@ const Template2 = ({ data, skills, downloadable }) => {
                         </div>
                         {skills.list2.map((skill, index) => (
                           <Draggable key={skill} draggableId={`list2-${skill}`} index={index}>
-                            {(provided) => (
+                            {(provided, snapshot) => (
                               <li
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
                                 className={styles.skillItem}
+                                style={{
+                                  ...provided.draggableProps.style,
+                                  width: snapshot.isDragging ? "1px" : "auto",
+                                  position: snapshot.isDragging ? "absolute" : "relative",
+                                  zIndex: snapshot.isDragging ? 9999 : "auto",
+                                  opacity: snapshot.isDragging ? 0.5 : 1,
+                                }}
                               >
                                 {skill}
                               </li>

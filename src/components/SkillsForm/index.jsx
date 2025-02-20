@@ -43,13 +43,16 @@ const SkillsForm = ({ data, setSkills, onChange }) => {
             <div ref={provided.innerRef} {...provided.droppableProps}>
               {data.list.map((skill, index) => (
                 <Draggable key={index} draggableId={String(index)} index={index}>
-                  {(provided) => (
+                  {(provided, snapshot) => (
                     <div
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                       style={{
-                        width: "100%",
+                        width: snapshot.isDragging ? "1px" : "100%",
+                        position: snapshot.isDragging ? "absolute" : "relative",
+                        zIndex: snapshot.isDragging ? 9999 : "auto",
+                        opacity: snapshot.isDragging ? 0.5 : 1,
                         margin: '8px',
                         padding: "16px",
                         border: "1px solid #ddd",
