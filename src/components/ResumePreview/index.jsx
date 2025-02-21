@@ -97,11 +97,11 @@ const ResumePreview = ({ template, downloadable = false }) => {
   };
   
   return (
-      <Box sx={{ display: 'flex', flexDirection: "column", gap: 3, bgcolor: 'white' }}>
+      <Box sx={{ display: 'flex', flexDirection: ["column", "column", "row-reverse"], gap: 3, bgcolor: 'white' }}>
         <DragDropContext onDragEnd={handleDragEnd}>
           {!downloadable &&
             <Paper elevation={3} sx={{ display: "flex", flexDirection: "column" }}>
-              <Box elevation={3} sx={{ display: "flex" /*, width: "600px" */ }}>
+              <Box elevation={3} sx={{ display: "flex", width: ["100%", "100%", "600px"] }}>
                 <Droppable droppableId="list3">
                   {(provided) => (
                     <ul
@@ -140,7 +140,7 @@ const ResumePreview = ({ template, downloadable = false }) => {
                   )}
                 </Droppable>
               </Box>
-              <Box elevation={3} sx={{ display: "flex" /*, width: "600px" */}}>
+              <Box elevation={3} sx={{ display: "flex", width: ["100%", "100%", "600px"]}}>
                 <Droppable droppableId="list1">
                   {(provided) => (
                     <ul
