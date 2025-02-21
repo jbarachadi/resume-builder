@@ -2,12 +2,14 @@ import React from 'react';
 import Template1 from '../../templates/Template1';
 import Template2 from '../../templates/Template2';
 import Template3 from '../../templates/Template3';
-import { Box, Paper, Divider } from '@mui/material';
+import { Box, Paper, Divider,useMediaQuery, useTheme } from '@mui/material';
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useStore } from "../../store"
 
 const ResumePreview = ({ template, downloadable = false }) => {
   const { data, setData, skills, setSkills } = useStore();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleDragEnd = (result) => {
     const { destination, source } = result;
@@ -18,16 +20,6 @@ const ResumePreview = ({ template, downloadable = false }) => {
       destination.index === source.index &&
       destination.droppableId === source.droppableId
     ) {
-      return;
-    }
-  
-    // Prevent dropping elements from list1 and list2 into list3 and list4
-    if ((source.droppableId === "list1" || source.droppableId === "list2") && (destination.droppableId === "list3" || destination.droppableId.startsWith("list4"))) {
-      return;
-    }
-  
-    // Prevent dropping elements from list3 and list4 into list1 and list2
-    if ((source.droppableId === "list3" || source.droppableId.startsWith("list4")) && (destination.droppableId === "list1" || destination.droppableId === "list2")) {
       return;
     }
   
@@ -97,11 +89,16 @@ const ResumePreview = ({ template, downloadable = false }) => {
   };
   
   return (
-      <Box sx={{ display: 'flex', flexDirection: ["column", "column", "row-reverse"], gap: 3, bgcolor: 'white' }}>
+      <Box sx={{ display: 'flex', flexDirection: isMobile ? 'column' : "row", gap: 3, bgcolor: 'white'}}>
         <DragDropContext onDragEnd={handleDragEnd}>
+          <Paper elevation={3} sx={{order: isMobile ? '2' : ''}}>
+            {template === 'Template1' && <Template1 data={data} skills={skills} downloadable={downloadable} />}
+            {template === 'Template2' && <Template2 data={data} skills={skills} downloadable={downloadable} />}
+            {template === 'Template3' && <Template3 data={data} skills={skills} downloadable={downloadable} />}
+          </Paper>
           {!downloadable &&
             <Paper elevation={3} sx={{ display: "flex", flexDirection: "column" }}>
-              <Box elevation={3} sx={{ display: "flex", width: ["100%", "100%", "600px"] }}>
+              <Box elevation={3} sx={{ display: "flex", width: isMobile ? '43vh' : '600px' }}>
                 <Droppable droppableId="list3">
                   {(provided) => (
                     <ul
@@ -114,18 +111,11 @@ const ResumePreview = ({ template, downloadable = false }) => {
                         {data.sections.suggested_missions.items.map((suggested_mission, index) => (
                           <>
                             <Draggable key={suggested_mission} draggableId={`list3-${suggested_mission}`} index={index}>
-                              {(provided, snapshot) => (
+                              {(provided) => (
                                 <li
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
-                                  style={{
-                                    ...provided.draggableProps.style,
-                                    width: snapshot.isDragging ? "1px" : "auto",
-                                    position: snapshot.isDragging ? "absolute" : "relative",
-                                    zIndex: snapshot.isDragging ? 9999 : "auto",
-                                    opacity: snapshot.isDragging ? 0.5 : 1,
-                                  }}
                                 >
                                   {suggested_mission}
                                 </li>
@@ -140,7 +130,7 @@ const ResumePreview = ({ template, downloadable = false }) => {
                   )}
                 </Droppable>
               </Box>
-              <Box elevation={3} sx={{ display: "flex", width: ["100%", "100%", "600px"]}}>
+              <Box elevation={3} sx={{ display: "flex", width: isMobile ? '43vh' : '600px' }}>
                 <Droppable droppableId="list1">
                   {(provided) => (
                     <ul
@@ -153,18 +143,11 @@ const ResumePreview = ({ template, downloadable = false }) => {
                         {skills.list1.map((skill, index) => (
                           <>
                             <Draggable key={skill} draggableId={`list1-${skill}`} index={index}>
-                              {(provided, snapshot) => (
+                              {(provided) => (
                                 <li
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
                                   {...provided.dragHandleProps}
-                                  style={{
-                                    ...provided.draggableProps.style,
-                                    width: snapshot.isDragging ? "1px" : "auto",
-                                    position: snapshot.isDragging ? "absolute" : "relative",
-                                    zIndex: snapshot.isDragging ? 9999 : "auto",
-                                    opacity: snapshot.isDragging ? 0.5 : 1,
-                                  }}
                                 >
                                   {skill}
                                 </li>
@@ -181,11 +164,6 @@ const ResumePreview = ({ template, downloadable = false }) => {
               </Box>
             </Paper>
           }
-          <Paper elevation={3}>
-            {template === 'Template1' && <Template1 data={data} skills={skills} downloadable={downloadable} />}
-            {template === 'Template2' && <Template2 data={data} skills={skills} downloadable={downloadable} />}
-            {template === 'Template3' && <Template3 data={data} skills={skills} downloadable={downloadable} />}
-          </Paper>
         </DragDropContext>
       </Box>
   )

@@ -56,6 +56,16 @@ const Navbar = () => {
           <Button href="https://interviewaxis.com" color="inherit">
             Home
           </Button>
+     
+          <Button href="https://interviewaxis.com/about-us" color="inherit">
+            About Us
+          </Button>
+          <Button href="https://interviewaxis.com/team" color="inherit">
+            My Team
+          </Button>
+          <Button href="https://interviewaxis.com/blogs" color="inherit">
+            Blog
+          </Button>
           <Button
             color="inherit"
             endIcon={<ArrowDropDownIcon />}
@@ -68,22 +78,13 @@ const Navbar = () => {
             open={Boolean(anchorEl)}
             onClose={handleMenuClose}
           >
-            <MenuItem onClick={handleMenuClose} component="a" href="/user-dashboard">
+            <MenuItem onClick={handleMenuClose} component="a" href={`${process.env.REACT_APP_BASE_URL}/user-dashboard`}>
               User Dashboard
             </MenuItem>
-            <MenuItem onClick={handleMenuClose} component="a" href="/user-profile">
+            <MenuItem onClick={handleMenuClose} component="a" href={`${process.env.REACT_APP_BASE_URL}/user-profile`}>
               My Profile
             </MenuItem>
           </Menu>
-          <Button href="https://interviewaxis.com/about-us" color="inherit">
-            About Us
-          </Button>
-          <Button href="https://interviewaxis.com/team" color="inherit">
-            My Team
-          </Button>
-          <Button href="https://interviewaxis.com/blogs" color="inherit">
-            Blog
-          </Button>
         </Box>
 
         {/* Action Buttons */}

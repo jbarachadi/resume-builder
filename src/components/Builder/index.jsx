@@ -16,49 +16,47 @@ const Builder = () => {
   const resumeRef = useRef();
 
   const initPdfDownload = async () => {
-    navigate("/download")
+    try {
+      console.log(userData.user_email)
 
-    // try {
-    //   console.log(userData.user_email)
+      const response = await axios.post(
+        "https://www.interviewaxis.com/api/v1/checkCredit",
+        {
+          email: userData.user_email,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true
+        }
+      );
 
-    //   const response = await axios.post(
-    //     "https://www.interviewaxis.com/api/v1/checkCredit",
-    //     {
-    //       email: userData.user_email,
-    //     },
-    //     {
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //       withCredentials: true
-    //     }
-    //   );
+      // console.log("checkCredit : ", response.data)
 
-    //   // console.log("checkCredit : ", response.data)
-
-    //   if (response.data.status !== 404) {
-    //     navigate("/download")
-    //   } else {
-    //     const response = await axios.post(
-    //       "https://api.interviewaxis.com/modifier/get_token",
-    //       {
-    //         user_id: userData.user_id,
-    //         user_email: userData.user_email
-    //       },
-    //       { 
-    //         headers: {
-    //           'Accept': 'application/json',
-    //         },
-    //       }
-    //     );
-    //     localStorage.setItem("token", response.data.access_token);
-    //     alert("You will be redirected to the pricing page. Please purchase plan 2 to be able to proceed with the download")
-    //     window.location.href = "https://interviewaxis.com/pricing-plan?mid=" + response.data.access_token
-    //   }
-    // } catch (error) {
-    //   console.error("Error fetching users data:", error);
-    //   return [];
-    // }
+      if (response.data.status !== 404) {
+        navigate("/download")
+      } else {
+        const response = await axios.post(
+          "https://api.interviewaxis.com/modifier/get_token",
+          {
+            user_id: userData.user_id,
+            user_email: userData.user_email
+          },
+          { 
+            headers: {
+              'Accept': 'application/json',
+            },
+          }
+        );
+        localStorage.setItem("token", response.data.access_token);
+        alert("You will be redirected to the pricing page. Please purchase plan 2 to be able to proceed with the download")
+        window.location.href = "https://interviewaxis.com/pricing-plan?mid=" + response.data.access_token
+      }
+    } catch (error) {
+      console.error("Error fetching users data:", error);
+      return [];
+    }
   }
 
   const fetchAllUsersData = async () => {
@@ -122,7 +120,7 @@ const Builder = () => {
     });
   
     // Redirect to login page
-    // window.location.href = "https://www.interviewaxis.com/login";
+    window.location.href = "https://www.interviewaxis.com/login";
   };
 
   const processSessionData = async () => {
