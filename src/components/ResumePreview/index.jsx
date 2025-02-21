@@ -22,6 +22,14 @@ const ResumePreview = ({ template, downloadable = false }) => {
     ) {
       return;
     }
+
+    if ((source.droppableId === "list1" || source.droppableId === "list2") && (destination.droppableId === "list3" || destination.droppableId.startsWith("list4"))) {
+      return;
+    }
+  
+    if ((source.droppableId === "list3" || source.droppableId.startsWith("list4")) && (destination.droppableId === "list1" || destination.droppableId === "list2")) {
+      return;
+    }
   
     const list1 = skills.list1 || [];
     const list2 = skills.list2 || [];
@@ -89,7 +97,7 @@ const ResumePreview = ({ template, downloadable = false }) => {
   };
   
   return (
-      <Box sx={{ display: 'flex', flexDirection: isMobile ? 'column' : "row", gap: 3, bgcolor: 'white'}}>
+      <Box sx={{ display: 'flex', flexDirection: isMobile ? 'column-reverse' : "row", gap: 3, bgcolor: 'white'}}>
         <DragDropContext onDragEnd={handleDragEnd}>
           <Paper elevation={3} sx={{order: isMobile ? '2' : ''}}>
             {template === 'Template1' && <Template1 data={data} skills={skills} downloadable={downloadable} />}
